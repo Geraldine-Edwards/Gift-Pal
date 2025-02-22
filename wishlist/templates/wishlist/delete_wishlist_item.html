@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Delete Wishlist Item</h2>
+    <p>Are you sure you want to delete "{{ wishlist_item.item_name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'wishlist:wishlist' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

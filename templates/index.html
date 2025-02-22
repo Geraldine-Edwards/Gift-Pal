@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Gift Box{% endblock %}
+
+{% block content %}
+<!-- Link to your custom CSS -->
+<link rel="stylesheet" href="{% static 'css/gift-box.css' %}">
+
+<!-- Gift Box Container -->
+<div class="gift-container min-vh-100 d-flex flex-column justify-content-center align-items-center">
+    <div class="shadow"></div> <!-- Shadow outside the gift box -->   
+        <div class="gift-box">
+            <div class="lid">
+                <div class="bow"></div>
+            </div>
+            <div class="surprise">
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+            </div>
+        </div>
+    <div class="text d-flex flex-column align-items-center">
+        <a href="{% url 'account_login' %}" class="mt-5 btn btn-lg btn-light text-primary fw-bold rounded-pill pulse">
+            Start your gift-giving journey today!
+        </a>
+    </div>
+</div>
+
+<!-- Link to your custom JavaScript -->
+<script src="{% static 'js/gift-box.js' %}"></script>
+{% endblock %}

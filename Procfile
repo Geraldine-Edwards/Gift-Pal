@@ -1,1 +1,1 @@
-web: gunicorn giftinggenie.wsgi:application
+web: gunicorn giftpal.wsgi:application

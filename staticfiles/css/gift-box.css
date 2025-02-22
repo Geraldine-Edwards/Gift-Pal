@@ -1,0 +1,273 @@
+.gift-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.gift-container.active {
+    animation: Squish 1s ease-in-out forwards;
+}
+
+@keyframes Squish {
+    0% {
+        transform: scale(1, 1);
+    }
+
+    50% {
+        transform: scale(0.95, 1.05);
+    }
+
+    55% {
+        transform: scale(1.1, 0.9);
+    }
+
+    60% {
+        transform: scale(0.9, 1.05);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+.gift-container .gift-box {
+    position: relative;
+    height: 200px;
+    width: 300px;
+    background: linear-gradient(180deg, #e83283, #fc346f);
+    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 5%;
+    animation: Bounce 4s ease infinite forwards;
+    z-index: 2;
+}
+
+.gift-box.active {
+    animation: none;
+}
+
+@keyframes Bounce {
+    0% {
+        transform: translateY(-60px);
+    }
+
+    50% {
+        transform: translateY(0px);
+    }
+
+    100% {
+        transform: translateY(-60px);
+    }
+}
+
+.gift-container .shadow {
+    content: '';
+    position: relative;
+    width: 300px;
+    height: 40px;
+    background: rgba(0, 0, 0, .4);
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    animation: BounceOut 4s ease infinite forwards;
+    z-index: 1;
+}
+
+@keyframes BounceOut {
+    0% {
+        transform: translateY(-30px) scale(0.7);
+        opacity: 0.7;
+        filter: blur(1px);
+    }
+
+    50% {
+        transform: translateY(0px) scale(1);
+        opacity: 1;
+        filter: blur(0px);
+    }
+
+    100% {
+        transform: translateY(-30px) scale(0.7);
+        opacity: 0.7;
+        filter: blur(1px);
+    }
+}
+
+.gift-container .shadow.active {
+    animation: none;
+}
+
+/* Box ribbon */
+.gift-box::before {
+    content: '';
+    position: absolute;
+    height: 200px;
+    width: 50px;
+    background: #89cff0;
+    left: 124px;
+}
+
+/* Top of box shadow */
+.gift-box::after {
+    content: '';
+    position: absolute;
+    box-shadow: inset 0px 8px 5px rgba(0, 0, 0, .3);
+    width: 300px;
+    height: 200px;
+}
+
+/* Box lid */
+.lid {
+    position: absolute;
+    background: #c1206e;
+    width: 315px;
+    height: 90px;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    top: -80px;
+    left: -7px;
+    z-index: 2;
+    transition: .5s ease;
+}
+
+.lid.active {
+    transition-delay: 0.5s;
+    transform: translateY(-200px) /* gap between box and lid */
+}
+
+/* Lid ribbon */
+.lid::before {
+    content: '';
+    position: absolute;
+    background: #89cff0;
+    width: 50px;
+    height: 90px;
+    left: 130px;
+    z-index: 2;
+}
+
+/* Box bows */
+.bow::before,
+.bow::after {
+    content: "";
+    width: 83.3333333333px;
+    height: 83.3333333333px;
+    border: 16.6666666667px solid #89cff0;
+    border-radius: 50% 50% 0 50%;
+    position: absolute;
+    bottom: 99%;
+    z-index: 1;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.bow::before {
+    left: 50%;
+    transform: translateX(-100%) skew(10deg, 10deg);
+}
+
+.bow::after {
+    left: 50%;
+    transform: translateX(0%) rotate(90deg) skew(10deg, 10deg);
+}
+
+/* Surprise (Confetti or Glow) */
+.surprise {
+    position: absolute;
+    top: 0%; /* Position at the top of the gift box */
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, #ffc107 10%, transparent 70%);
+    opacity: 0;
+    transform: translate(-50%, -50%); /* Center horizontally */
+    transition: opacity 0.5s ease-in-out;
+    z-index: -1;
+}
+
+.surprise.active {
+    transition-delay: 0.3s;
+    opacity: 1;
+}
+
+/* Confetti Animation */
+@keyframes confetti {
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+    }
+}
+
+/* Confetti Particles */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: confetti 1s ease-in-out infinite;
+}
+
+.confetti:nth-child(1) {
+    background-color: #e271a4;
+    top: 10%;
+    left: 20%;
+    animation-delay: 0.2s;
+}
+
+.confetti:nth-child(2) {
+    background-color: #6610f2;
+    top: 20%;
+    left: 50%;
+    animation-delay: 0.4s;
+}
+
+.confetti:nth-child(3) {
+    background-color: #0ec22f;
+    top: 30%;
+    left: 80%;
+    animation-delay: 0.6s;
+}
+
+.confetti:nth-child(4) {
+    background-color: #ffc107;
+    top: 40%;
+    left: 30%;
+    animation-delay: 0.8s;
+}
+
+.confetti:nth-child(5) {
+    background-color: #3a8fd9;
+    top: 50%;
+    left: 60%;
+    animation-delay: 1s;
+}
+
+.text {
+    position: absolute;
+    width: 100%; /* Ensure the text container takes full width */
+    bottom: 15px; /* Adjust as needed */
+    opacity: 0;
+    z-index: -2;
+    transform: translate(-50%, -50%); /* Center horizontally */
+    transform: translateY(-370px);            
+    transition: opacity 0.5s ease-in-out;
+}
+
+.text.active {
+    transition-delay: 1s;
+    opacity: 1;
+    z-index: 10;
+}
+
+.text a  {
+    transition: transform 0.5s ease-in-out;
+}
+
+.text.active a {
+    transform: scale(1.1);
+}
