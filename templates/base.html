@@ -23,17 +23,17 @@
     <!-- Custom CSS-->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <!-- favicon.io -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon-light/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-light/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-light/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/favicon-light/site.webmanifest' %}">
 </head>
 
 <body class="{% if request.COOKIES.dark_mode == 'true' %}dark-mode{% endif %}">
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: var(--bs-primary);">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-                <img src="{% static 'images/gift-genie-white.png' %}" alt="Gift Pal Logo" height="40">
+                <img src="{% static 'images/gift_box_light.png' %}" alt="Gift Pal Logo" height="40">
                 <span class="ms-2">Gift Pal</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

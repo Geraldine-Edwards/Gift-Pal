@@ -4,6 +4,7 @@
     align-items: center;
     position: relative;
     cursor: pointer;
+    min-height: 100vh;
 }
 
 .gift-container.active {
@@ -32,15 +33,15 @@
     }
 }
 
-.gift-container .gift-box {
+.gift-box {
     position: relative;
     height: 200px;
     width: 300px;
     background: linear-gradient(180deg, #e83283, #fc346f);
     border-bottom-left-radius: 5%;
     border-bottom-right-radius: 5%;
-    animation: Bounce 4s ease infinite forwards;
     z-index: 2;
+    animation: Bounce 4s ease infinite forwards;
 }
 
 .gift-box.active {
@@ -61,17 +62,36 @@
     }
 }
 
+/* Box ribbon */
+.gift-box::before {
+    content: '';
+    position: absolute;
+    height: 200px;
+    width: 50px;
+    background: #89cff0;
+    left: 124px;
+}
+
+/* Top of box shadow */
+.gift-box::after {
+    content: '';
+    position: absolute;
+    box-shadow: inset 0px 8px 5px rgba(0, 0, 0, .3);
+    width: 300px;
+    height: 200px;
+}
+
 .gift-container .shadow {
     content: '';
     position: absolute;
     width: 300px;
     height: 40px;
     background: rgba(0, 0, 0, .4);
-    top: 180px;
     border-radius: 50%;
-    left: 0px;
-    animation: BounceOut 4s ease infinite forwards;
+    bottom: calc(50% - 100px);
+    left: 50px;
     z-index: 1;
+    animation: BounceOut 4s ease infinite forwards;
 }
 
 @keyframes BounceOut {
@@ -98,25 +118,6 @@
     animation: none;
 }
 
-/* Box ribbon */
-.gift-box::before {
-    content: '';
-    position: absolute;
-    height: 200px;
-    width: 50px;
-    background: #89cff0;
-    left: 124px;
-}
-
-/* Top of box shadow */
-.gift-box::after {
-    content: '';
-    position: absolute;
-    box-shadow: inset 0px 8px 5px rgba(0, 0, 0, .3);
-    width: 300px;
-    height: 200px;
-}
-
 /* Box lid */
 .lid {
     position: absolute;
@@ -128,13 +129,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     top: -80px;
     left: -7px;
-    z-index: 2;
+    z-index: 4;
     transition: .5s ease;
 }
 
 .lid.active {
     transition-delay: 0.5s;
-    transform: translateY(-200px) /* gap between box and lid */
+    transform: translateY(-150px) /* gap between box and lid */
 }
 
 /* Lid ribbon */
@@ -145,7 +146,6 @@
     width: 50px;
     height: 90px;
     left: 130px;
-    z-index: 2;
 }
 
 /* Box bows */
@@ -158,7 +158,6 @@
     border-radius: 50% 50% 0 50%;
     position: absolute;
     bottom: 99%;
-    z-index: 1;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -182,8 +181,8 @@
     background: radial-gradient(circle, #ffc107 10%, transparent 70%);
     opacity: 0;
     transform: translate(-50%, -50%); /* Center horizontally */
+    z-index: 2;
     transition: opacity 0.5s ease-in-out;
-    z-index: -1;
 }
 
 .surprise.active {
@@ -248,19 +247,17 @@
 
 .text {
     position: absolute;
-    width: 100%; /* Ensure the text container takes full width */
-    bottom: 15px; /* Adjust as needed */
-    opacity: 0;
-    z-index: -2;
+    top: 50%; /* Position at the center of the surprise element */
+    left: 50%;
     transform: translate(-50%, -50%); /* Center horizontally */
-    transform: translateY(-370px);            
+    z-index: 5; /* Ensure the text is at the highest level */
+    opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
 .text.active {
     transition-delay: 1s;
     opacity: 1;
-    z-index: 10;
 }
 
 .text a  {

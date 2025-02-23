@@ -4,7 +4,7 @@
     align-items: center;
     position: relative;
     cursor: pointer;
-    min-height: 100vh
+    min-height: 100vh;
 }
 
 .gift-container.active {
@@ -40,8 +40,8 @@
     background: linear-gradient(180deg, #e83283, #fc346f);
     border-bottom-left-radius: 5%;
     border-bottom-right-radius: 5%;
-    animation: Bounce 4s ease infinite forwards;
     z-index: 2;
+    animation: Bounce 4s ease infinite forwards;
 }
 
 .gift-box.active {
@@ -50,7 +50,7 @@
 
 @keyframes Bounce {
     0% {
-        transform: translateY(-60px);
+        transform: translateY(-30px);
     }
 
     50% {
@@ -58,21 +58,38 @@
     }
 
     100% {
-        transform: translateY(-60px);
+        transform: translateY(-30px);
     }
 }
 
-.gift-container .shadow {
+/* Box ribbon */
+.gift-box::before {
     content: '';
+    position: absolute;
+    height: 200px;
+    width: 50px;
+    background: #89cff0;
+    left: 124px;
+}
+
+/* Top of box shadow */
+.gift-box::after {
+    content: '';
+    position: absolute;
+    box-shadow: inset 0px 8px 5px rgba(0, 0, 0, .3);
+    width: 300px;
+    height: 200px;
+}
+
+.gift-container .shadow {
     position: absolute;
     width: 300px;
     height: 40px;
     background: rgba(0, 0, 0, .4);
-    top: 180px;
     border-radius: 50%;
-    left: 0px;
+    bottom: calc(50% - 150px);
+    z-index: 1;
     animation: BounceOut 4s ease infinite forwards;
-    z-index: 2;
 }
 
 @keyframes BounceOut {
@@ -99,43 +116,24 @@
     animation: none;
 }
 
-/* Box ribbon */
-.gift-box::before {
-    content: '';
-    position: absolute;
-    height: 200px;
-    width: 50px;
-    background: #89cff0;
-    left: 124px;
-}
-
-/* Top of box shadow */
-.gift-box::after {
-    content: '';
-    position: absolute;
-    box-shadow: inset 0px 8px 5px rgba(0, 0, 0, .3);
-    width: 300px;
-    height: 200px;
-}
-
 /* Box lid */
 .lid {
     position: absolute;
     background: #c1206e;
-    width: 315px;
+    width: 310px;
     height: 90px;
     border-top-left-radius: 5%;
     border-top-right-radius: 5%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     top: -80px;
-    left: -7px;
-    z-index: 2;
+    left: -6px;
+    z-index: 3;
     transition: .5s ease;
 }
 
 .lid.active {
     transition-delay: 0.5s;
-    transform: translateY(-200px) /* gap between box and lid */
+    transform: translateY(-150px) /* gap between box and lid */
 }
 
 /* Lid ribbon */
@@ -144,9 +142,9 @@
     position: absolute;
     background: #89cff0;
     width: 50px;
-    height: 90px;
+    height: 89px;
     left: 130px;
-    z-index: 2;
+    top: 2px;
 }
 
 /* Box bows */
@@ -158,8 +156,8 @@
     border: 16.6666666667px solid #89cff0;
     border-radius: 50% 50% 0 50%;
     position: absolute;
+    z-index: -1;
     bottom: 99%;
-    z-index: 1;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -176,20 +174,21 @@
 /* Surprise (Confetti or Glow) */
 .surprise {
     position: absolute;
-    top: 0%; /* Position at the top of the gift box */
+    top: 44%; /* Position at the top of the gift box */
     left: 50%;
-    width: 80%;
-    height: 80%;
+    width: 260px;
+    height: 260px;
     background: radial-gradient(circle, #ffc107 10%, transparent 70%);
     opacity: 0;
     transform: translate(-50%, -50%); /* Center horizontally */
+    z-index: 0;
     transition: opacity 0.5s ease-in-out;
-    z-index: -1;
 }
 
 .surprise.active {
     transition-delay: 0.3s;
     opacity: 1;
+    
 }
 
 /* Confetti Animation */
@@ -210,10 +209,11 @@
     height: 10px;
     border-radius: 50%;
     animation: confetti 1s ease-in-out infinite;
+    animation-delay: 0.5;
 }
 
 .confetti:nth-child(1) {
-    background-color: #e271a4;
+    background-color: #f9a7cc;
     top: 10%;
     left: 20%;
     animation-delay: 0.2s;
@@ -227,8 +227,8 @@
 }
 
 .confetti:nth-child(3) {
-    background-color: #0ec22f;
-    top: 30%;
+    background-color: #049a1f;
+    top: 35%;
     left: 80%;
     animation-delay: 0.6s;
 }
@@ -242,7 +242,7 @@
 
 .confetti:nth-child(5) {
     background-color: #3a8fd9;
-    top: 50%;
+    top: 30%;
     left: 60%;
     animation-delay: 1s;
 }
@@ -250,18 +250,15 @@
 .text {
     position: absolute;
     width: 100%; /* Ensure the text container takes full width */
-    bottom: 15px; /* Adjust as needed */
     opacity: 0;
-    z-index: -2;
-    transform: translate(-50%, -50%); /* Center horizontally */
-    transform: translateY(-370px);            
+    z-index: 4;          
     transition: opacity 0.5s ease-in-out;
+    bottom: 58%;
 }
 
 .text.active {
     transition-delay: 1s;
     opacity: 1;
-    z-index: 10;
 }
 
 .text a  {
@@ -271,3 +268,4 @@
 .text.active a {
     transform: scale(1.1);
 }
+
