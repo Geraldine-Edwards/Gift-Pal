@@ -265,30 +265,3 @@
     transition: transform 0.5s ease-in-out;
 }
 
-/* Media Queries for Small Devices */
-@media (max-width: 576px) {
-    .gift-container .gift-box {
-        height: 150px;
-        width: 225px;
-    }
-
-    .gift-container .shadow {
-        width: 225px;
-        height: 30px;
-    }
-
-    .gift-container .lid {
-        width: 235px;
-        height: 70px;
-    }
-
-    .gift-container .surprise {
-        width: 195px;
-        height: 195px;
-    }
-
-    .gift-container .text {
-        bottom: 60%;
-    }
-}
-
