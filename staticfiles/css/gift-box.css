@@ -174,7 +174,7 @@
 /* Surprise (Confetti or Glow) */
 .surprise {
     position: absolute;
-    top: 44%; /* Position at the top of the gift box */
+    top: 38%; /* Position at the top of the gift box */
     left: 50%;
     width: 260px;
     height: 260px;
@@ -251,9 +251,9 @@
     position: absolute;
     width: 100%; /* Ensure the text container takes full width */
     opacity: 0;
-    z-index: 4;          
+    z-index: 1;          
     transition: opacity 0.5s ease-in-out;
-    bottom: 58%;
+    bottom: 68%;
 }
 
 .text.active {
