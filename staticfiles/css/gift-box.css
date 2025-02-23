@@ -37,7 +37,7 @@
     position: relative;
     height: 200px;
     width: 300px;
-    background: linear-gradient(180deg, #e83283, #fc346f);
+    background: #f60237;
     border-bottom-left-radius: 5%;
     border-bottom-right-radius: 5%;
     z-index: 2;
@@ -119,7 +119,7 @@
 /* Box lid */
 .lid {
     position: absolute;
-    background: #c1206e;
+    background: #f60237;
     width: 310px;
     height: 90px;
     border-top-left-radius: 5%;
@@ -174,7 +174,7 @@
 /* Surprise (Confetti or Glow) */
 .surprise {
     position: absolute;
-    top: 38%; /* Position at the top of the gift box */
+    top: 48%; /* Position at the top of the gift box */
     left: 50%;
     width: 260px;
     height: 260px;
@@ -265,7 +265,30 @@
     transition: transform 0.5s ease-in-out;
 }
 
-.text.active a {
-    transform: scale(1.1);
+/* Media Queries for Small Devices */
+@media (max-width: 576px) {
+    .gift-container .gift-box {
+        height: 150px;
+        width: 225px;
+    }
+
+    .gift-container .shadow {
+        width: 225px;
+        height: 30px;
+    }
+
+    .gift-container .lid {
+        width: 235px;
+        height: 70px;
+    }
+
+    .gift-container .surprise {
+        width: 195px;
+        height: 195px;
+    }
+
+    .gift-container .text {
+        bottom: 60%;
+    }
 }
 
