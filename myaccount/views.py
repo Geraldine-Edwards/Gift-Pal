@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import MyAccount, Like
-from .forms import ProfileImageForm
+from .forms import ProfileImageForm, ProfileStatusForm, ProfileDetailsForm
 from planner.models import Planner
 from wishlist.models import WishlistItem
 
@@ -10,18 +10,66 @@ from wishlist.models import WishlistItem
 def profile_view(request):
     myaccount, created = MyAccount.objects.get_or_create(user=request.user)
 
+    status_form = ProfileStatusForm(instance=myaccount)
+    details_form = ProfileDetailsForm(instance=myaccount)
+    image_form = ProfileImageForm(instance=myaccount)
+
     if request.method == 'POST':
-        form = ProfileImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            myaccount.profile_image = form.cleaned_data['profile_image']  # Save Cloudinary file
-            myaccount.save()
-            messages.success(request, 'Your profile picture has been updated!')
-            return redirect('myaccount:myaccount_home')
-    else:
-        form = ProfileImageForm()
+        # Handle profile image upload
+        if 'profile_image' in request.FILES:
+            image_form = ProfileImageForm(request.POST, request.FILES, instance=myaccount)
+            if image_form.is_valid():
+                image_form.save()
+                messages.success(request, 'Profile image updated successfully!')
+                return redirect('myaccount:myaccount_home')
 
-    return render(request, 'myaccount/profile.html', {'myaccount': myaccount, 'form': form})
+        # Handle status update
+        elif 'status_message' in request.POST:
+            status_form = ProfileStatusForm(request.POST, instance=myaccount)
+            if status_form.is_valid():
+                status_form.save()
+                messages.success(request, 'Status updated successfully!')
+                return redirect('myaccount:myaccount_home')
+            # Return response even if invalid
+            return render(request, 'myaccount/profile.html', {
+                'myaccount': myaccount,
+                'image_form': image_form,
+                'status_form': status_form,
+                'details_form': details_form,
+                'friends_count': request.user.friends.count(),
+                'events_count': Planner.objects.filter(user=request.user).count(),
+                'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count()
+            })
 
+        # Handle profile details
+        elif 'about_me' in request.POST:
+            details_form = ProfileDetailsForm(request.POST, instance=myaccount)
+            if details_form.is_valid():
+                details_form.save()
+                messages.success(request, 'Profile details updated successfully!')
+                return redirect('myaccount:myaccount_home')
+            # Return response even if invalid
+            return render(request, 'myaccount/profile.html', {
+                'myaccount': myaccount,
+                'image_form': image_form,
+                'status_form': status_form,
+                'details_form': details_form,
+                'friends_count': request.user.friends.count(),
+                'events_count': Planner.objects.filter(user=request.user).count(),
+                'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count()
+            })
+
+    # GET request or no form submitted
+    context = {
+        'myaccount': myaccount,
+        'image_form': image_form,
+        'status_form': status_form,
+        'details_form': details_form,
+        'friends_count': request.user.friends.count(),
+        'events_count': Planner.objects.filter(user=request.user).count(),
+        'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count()
+    }
+    return render(request, 'myaccount/profile.html', context)
 
 
 @login_required

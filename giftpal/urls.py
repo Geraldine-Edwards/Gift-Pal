@@ -27,7 +27,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('friends/', include('friendslist.urls')),
     path('myaccount/', include('myaccount.urls')),
-    path('wishlist/', include('wishlist.urls')),
+    path('wishlist/', include('wishlist.urls', namespace='wishlist')),
     path('planner/', include('planner.urls')),
     path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),

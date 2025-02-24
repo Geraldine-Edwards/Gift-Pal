@@ -1,13 +1,24 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Delete Wishlist Item{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Delete Wishlist Item</h2>
-    <p>Are you sure you want to delete "{{ wishlist_item.item_name }}"?</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Delete</button>
-        <a href="{% url 'wishlist:wishlist' %}" class="btn btn-secondary">Cancel</a>
-    </form>
+<div class="container py-5">
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-body p-4 text-center">
+            <i class="fas fa-exclamation-triangle fa-3x text-danger mb-4"></i>
+            <h2 class="h3 mb-3">Delete Item</h2>
+            <p class="lead">Are you sure you want to delete "{{ wishlist_item.item_name }}"?</p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                    <a href="{% url 'wishlist:wishlist' %}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

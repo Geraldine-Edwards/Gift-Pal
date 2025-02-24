@@ -32,7 +32,7 @@ class MyAccount(models.Model):
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
-    friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_by')
+    friend = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,related_name='liked_by')
     event = models.ForeignKey(Planner, on_delete=models.CASCADE, null=True, blank=True, related_name='likes')
     wishlist_item = models.ForeignKey(WishlistItem, on_delete=models.CASCADE, null=True, blank=True, related_name='likes')
     created_on = models.DateTimeField(auto_now_add=True)

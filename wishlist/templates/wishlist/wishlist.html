@@ -1,52 +1,71 @@
 {% extends "base.html" %}
 {% load static %}
-{% load crispy_forms_tags %}
+
+{% block title %}My Wishlists{% endblock %}
 
 {% block content %}
-<div class="container mt-3">
-    <h1 class="main-title-text">My Wishlist</h1>
-    <div class="row">
-        {% if user.is_authenticated %}
-        <div class="col-md-12">
-            <div>
-                <div class="card-body">
-                    <h4 class="card-title">Wishlist Items</h4>
-                    <ul class="list-group">
-                        {% for item in wishlist_items %}
-                        <li class="list-group-item">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center">
-                                    <div class="profile-picture-container position-relative mx-3">
-                                        {% if item.thumbnail_url %}
-                                        <img src="{{ item.thumbnail_url }}" alt="{{ item.item_name }}"
-                                            class="img-thumbnail"
-                                            style="width: 100px; height: 100px; object-fit: cover;">
-                                        {% else %}
-                                        <div class="img-thumbnail"
-                                            style="width: 100px; height: 100px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                                            <span>No Image</span>
-                                        </div>
-                                        {% endif %}
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">{{ item.item_name }}</h5>
-                                        <p class="mb-1">{{ item.description }}</p>
-                                        <div class="d-flex flex-wrap">
-                                            <a href="{{ item.link }}" target="_blank" class="btn btn-primary btn-sm mb-2 m-1">View Item</a>
-                                            <a href="#" class="btn btn-primary btn-sm mb-2 m-1">Like</a>
-                                            <a href="{% url 'wishlist:edit_wishlist_item' item.id %}" class="btn btn-warning btn-sm m-1">Edit</a>
-                                            <a href="{% url 'wishlist:delete_wishlist_item' item.id %}" class="btn btn-danger btn-sm m-1">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">
+            <i class="fas fa-gift me-2"></i>My Wishlists
+        </h1>
+        <div class="btn-group">
+            <a href="{% url 'wishlist:add_category' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>New Occasion
+            </a>
+            <a href="{% url 'wishlist:add_wishlist_item' %}" class="btn btn-outline-primary">
+                <i class="fas fa-gift me-2"></i>Add Item
+            </a>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    {% for category in categories %}
+    <div class="card shadow-sm mb-5">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="h4 mb-0">
+                {{ category.name }}
+                {% if category.occasion_date %}
+                <small class="text-muted ms-2">
+                    ({{ category.occasion_date|date:"M d, Y" }})
+                </small>
+                {% endif %}
+            </h3>
+            <div class="btn-group">
+                <a href="{% url 'wishlist:edit_category' category.pk %}" 
+                   class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'wishlist:delete_category' category.pk %}" 
+                   class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-trash"></i>
+                </a>
             </div>
         </div>
-        {% endif %}
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for item in category.wishlistitem_set.all %}
+                {% include "wishlist/includes/item_card.html" %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
+    {% endfor %}
+
+    <!-- Uncategorized Items -->
+    {% if uncategorized %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="h4 mb-0">General Wishlist</h3>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for item in uncategorized %}
+                {% include "wishlist/includes/item_card.html" %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
