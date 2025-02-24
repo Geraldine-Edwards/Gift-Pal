@@ -263,9 +263,12 @@
 
 .text a  {
     transition: transform 0.5s ease-in-out;
+    color: var(--bs-indigo);
 }
 
 .text.active a {
+    color: var(--bs-indigo);
     transform: scale(1.1);
 }
+
 

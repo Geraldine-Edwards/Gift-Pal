@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Site Map</h1>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'myaccount:myaccount_home' %}">My Account</a></li>
+        <li><a href="{% url 'friendslist' %}">Friends</a></li>
+        <li><a href="{% url 'wishlist:wishlist' %}">Wishlist</a></li>
+        <li><a href="{% url 'planner:planner_view' %}">Event Planner</a></li>
+        <li><a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a></li>
+        <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+        <li><a href="{% url 'site_map' %}">Site Map</a></li>
+    </ul>
+</div>
+{% endblock %}

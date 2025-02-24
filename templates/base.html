@@ -30,11 +30,11 @@
 </head>
 
 <body class="{% if request.COOKIES.dark_mode == 'true' %}dark-mode{% endif %}">
-    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: var(--bs-primary);">
+    <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
                 <img src="{% static 'images/gift_box_light.png' %}" alt="Gift Pal Logo" height="40">
-                <span class="ms-2">Gift Pal</span>
+                <span class="ms-2">Gift-Pal</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -51,7 +51,6 @@
                             <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1739390582/nobody_pcaqjl.jpg"
                                 alt="Profile Image" class="rounded-circle profile-image" height="40">
                             {% endif %}
-                            <span class="">{{ user.username }}</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -87,8 +86,33 @@
         {% block content %}{% endblock %}
     </div>
 
-    <footer>
-
+    <footer class="text-white mt-5 p-4 text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <a href="https://www.instagram.com" target="_blank" class="text-white me-3">
+                        <i class="fab fa-instagram fa-2x"></i>
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank" class="text-white me-3">
+                        <i class="fab fa-facebook fa-2x"></i>
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank" class="text-white me-3">
+                        <i class="fab fa-twitter fa-2x"></i>
+                    </a>
+                    <a href="https://www.linkedin.com" target="_blank" class="text-white">
+                        <i class="fab fa-linkedin fa-2x"></i>
+                    </a>
+                </div>
+                <div class="text-white col-md-4 mb-3">
+                    <p>&copy; 2025 Gift Pal. All rights reserved.</p>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'terms_and_conditions' %}" class="text-white me-3">Terms & Conditions</a>
+                    <a href="{% url 'privacy_policy' %}" class="text-white me-3">Privacy Policy</a>
+                    <a href="{% url 'site_map' %}" class="text-white">Site Map</a>
+                </div>
+            </div>
+        </div>
     </footer>
     
     <!-- Toggle Light/Dark theme JS -->

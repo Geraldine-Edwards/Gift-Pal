@@ -6,6 +6,7 @@
 {% block content %}
 <!-- Link to your custom CSS -->
 <link rel="stylesheet" href="{% static 'css/gift-box.css' %}">
+
 <div class="container">
 <!-- Gift Box Container -->
 <div class="gift-container min-vh-100 d-flex flex-column justify-content-center align-items-center">
@@ -22,8 +23,8 @@
             <div class="bow"></div>
         </div>       
     </div>
-    <div class="text d-flex flex-column justify-content-center align-items-center">
-        <a href="{% url 'account_login' %}" class="mt-5 btn btn-lg btn-light text-primary fw-bold rounded-pill">
+    <div class="text title-text d-flex flex-column justify-content-center align-items-center">
+        <a href="{% url 'account_login' %}" class="mt-5 btn btn-lg btn-light fw-bold rounded-pill">
             Start your gift-giving journey today!
         </a>
     </div>

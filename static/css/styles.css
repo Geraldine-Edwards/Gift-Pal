@@ -1,6 +1,6 @@
 
 /* Google Fonts import */
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sigmar&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
 /* CSS Variables */
 /* Light Mode */
@@ -8,7 +8,7 @@
 [data-theme="light"] {
     --bs-blue: #3a8fd9;
     --bs-baby-blue: #89cff0;
-    --bs-indigo: #6610f2;
+    --bs-indigo: #5f02f6;
     --bs-purple: #686dc3;
     --bs-pink: #e83283;
     --bs-red: #fc346f;
@@ -21,7 +21,7 @@
     --bs-white: #fff;
     --bs-gray: #6c757d;
     --bs-gray-dark: #343a40;
-    --bs-primary: #e83283;
+    --bs-primary: #686dc3;
 }
 
 /* Dark Mode */
@@ -42,7 +42,7 @@
     --bs-gray: #3e3e3e;
     --bs-gray-dark: #1e1e1e;
     --bs-body-bg: #212529;
-    --bs-primary: #4d112c;
+    --bs-primary: #3e3a6d;
 }
 
 
@@ -68,27 +68,30 @@
 }
 
 [data-theme="light"] .title-text {
+    font-family: "Ubuntu", sans-serif;
     color: var(--bs-black);
 }
 
 [data-theme="dark"] .title-text {
+    font-family: "Ubuntu", sans-serif;
     color: var(--bs-black);
 }
 
 [data-theme="light"] .main-title-text {
-    font-family: "Pacifico", serif;
-    color: var(--bs-primary);
+    font-family: "Ubuntu", sans-serif;
+    color: var(--bs-white);
 }
 
 [data-theme="dark"] .main-title-text {
-    font-family: "Pacifico", serif;
-    color: var(--bs-primary);
+    font-family: "Ubuntu", sans-serif;
+    color: var(--bs-white);
 }
 
 /* Apply the background gradient */
 body {
     background: linear-gradient(45deg, var(--bs-pink), var(--bs-green), var(--bs-purple));
     min-height: 100vh;
+    font-family: "Ubuntu", sans-serif;
 }
 
 /* Dark Mode Background */
@@ -98,7 +101,7 @@ body {
 
 /* Navbar Styling */
 .navbar {
-    background-color: var(--bs-primary) !important;
+    background-color: var(--bs-purple) !important;
 }
 
 .navbar-brand img{
@@ -106,9 +109,9 @@ body {
     height: 60px;
 }
 .navbar-brand span{
-    font-family: "Pacifico", serif;
-    font-size: 2rem;
-    font-weight: 400;
+    font-family: "Sigmar", sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
     letter-spacing: 0.2rem;
 }
 
@@ -134,7 +137,7 @@ body {
 
 /* Dark Mode Navbar */
 [data-theme="dark"] .navbar {
-    background-color: var(--bs-primary) !important;
+    background-color: var(--bs-purple) !important;
 }
 
 /* Dark Mode Links */
@@ -146,6 +149,8 @@ body {
     color: var(--bs-baby-blue) !important;
     text-shadow: 0px 0px 5px rgba(137, 207, 240, 0.7);
 }
+
+
 
 /* Theme Toggle Button */
 #theme-toggle {
@@ -159,18 +164,17 @@ body {
     transform: scale(1.1);
 }
 
+/* Custom Button Styles */
+.btn-primary {
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
 
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-30px);
-    }
-    60% {
-        transform: translateY(-15px);
-    }
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: darken(var(--bs-primary), 10%) !important;
+    border-color: darken(var(--bs-primary), 10%) !important;
 }
 
 

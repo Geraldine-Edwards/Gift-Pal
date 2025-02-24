@@ -29,6 +29,9 @@ urlpatterns = [
     path('myaccount/', include('myaccount.urls')),
     path('wishlist/', include('wishlist.urls')),
     path('planner/', include('planner.urls')),
+    path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('site-map/', views.site_map, name='site_map'),
 ]
 
 if settings.DEBUG:
