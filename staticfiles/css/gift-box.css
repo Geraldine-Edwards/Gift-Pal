@@ -174,7 +174,7 @@
 /* Surprise (Confetti or Glow) */
 .surprise {
     position: absolute;
-    top: 30%; /* Position at the top of the gift box */
+    top: 40%; /* Position at the top of the gift box */
     left: 50%;
     width: 260px;
     height: 260px;
