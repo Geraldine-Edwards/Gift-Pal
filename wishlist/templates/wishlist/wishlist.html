@@ -3,31 +3,50 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="app-container mt-5">
-    <h1 class="main-title-text mb-3">My Wishlist</h1>
-    <a href="{% url 'wishlist:add_wishlist_item' %}" class="btn btn-rounded btn-primary btn-log mb-3" action="{% url 'wishlist:add_wishlist_item' %}">Add an item to my wishlist</a>
-    <div class="scrollable-container" style=" overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
-        <ul class="list-group">
-            {% for item in wishlist_items %}
-            <li class="list-group-item">
-                {% if item.thumbnail_url %}
-                <img src="{{ item.thumbnail_url }}" alt="{{ item.item_name }}" class="img-thumbnail mr-3" style="width: 100px; height: 100px; object-fit: cover;">
-                {% else %}
-                <div class="img-thumbnail mr-3" style="width: 100px; height: 100px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                    <span>No Image</span>
+<div class="container mt-3">
+    <h1 class="main-title-text">My Wishlist</h1>
+    <div class="row">
+        {% if user.is_authenticated %}
+        <div class="col-md-12">
+            <div>
+                <div class="card-body">
+                    <h4 class="card-title">Wishlist Items</h4>
+                    <ul class="list-group">
+                        {% for item in wishlist_items %}
+                        <li class="list-group-item">
+                            <div class="card h-100">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="profile-picture-container position-relative mx-3">
+                                        {% if item.thumbnail_url %}
+                                        <img src="{{ item.thumbnail_url }}" alt="{{ item.item_name }}"
+                                            class="img-thumbnail"
+                                            style="width: 100px; height: 100px; object-fit: cover;">
+                                        {% else %}
+                                        <div class="img-thumbnail"
+                                            style="width: 100px; height: 100px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                            <span>No Image</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h5 class="mb-1">{{ item.item_name }}</h5>
+                                        <p class="mb-1">{{ item.description }}</p>
+                                        <div class="d-flex flex-wrap">
+                                            <a href="{{ item.link }}" target="_blank" class="btn btn-primary btn-sm mb-2 m-1">View Item</a>
+                                            <a href="#" class="btn btn-primary btn-sm mb-2 m-1">Like</a>
+                                            <a href="{% url 'wishlist:edit_wishlist_item' item.id %}" class="btn btn-warning btn-sm m-1">Edit</a>
+                                            <a href="{% url 'wishlist:delete_wishlist_item' item.id %}" class="btn btn-danger btn-sm m-1">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-                {% endif %}
-                <div>
-                    <h5>{{ item.item_name }}</h5>
-                    <p>{{ item.description }}</p>
-                <a href="{{ item.link }}" target="_blank">{{ item.link|slice:":65" }}{% if item.link|length > 50 %}...{% endif %}</a>
-                <div class="mt-2">
-                    <a href="{% url 'wishlist:edit_wishlist_item' item.id %}" class="btn btn-baby-blue btn-warning btn-sm">Edit</a>
-                    <a href="{% url 'wishlist:delete_wishlist_item' item.id %}" class="btn btn-rounded btn-danger btn-sm">Delete</a>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -68,7 +68,7 @@
     position: absolute;
     height: 200px;
     width: 50px;
-    background: #89cff0;;
+    background: #89cff0;
     left: 124px;
 }
 
@@ -133,7 +133,7 @@
 
 .lid.active {
     transition-delay: 0.5s;
-    transform: translateY(-130px) /* gap between box and lid */
+    transform: translateY(-120px) /* gap between box and lid */
 }
 
 /* Lid ribbon */
@@ -174,7 +174,7 @@
 /* Surprise (Confetti or Glow) */
 .surprise {
     position: absolute;
-    top: 38%; /* Position at the top of the gift box */
+    top: 30%; /* Position at the top of the gift box */
     left: 50%;
     width: 260px;
     height: 260px;
@@ -263,5 +263,9 @@
 
 .text a  {
     transition: transform 0.5s ease-in-out;
+}
+
+.text.active a {
+    transform: scale(1.1);
 }
 

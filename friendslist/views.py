@@ -44,10 +44,12 @@ def add_friend(request):
 @login_required
 def friendsdetail(request, friend_id):
     friend = get_object_or_404(User, id=friend_id)
+    friends_friends = Friendship.objects.filter(user=friend, confirmed=True)
     events = Planner.objects.filter(user=friend)
     wishlist_items = WishlistItem.objects.filter(user=friend)
     return render(request, 'friendslist/frienddetail.html', {
         'friend': friend,
+        'friends_friends': friends_friends,
         'events': events,
         'wishlist_items': wishlist_items
     })

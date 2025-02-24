@@ -1,0 +1,19 @@
+/* Main Profile Page */
+
+.profile-picture-container{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden; /* Ensure the image does not overflow the container */
+}
+
+.profile-picture-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the container */
+    border-radius: 50%; /* Ensure the image is displayed as a circle */
+    border: 5px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}

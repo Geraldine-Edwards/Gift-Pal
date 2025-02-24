@@ -28,18 +28,21 @@ class MyAccount(models.Model):
         self.clean()
         super().save(*args, **kwargs)
 
+
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_by')
     event = models.ForeignKey(Planner, on_delete=models.CASCADE, null=True, blank=True, related_name='likes')
     wishlist_item = models.ForeignKey(WishlistItem, on_delete=models.CASCADE, null=True, blank=True, related_name='likes')
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'event', 'wishlist_item')
+        unique_together = ('user', 'friend', 'event', 'wishlist_item')
 
     def __str__(self):
         if self.event:
-            return f"{self.user.username} likes {self.event.title}"
+            return f"{self.user.username} likes {self.event.title} by {self.friend.username}"
         elif self.wishlist_item:
-            return f"{self.user.username} likes {self.wishlist_item.item_name}"
-        return f"{self.user.username} likes an item"
+            return f"{self.user.username} likes {self.wishlist_item.item_name} by {self.friend.username}"
+        return f"{self.user.username} likes an item by {self.friend.username}"
