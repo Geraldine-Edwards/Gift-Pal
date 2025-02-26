@@ -28,11 +28,16 @@
 }
 
 .hero {
-    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(rgba(232, 50, 131, 0.2), rgba(58, 143, 217, 0.2)),
+                url('../images/pexels-ivan-samkov-7911316.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: relative;
+    padding: 4rem 0;
 }
 
 .hero-overlay {
@@ -51,7 +56,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; 
 }
 
 .card:hover .icon-wrapper {

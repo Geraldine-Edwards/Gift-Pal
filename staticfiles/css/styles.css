@@ -75,11 +75,13 @@
     color: var(--white);
 }
 
-/* Base template styles */
+/* Apply the background gradient */
 body {
     min-height: 100vh;
     font-family: "Ubuntu", sans-serif;
 }
+
+
 
 /* Navbar Styling */
 .navbar {
@@ -90,7 +92,6 @@ body {
     width: 60px;
     height: 60px;
 }
-
 .navbar-brand span{
     font-family: "Sigmar", sans-serif;
     font-size: 3rem;
@@ -133,6 +134,32 @@ body {
     text-shadow: 0px 0px 5px rgba(137, 207, 240, 0.7);
 }
 
+/* Footer styling */
+footer {
+    margin-top: auto; /* Push footer to bottom */
+}
+
+.social-link {
+    transition: transform 0.3s ease;
+    display: inline-block; /* Required for transform */
+    position: relative; /* Ensures proper layering */
+    z-index: 1; /* Brings links to front */
+    pointer-events: auto !important; /* Forces clickability */
+}
+
+.social-link:hover {
+    transform: scale(1.1);
+}
+
+/* Optional: Add color transition */
+.social-link:hover i {
+    color: var(--primary-color) !important; /* Use your brand color */
+}
+
+.footer-link:hover {
+    color: var(--primary-color) !important; /* Use your brand color */  
+}
+
 
 
 /* Theme Toggle Button */
@@ -166,20 +193,8 @@ body {
     color: var(--purple) !important; 
 } 
 
-/* Footer styling */
-footer {
-    position: relative; /* Remove any fixed positioning */
-    z-index: -2; /* Lower than gift-container */
-    margin-top: auto; /* Push footer to bottom */
-}
 
-.footer .social-icons a {
-transition: transform 0.3s ease; /* Smooth transition for scaling */
-}
 
-.footer .social-icons a:hover {
-transform: scale(1.1); /* Scale the icon on hover */
-}
 
 /* Planner */
 
@@ -240,7 +255,6 @@ transform: scale(1.1); /* Scale the icon on hover */
     border-style: solid;
     border-color: rgba(0,0,0,0.8) transparent transparent transparent;
 }
-
 
 /* Adjust theme toggle button margin for smaller screens */
 @media (max-width: 768px) { /* Bootstrap's breakpoint for large devices */
