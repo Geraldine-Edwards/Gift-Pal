@@ -1,4 +1,10 @@
-/* Friends List Styling */
+:root {
+    --primary-color: #e83283;
+    --secondary-color: #3a8fd9;
+    --tertiary-color: #686dc3;
+    --accent-color: #ffc107;
+}
+
 .friend-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border-radius: 1rem;

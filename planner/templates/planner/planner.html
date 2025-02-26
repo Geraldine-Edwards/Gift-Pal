@@ -1,60 +1,82 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Event Planner{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="app-container">
-        <h1 class="main-title-text">My Events Planner</h1>
-        <div id="calendar-container">
+<link rel="stylesheet" href="{% static 'css/planner.css' %}">
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">
+            <i class="fas fa-calendar-alt me-2"></i>Event Planner
+        </h1>
+        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#eventModal">
+            <i class="fas fa-plus me-2"></i>Add Event
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
             <div id="calendar"></div>
         </div>
     </div>
 </div>
-<!-- Modal for creating/editing events -->
+
+<!-- Event Modal -->
 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Add/Edit Event</h5>
+                <h5 class="modal-title text-primary" id="eventModalLabel">
+                    <i class="fas fa-calendar-plus me-2"></i>
+                    <span id="modalTitle">New Event</span>
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="eventForm">
-                    <div class="mb-3">
-                        <label for="eventTitle" class="form-label">Event Title</label>
-                        <input type="text" class="form-control" id="eventTitle" required>
+                <form id="eventForm" class="needs-validation" novalidate>
+                    <div class="mb-4">
+                        <label for="eventTitle" class="form-label fw-bold">Event Title</label>
+                        <input type="text" class="form-control form-control-lg" id="eventTitle" required>
+                        <div class="invalid-feedback">Please enter a title</div>
                     </div>
-                    <div class="form-check mb-3">
-                        <label for="allDayCheckbox" class="form-check-label">All-Day</label>
-                        <input type="checkbox" class="form-check-input" id="allDayCheckbox">
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="eventStart" class="form-label fw-bold">Start</label>
+                            <input type="datetime-local" class="form-control" id="eventStart" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="eventEnd" class="form-label fw-bold">End</label>
+                            <input type="datetime-local" class="form-control" id="eventEnd">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="eventStart" class="form-label">Start Date & Time (Hit enter once date/time selected)</label>
-                        <input type="datetime-local" class="form-control" id="eventStart" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="eventEnd" class="form-label">End Date & Time (Hit enter once date/time selected)</label>
-                        <input type="datetime-local" class="form-control" id="eventEnd">
-                    </div>
-                    <div class="mb-3">
-                        <label for="eventDescription" class="form-label">Description</label>
+
+                    <div class="mb-4">
+                        <label for="eventDescription" class="form-label fw-bold">Description</label>
                         <textarea class="form-control" id="eventDescription" rows="3"></textarea>
                     </div>
+                    
                     <input type="hidden" id="eventId">
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" id="deleteEvent">Delete</button>
-                <button type="button" class="btn btn-primary" id="saveEvent">Save</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="deleteEvent">
+                    <i class="fas fa-trash me-2"></i>Delete
+                </button>
+                <button type="button" class="btn btn-primary" id="saveEvent">
+                    <i class="fas fa-save me-2"></i>Save
+                </button>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
-
 {% block scripts %}
-<!-- Link your custom JS file -->
 <script src="{% static 'js/planner.js' %}"></script>
 {% endblock %}

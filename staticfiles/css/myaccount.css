@@ -1,4 +1,10 @@
-/* Profile Styling */
+:root {
+    --primary-color: #e83283;
+    --secondary-color: #3a8fd9;
+    --tertiary-color: #686dc3;
+    --accent-color: #ffc107;
+}
+
 .avatar-img {
     width: 150px;
     height: 150px;

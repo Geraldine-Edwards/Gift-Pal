@@ -1,7 +1,30 @@
-:root {
+:root,
+[data-theme="light"] {
     --primary-color: #e83283;
     --secondary-color: #3a8fd9;
+    --tertiary-color: #686dc3;
     --accent-color: #ffc107;
+    --green: #41d7a7;
+    --orange: #fd7e14;
+    --black: #000;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+
+    --primary-color: #8a1a4a;
+    --secondary-color: #1b456a;
+    --tertiary-color: #3e3a6d;
+    --accent-color: #8a6a07;
+    --green: #1e5f4a;
+    --orange: #8a3e14;
+    --black: #000;
+    --white: #fff;
+    --gray: #3e3e3e;
+    --gray-dark: #1e1e1e;
 }
 
 .hero {
@@ -28,7 +51,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; 
 }
 
 .card:hover .icon-wrapper {
@@ -53,17 +76,6 @@
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #c1206e;
-    border-color: #c1206e;
-    transform: translateY(-2px);
-}
 
 .shadow-lg {
     box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;

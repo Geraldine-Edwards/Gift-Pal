@@ -6,43 +6,31 @@
 /* Light Mode */
 :root,
 [data-theme="light"] {
-    --bs-blue: #3a8fd9;
-    --bs-baby-blue: #89cff0;
-    --bs-indigo: #5f02f6;
-    --bs-purple: #686dc3;
-    --bs-pink: #e83283;
-    --bs-red: #fc346f;
-    --bs-orange: #fd7e14;
-    --bs-yellow: #ffc107;
-    --bs-green: #41d7a7;
-    --bs-teal: #528fb3;
-    --bs-cyan: #39cbfb;
-    --bs-black: #000;
-    --bs-white: #fff;
-    --bs-gray: #6c757d;
-    --bs-gray-dark: #343a40;
-    --bs-primary: #686dc3;
+    --pink: #e83283;
+    --blue: #3a8fd9;
+    --purple: #686dc3;
+    --yellow: #ffc107;
+    --green: #41d7a7;
+    --orange: #fd7e14;
+    --black: #000;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
 }
 
 /* Dark Mode */
 [data-theme="dark"] {
-    --bs-blue: #1e3a5f;
-    --bs-baby-blue: #4a7c9f;
-    --bs-indigo: #3e1a8a;
-    --bs-purple: #3e3a6d;
-    --bs-pink: #8a1a4a;
-    --bs-red: #8a1a2f;
-    --bs-orange: #8a3e14;
-    --bs-yellow: #8a6a07;
-    --bs-green: #1e5f4a;
-    --bs-teal: #1e4a5f;
-    --bs-cyan: #1e5f6a;
-    --bs-black: #000;
-    --bs-white: #fff;
-    --bs-gray: #3e3e3e;
-    --bs-gray-dark: #1e1e1e;
-    --bs-body-bg: #212529;
-    --bs-primary: #3e3a6d;
+
+    --pink: #8a1a4a;
+    --blue: #1b456a;
+    --purple: #3e3a6d;
+    --yellow: #8a6a07;
+    --green: #1e5f4a;
+    --orange: #8a3e14;
+    --black: #000;
+    --white: #fff;
+    --gray: #3e3e3e;
+    --gray-dark: #1e1e1e;
 }
 
 
@@ -54,7 +42,7 @@
 [data-theme="light"] h5,
 [data-theme="light"] h6,
 [data-theme="light"] p {
-    color: var(--bs-black);
+    color: var(--black);
 }
 
 [data-theme="dark"] h1,
@@ -64,27 +52,27 @@
 [data-theme="dark"] h5,
 [data-theme="dark"] h6,
 [data-theme="dark"] p {
-    color: var(--bs-white);
+    color: var(--white);
 }
 
 [data-theme="light"] .title-text {
     font-family: "Ubuntu", sans-serif;
-    color: var(--bs-black);
+    color: var(--black);
 }
 
 [data-theme="dark"] .title-text {
     font-family: "Ubuntu", sans-serif;
-    color: var(--bs-black);
+    color: var(--black);
 }
 
 [data-theme="light"] .main-title-text {
     font-family: "Ubuntu", sans-serif;
-    color: var(--bs-white);
+    color: var(--white);
 }
 
 [data-theme="dark"] .main-title-text {
     font-family: "Ubuntu", sans-serif;
-    color: var(--bs-white);
+    color: var(--white);
 }
 
 /* Apply the background gradient */
@@ -97,7 +85,7 @@ body {
 
 /* Navbar Styling */
 .navbar {
-    background-color: var(--bs-purple) !important;
+    background-color: var(--purple) !important;
 }
 
 .navbar-brand img{
@@ -113,12 +101,12 @@ body {
 
 /* Navbar Links */
 .navbar .nav-link {
-    color: var(--bs-white) !important;
+    color: var(--white) !important;
     transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
 }
 
 .navbar .nav-link:hover {
-    color: var(--bs-baby-blue) !important;
+    color: var(--blue) !important;
     text-shadow: 0px 0px 5px rgba(137, 207, 240, 0.7);
 }
 
@@ -128,21 +116,21 @@ body {
     height: 40px;
     object-fit: cover;
     border-radius: 50%;
-    border: 2px solid var(--bs-white);
+    border: 2px solid var(--white);
 }
 
 /* Dark Mode Navbar */
 [data-theme="dark"] .navbar {
-    background-color: var(--bs-purple) !important;
+    background-color: var(--purple) !important;
 }
 
 /* Dark Mode Links */
 [data-theme="dark"] .navbar .nav-link {
-    color: var(--bs-white) !important;
+    color: var(--white) !important;
 }
 
 [data-theme="dark"] .navbar .nav-link:hover {
-    color: var(--bs-baby-blue) !important;
+    color: var(--blue) !important;
     text-shadow: 0px 0px 5px rgba(137, 207, 240, 0.7);
 }
 
@@ -167,16 +155,24 @@ footer {
 
 /* Custom Button Styles */
 .btn-primary {
-    background-color: var(--bs-primary) !important;
-    border-color: var(--bs-primary) !important;
+    background-color: var(--purple) !important;
+    border-color: var(--purple) !important;
+    color: var(--white) !important; 
+    transition: transform 0.3s ease; background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-primary:hover,
+.btn-primary:hover {
+    transform: scale(1.1);
+}
+
 .btn-primary:focus,
 .btn-primary:active {
-    background-color: darken(var(--bs-primary), 10%) !important;
-    border-color: darken(var(--bs-primary), 10%) !important;
-}
+    background-color: var(--white) !important;
+    border-color: var(--purple) !important;
+    color: var(--purple) !important; 
+} 
+
+
 
 
 /* Planner */
