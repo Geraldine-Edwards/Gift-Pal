@@ -34,64 +34,44 @@
 }
 
 
-/* fonts */
-[data-theme="light"] h1,
-[data-theme="light"] h2,
-[data-theme="light"] h3,
-[data-theme="light"] h4,
-[data-theme="light"] h5,
-[data-theme="light"] h6,
-[data-theme="light"] p {
-    color: var(--black);
-}
 
-[data-theme="dark"] h1,
-[data-theme="dark"] h2,
-[data-theme="dark"] h3,
-[data-theme="dark"] h4,
-[data-theme="dark"] h5,
-[data-theme="dark"] h6,
-[data-theme="dark"] p {
-    color: var(--white);
-}
 
-[data-theme="light"] .title-text {
-    font-family: "Ubuntu", sans-serif;
-    color: var(--black);
-}
-
-[data-theme="dark"] .title-text {
-    font-family: "Ubuntu", sans-serif;
-    color: var(--black);
-}
-
-[data-theme="light"] .main-title-text {
-    font-family: "Ubuntu", sans-serif;
-    color: var(--white);
-}
-
-[data-theme="dark"] .main-title-text {
-    font-family: "Ubuntu", sans-serif;
-    color: var(--white);
-}
-
-/* Apply the background gradient */
+/* Base styling */
 body {
     min-height: 100vh;
     font-family: "Ubuntu", sans-serif;
+    background-color: var(--white);
+    color: var(--black);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+[data-theme="dark"] body {
+    background-color: var(--black);
+}
 
+[data-theme="dark"] .light-text {
+    color: var(--white);
+}
+[data-theme="dark"] .dark-text {
+    color: var(--black);
+}
 
 /* Navbar Styling */
 .navbar {
-    background-color: var(--tertiary-color) !important;
+    background-color: var(--tertiary-color);
+    transition: background-color 0.3s ease;
+}
+
+/* Dark Mode Navbar */
+[data-theme="dark"] .navbar {
+    background-color: var(--tertiary-color);
 }
 
 .navbar-brand img{
     width: 60px;
     height: 60px;
 }
+
 .navbar-brand span{
     font-family: "Sigmar", sans-serif;
     font-size: 3rem;
@@ -101,12 +81,21 @@ body {
 
 /* Navbar Links */
 .navbar .nav-link {
-    color: var(--white) !important;
+    color: var(--white);
     transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+}
+
+[data-theme="dark"] .navbar .nav-link {
+    color: var(--white) !important;
 }
 
 .navbar .nav-link:hover {
     color: rgba(137, 207, 240) !important;
+    text-shadow: 0px 0px 5px rgba(137, 207, 240, 0.7);
+}
+
+[data-theme="dark"] .navbar .nav-link:hover {
+    color: rgb(84, 125, 144) !important;
     text-shadow: 0px 0px 5px rgba(137, 207, 240, 0.7);
 }
 
@@ -119,45 +108,54 @@ body {
     border: 2px solid var(--white);
 }
 
-/* Dark Mode Navbar */
-[data-theme="dark"] .navbar {
-    background-color: var(--tertiary-color) !important;
-}
-
-/* Dark Mode Links */
-[data-theme="dark"] .navbar .nav-link {
-    color: var(--white) !important;
-}
-
-[data-theme="dark"] .navbar .nav-link:hover {
-    color: rgb(84, 125, 144) !important;
-    text-shadow: 0px 0px 5px rgba(137, 207, 240, 0.7);
-}
-
 /* Footer styling */
 footer {
     margin-top: auto; /* Push footer to bottom */
 }
 
-.social-link {
-    transition: transform 0.3s ease;
-    display: inline-block; /* Required for transform */
-    position: relative; /* Ensures proper layering */
-    z-index: 1; /* Brings links to front */
-    pointer-events: auto !important; /* Forces clickability */
+/* Remove default focus outline for social links */
+.social-link:focus {
+    outline: none;
 }
 
-.social-link:hover {
-    transform: scale(1.1);
+/* Add custom focus styles for accessibility */
+.social-link:focus i::before {
+    box-shadow: 0 0 0 3px rgba(58, 143, 217, 0.5); /* Custom focus outline */
+    border-radius: 50%; /* Optional: Add rounded corners */
 }
 
-/* Optional: Add color transition */
-.social-link:hover i {
-    color: var(--primary-color) !important; /* Use your brand color */
+/* Custom styles for FontAwesome icons */
+i.fab.fa-facebook::before {
+    color: #3b5998; /* Facebook brand color */
+}
+
+i.fab.fa-x-twitter::before {
+    color: #1da1f2; /* Twitter brand color */
+}
+
+i.fab.fa-instagram::before {
+    color: #e1306c; /* Instagram brand color */
+}
+
+i.fab.fa-linkedin::before {
+    color: #0077b5; /* LinkedIn brand color */
+}
+
+/* Add hover effects */
+i.fab:hover::before {
+    opacity: 0.8; /* Slightly reduce opacity on hover */
+}
+
+.footer-link {
+    color: var(--secondary-color);
 }
 
 .footer-link:hover {
-    color: var(--primary-color) !important; /* Use your brand color */  
+    color: var(--primary-color) !important;  
+}
+
+[data-theme="dark"] .footer-link:hover {
+    color: var(--primary-color) !important;
 }
 
 /* Theme Toggle Button */
@@ -173,53 +171,122 @@ footer {
 }
 
 /* Custom Button Styles */
-.btn-primary {
-    background-color: var(--primary-color) !important;
-    border-color: var(--primary-color) !important;
-    color: var(--white) !important; 
-    transition: transform 0.3s ease; background-color 0.3s ease, color 0.3s ease;
-}
-.btn-secondary{
-    background-color: var(--secondary-color) !important;
-    border-color: var(--secondary-color) !important;
-    color: var(--white) !important; 
-    transition: transform 0.3s ease; background-color 0.3s ease, color 0.3s ease;
+.btn-pink {
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color); 
+    color: var(--white); 
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.btn-tertiary{
-    background-color: var(--tertiary-color) !important;
-    border-color: var(--tertiary-color) !important;
-    color: var(--white) !important; 
-    transition: transform 0.3s ease; background-color 0.3s ease, color 0.3s ease;
+[data-theme="dark"] .btn-pink {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
-.btn-primary:hover,
-.btn-secondary:hover,
-.btn-tertiary:hover {
+.btn-pink:hover {
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color); 
+    color: var(--white);
+}
+
+.btn-blue{
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--white); 
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"] .btn-blue {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-blue:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--white); 
+}
+
+.btn-purple{
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
+    color: var(--white); 
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"] .btn-purple {
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
+}
+
+.btn-purple:hover {
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
+    color: var(--white);  
+}
+
+.btn-pink:hover,
+.btn-blue:hover,
+.btn-purple:hover {
     transform: scale(1.1);
 }
 
-.btn-primary:focus,
-.btn-primary:active, {
-    background-color: var(--white) !important;
-    border-color: var(--primary-color) !important;
-    color: var(--primary-color) !important; 
+.btn-pink:focus,
+.btn-pink:active {
+    background-color: var(--white);
+    border-color: var(--primary-color);
+    color: var(--primary-color); 
 } 
 
-.btn-secondary:focus,
-.btn-secondary:active, {
-    background-color: var(--white) !important;
-    border-color: var(--secondary-color) !important;
-    color: var(--secondary-color) !important; 
+[data-theme="dark"]
+.btn-pink:focus,
+.btn-pink:active {
+    background-color: var(--white);
+    border-color: var(--primary-color);
+    color: var(--primary-color); 
+} 
+
+.btn-blue:focus,
+.btn-blue:active {
+    background-color: var(--white);
+    border-color: var(--secondary-color);
+    color: var(--secondary-color); 
 }
 
-.btn-tertiary:focus,
-.btn-tertiary:active, {
-    background-color: var(--white) !important;
-    border-color: var(--tertiary-color) !important;
-    color: var(--tertiary-color) !important; 
+[data-theme="dark"]
+.btn-blue:focus,
+.btn-blue:active {
+    background-color: var(--white);
+    border-color: var(--secondary-color);
+    color: var(--secondary-color); 
 }
 
+.btn-purple:focus,
+.btn-purple:active {
+    background-color: var(--white);
+    border-color: var(--tertiary-color);
+    color: var(--tertiary-color); 
+}
+
+[data-theme="dark"]
+.btn-purple:focus,
+.btn-purple:active {
+    background-color: var(--white);
+    border-color: var(--tertiary-color);
+    color: var(--tertiary-color); 
+}
+
+/* Cards */
+.card {
+    background-color: var(--white);
+    color: var(--black);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--gray-dark);
+    color: var(--white);
+}
 
 /* Adjust theme toggle button margin for smaller screens */
 @media (max-width: 768px) { /* Bootstrap's breakpoint for large devices */

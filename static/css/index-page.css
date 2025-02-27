@@ -1,4 +1,5 @@
 :root,
+/* Light Mode */
 [data-theme="light"] {
     --primary-color: #e83283;
     --secondary-color: #3a8fd9;
@@ -34,6 +35,7 @@
     display: flex;
     align-items: center;
     overflow: hidden; /* Hide overflow from collage images */
+    margin-top: 4rem;
 }
 
 /* Collage Container */
@@ -83,6 +85,10 @@
     margin-top: 350px;
 }
 
+[data-theme="dark"] .bg-overlay {
+    background-color: rgba(111, 110, 110, 0.8);
+}
+
 .text-primary {
     color: var(--primary-color) !important;
 }
@@ -90,12 +96,21 @@
 .hero-tagline {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
-/* Features Section */
 
+[data-theme="dark"] .hero-tagline {
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Features Section */
 .features {
     padding: 4rem 0; /* Existing padding */
     margin-top: 4rem; /* Add space above the features section */
 }
+
+[data-theme="dark"] .features {
+    background-color: var(--gray);
+}
+
 
 .features .icon-wrapper {
     width: 80px;
@@ -130,18 +145,18 @@
 
 /* Charity Donation Section */
 .charity-donation {
-    background-color: var(--white); /* Use your theme's white color */
+    background-color: var(--white); 
     padding: 4rem 0; /* Add padding for spacing */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
 .charity-donation h2 {
-    color: var(--secondary-color); /* Use your theme's primary color */
+    color: var(--tertiary-color); 
     margin-bottom: 2rem; /* Add spacing below the heading */
 }
 
 .charity-donation .lead {
-    color: var(--gray-dark); /* Use your theme's dark gray color */
+    color: var(--black); 
     margin-bottom: 2rem; /* Add spacing below the lead text */
 }
 
@@ -152,6 +167,7 @@
 /* Testomonial Section */
 .testimonial {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+    margin-top: 4rem;
 }
 
 .shadow-lg {

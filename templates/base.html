@@ -21,57 +21,73 @@
     <!-- Custom CSS-->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <!-- favicon.io -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon-light/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-light/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-light/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'images/favicon-light/site.webmanifest' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon-light/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-light/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-light/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/favicon-light/site.webmanifest' %}">
 </head>
 
 <body class="{% if request.COOKIES.dark_mode == 'true' %}dark-mode{% endif %}">
     <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container">
+            <!-- Brand Logo and Name -->
             <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
                 <img src="{% static 'images/gift_box_light.webp' %}" alt="Gift Pal Logo" height="40">
                 <span class="ms-2">Gift Pal</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    
+            <!-- Navbar Toggler Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+    
+            <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link trans-text" href="{% url 'myaccount:myaccount_home' %}">
-                            {% if user.myaccount.profile_image %}
-                            <img src="{{ user.myaccount.profile_image.url }}" alt="Profile Image"
-                                class="rounded-circle profile-image" />
-                            {% else %}
-                            <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1739390582/nobody_pcaqjl.jpg"
-                                alt="Profile Image" class="rounded-circle profile-image" height="40">
-                            {% endif %}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'friendslist' %}">Friends</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'wishlist:wishlist' %}">Wishlist</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'planner:planner_view' %}">Event Planner</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                    </li>
+                        <!-- Profile Image -->
+                        <li class="nav-item">
+                            <a class="nav-link trans-text" href="{% url 'myaccount:myaccount_home' %}">
+                                {% if user.myaccount.profile_image %}
+                                    <img src="{{ user.myaccount.profile_image.url }}" alt="Profile Image" class="rounded-circle profile-image" height="40">
+                                {% else %}
+                                    <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1739390582/nobody_pcaqjl.jpg" alt="Profile Image" class="rounded-circle profile-image" height="40">
+                                {% endif %}
+                            </a>
+                        </li>
+    
+                        <!-- Friends Link -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'friendslist' %}">Friends</a>
+                        </li>
+    
+                        <!-- Wishlist Link -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'wishlist:wishlist' %}">Wishlist</a>
+                        </li>
+    
+                        <!-- Event Planner Link -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'planner:planner_view' %}">Event Planner</a>
+                        </li>
+    
+                        <!-- Logout Link -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                        </li>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
-                    </li>
+                        <!-- Login Link -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                        </li>
+    
+                        <!-- Sign Up Link -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+                        </li>
                     {% endif %}
+    
+                    <!-- Theme Toggle Button -->
                     <li class="nav-item">
                         <button id="theme-toggle" class="btn ms-2">🌙</button>
                     </li>
@@ -88,20 +104,20 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <a href="https://www.instagram.com/" target="_blank" rel="noopener"
-                        class="me-3 social-link" aria-label="Visit our Instagram page (opens in a new tab)"><i
-                                class="fab fa-instagram fa-2x"></i></a>
-                    <a href="https://www.facebook.com/" target="_blank" rel="noopener"
-                        class=" me-3 social-link" aria-label="Visit our Facebook page (opens in a new tab)"><i
-                                class="fab fa-facebook fa-2x"></i></a>
-                    <a href="https://www.twitter.com/" target="_blank" rel="noopener"
-                        class=" me-3 social-link" aria-label="Visit our X (Twitter) page (opens in a new tab)"><i
-                                class="fab fa-x-twitter fa-2x"></i></a>
-                    <a href="https://www.linkedin.com" target="_blank" rel="noopener"
-                        class=" me-3 social-link" aria-label="Visit our LinkedIn page (opens in a new tab)">
-                            <i class="fab fa-linkedin fa-2x"></i></a>
+                    <a href="https://www.facebook.com/" target="_blank" rel="noopener" class=" me-3 social-link"
+                        aria-label="Visit our Facebook page (opens in a new tab)">
+                        <i class="fab fa-facebook fa-2x"></i></a> 
+                    <a href="https://www.twitter.com/" target="_blank" rel="noopener" class=" me-3 social-link"
+                        aria-label="Visit our X (Twitter) page (opens in a new tab)">
+                        <i class="fab fa-x-twitter fa-2x"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="me-3 social-link"
+                        aria-label="Visit our Instagram page (opens in a new tab)">
+                        <i class="fab fa-instagram fa-2x"></i></a>
+                    <a href="https://www.linkedin.com" target="_blank" rel="noopener" class=" me-3 social-link"
+                        aria-label="Visit our LinkedIn page (opens in a new tab)">
+                        <i class="fab fa-linkedin fa-2x"></i></a>
                 </div>
-                <div class=" col-md-4 mb-3">
+                <div class="col-md-4 mb-3 light-text">
                     <p>&copy; 2025 Gift Pal. All rights reserved.</p>
                 </div>
                 <div class="col-md-4">
@@ -112,7 +128,7 @@
             </div>
         </div>
     </footer>
-    
+
     <!-- Toggle Light/Dark theme JS -->
     <script src="{% static 'js/theme-toggle.js' %}"></script>
     <!-- Bootstrap 5.3.3 JS -->
