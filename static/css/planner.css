@@ -1,6 +1,30 @@
-:root {
-    --primary-color: #e83283;
-    --secondary-color: #3a8fd9;
+:root,
+[data-theme="light"] {
+    --pink: #e83283;
+    --blue: #3a8fda;
+    --purple: #9161ae; 
+    --yellow: #ffc107;
+    --green: #41d7a7;
+    --orange: #fd7e14;
+    --black: #000;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+
+    --pink: #8a1a4a;
+    --blue: #1c4569;
+    --purple: #3e3a6d;
+    --yellow: #8a6a07;
+    --green: #1e5f4a;
+    --orange: #8a3e14;
+    --black: #000;
+    --white: #fff;
+    --gray: #3e3e3e;
+    --gray-dark: #1e1e1e;
 }
 
 /* Calendar Styling */
@@ -57,4 +81,67 @@
         display: flex;
         justify-content: center;
     }
+}
+
+
+
+/* OLD CSS */
+/* Planner */
+
+.fc-event .event-profile-thumbnail {
+    width: 24px !important;        /* Force width */
+    height: 24px !important;       /* Force height */
+    border-radius: 50% !important; /* Circular shape */
+    object-fit: cover;             /* Prevent stretching */
+    margin-right: 8px;             /* Spacing between image and text */
+    display: inline-block;         /* Align with text */
+    vertical-align: middle;        /* Center vertically */
+}
+
+/* Optional: Add hover animation */
+.fc-event .event-profile-thumbnail:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Tooltip styling */
+.profile-thumbnail-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.profile-tooltip {
+    visibility: hidden;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    padding: 4px 8px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%; /* Position above the image */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.profile-thumbnail-container:hover .profile-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Arrow for tooltip */
+.profile-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.8) transparent transparent transparent;
 }

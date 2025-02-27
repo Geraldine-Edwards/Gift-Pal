@@ -1,9 +1,3 @@
-:root {
-    --primary-color: #e83283;
-    --secondary-color: #3a8fd9;
-    --accent-color: #ffc107;
-}
-
 .wishlist-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border-radius: 1rem;
