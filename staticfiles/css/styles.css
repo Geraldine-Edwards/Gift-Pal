@@ -20,21 +20,18 @@
 
 /* Dark Mode */
 [data-theme="dark"] {
-
-    --primary-color: #8a1a4a;
-    --secondary-color: #1b456a;
-    --tertiary-color: #3e3a6d;
-    --yellow: #8a6a07;
-    --green: #1e5f4a;
-    --orange: #8a3e14;
-    --black: #000;
-    --white: #fff;
-    --gray: #3e3e3e;
+    --primary-color: #ff4d9e; 
+    --secondary-color: #5da8e6; 
+    --tertiary-color: #7c81e0; 
+    --yellow: #ffd54f; 
+    --green: #5ce6b5; /
+    --orange: #ff9a4a; 
+    --black: #121212; 
+    --white: #e0e0e0; 
+    --gray: #8a8a8a; 
     --gray-dark: #1e1e1e;
+    --card-bg-dark: #2a2a2a;
 }
-
-
-
 
 /* Base styling */
 body {
@@ -45,9 +42,9 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-[data-theme="dark"] body {
+/* [data-theme="dark"] body {
     background-color: var(--gray-dark);
-}
+} */
 
 [data-theme="dark"] .light-text {
     color: var(--white);
@@ -104,9 +101,20 @@ body {
 }
 
 /* root content styles */
-
 .title {
     color: var(--secondary-color) !important;
+}
+
+.text-pink{
+    color: var(--primary-color);
+}
+
+.text-blue {
+    color: var(--secondary-color);
+}
+
+.text-purple {
+    color: var(--tertiary-color);
 }
 
 /* Footer styling */
@@ -172,80 +180,100 @@ i.fab:hover::before {
 }
 
 /* Custom Button Styles */
+/* pink */
 .btn-pink {
     background-color: var(--primary-color); 
     border-color: var(--primary-color); 
     color: var(--white); 
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-[data-theme="dark"] .btn-pink {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn-pink:hover {
     background-color: var(--primary-color); 
     border-color: var(--primary-color); 
     color: var(--white);
-}
-
-.btn-blue{
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-    color: var(--white); 
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-[data-theme="dark"] .btn-blue {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-}
-
-.btn-blue:hover {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-    color: var(--white); 
-}
-
-.btn-purple{
-    background-color: var(--tertiary-color);
-    border-color: var(--tertiary-color);
-    color: var(--white); 
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-[data-theme="dark"] .btn-purple {
-    background-color: var(--tertiary-color);
-    border-color: var(--tertiary-color);
-}
-
-.btn-purple:hover {
-    background-color: var(--tertiary-color);
-    border-color: var(--tertiary-color);
-    color: var(--white);  
-}
-
-.btn-pink:hover,
-.btn-blue:hover,
-.btn-purple:hover {
     transform: scale(1.1);
 }
 
-.btn-pink:focus,
-.btn-pink:active {
-    background-color: var(--white);
-    border-color: var(--primary-color);
-    color: var(--primary-color); 
-} 
+.btn-outline-pink {
+    background-color: var(--white); 
+    border-color: var(--primary-color); 
+    color: var(--primary-color);
+}
 
-[data-theme="dark"]
+.btn-outline-pink:hover {
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color); 
+    color: var(--white);
+}
+
 .btn-pink:focus,
 .btn-pink:active {
     background-color: var(--white);
     border-color: var(--primary-color);
     color: var(--primary-color); 
-} 
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .btn-pink {
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color); 
+    color: var(--white); 
+}
+
+[data-theme="dark"] .btn-pink:hover {
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color); 
+    color: var(--white);
+}
+
+[data-theme="dark"] .btn-outline-pink {
+    background-color: var(--gray-dark); /* Dark background for outline button */
+    border-color: var(--primary-color); 
+    color: var(--primary-color);
+}
+
+[data-theme="dark"] .btn-outline-pink:hover {
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color); 
+    color: var(--white);
+}
+
+[data-theme="dark"] .btn-pink:focus,
+[data-theme="dark"] .btn-pink:active {
+    background-color: var(--gray-dark); /* Dark background for focus/active state */
+    border-color: var(--primary-color);
+    color: var(--primary-color); 
+}
+
+
+
+/* blue */
+.btn-blue {
+    background-color: var(--secondary-color); 
+    border-color: var(--secondary-color); 
+    color: var(--white); 
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-blue:hover {
+    background-color: var(--secondary-color); 
+    border-color: var(--secondary-color); 
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+.btn-outline-blue {
+    background-color: var(--white); 
+    border-color: var(--secondary-color); 
+    color: var(--secondary-color);
+}
+
+.btn-outline-blue:hover {
+    background-color: var(--secondary-color); 
+    border-color: var(--secondary-color); 
+    color: var(--white);
+}
 
 .btn-blue:focus,
 .btn-blue:active {
@@ -254,12 +282,63 @@ i.fab:hover::before {
     color: var(--secondary-color); 
 }
 
-[data-theme="dark"]
-.btn-blue:focus,
-.btn-blue:active {
-    background-color: var(--white);
+/* Dark Mode Overrides */
+[data-theme="dark"] .btn-blue {
+    background-color: var(--secondary-color); 
+    border-color: var(--secondary-color); 
+    color: var(--white); 
+}
+
+[data-theme="dark"] .btn-blue:hover {
+    background-color: var(--secondary-color); 
+    border-color: var(--secondary-color); 
+    color: var(--white);
+}
+
+[data-theme="dark"] .btn-outline-blue {
+    background-color: var(--gray-dark); /* Dark background for outline button */
+    border-color: var(--secondary-color); 
+    color: var(--secondary-color);
+}
+
+[data-theme="dark"] .btn-outline-blue:hover {
+    background-color: var(--secondary-color); 
+    border-color: var(--secondary-color); 
+    color: var(--white);
+}
+
+[data-theme="dark"] .btn-blue:focus,
+[data-theme="dark"] .btn-blue:active {
+    background-color: var(--gray-dark); /* Dark background for focus/active state */
     border-color: var(--secondary-color);
     color: var(--secondary-color); 
+}
+
+/* purple */
+.btn-purple {
+    background-color: var(--tertiary-color); 
+    border-color: var(--tertiary-color); 
+    color: var(--white); 
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-purple:hover {
+    background-color: var(--tertiary-color); 
+    border-color: var(--tertiary-color); 
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+.btn-outline-purple {
+    background-color: var(--white); 
+    border-color: var(--tertiary-color); 
+    color: var(--tertiary-color);
+}
+
+.btn-outline-purple:hover {
+    background-color: var(--tertiary-color); 
+    border-color: var(--tertiary-color); 
+    color: var(--white);
 }
 
 .btn-purple:focus,
@@ -269,24 +348,99 @@ i.fab:hover::before {
     color: var(--tertiary-color); 
 }
 
-[data-theme="dark"]
-.btn-purple:focus,
-.btn-purple:active {
-    background-color: var(--white);
+/* Dark Mode Overrides */
+[data-theme="dark"] .btn-purple {
+    background-color: var(--tertiary-color); 
+    border-color: var(--tertiary-color); 
+    color: var(--white); 
+}
+
+[data-theme="dark"] .btn-purple:hover {
+    background-color: var(--tertiary-color); 
+    border-color: var(--tertiary-color); 
+    color: var(--white);
+}
+
+[data-theme="dark"] .btn-outline-purple {
+    background-color: var(--gray-dark); /* Dark background for outline button */
+    border-color: var(--tertiary-color); 
+    color: var(--tertiary-color);
+}
+
+[data-theme="dark"] .btn-outline-purple:hover {
+    background-color: var(--tertiary-color); 
+    border-color: var(--tertiary-color); 
+    color: var(--white);
+}
+
+[data-theme="dark"] .btn-purple:focus,
+[data-theme="dark"] .btn-purple:active {
+    background-color: var(--gray-dark); /* Dark background for focus/active state */
     border-color: var(--tertiary-color);
     color: var(--tertiary-color); 
 }
 
 /* Cards */
 .card {
-    background-color: var(--white);
-    color: var(--black);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: var(--white); /* Light background */
+    color: var(--black); /* Dark text */
+    border: 1px solid var(--gray); /* Subtle border */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Strong shadow for depth */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions */
 }
 
+.card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+/* Dark mode */
 [data-theme="dark"] .card {
-    background-color: var(--gray-dark);
-    color: var(--white);
+    background-color: #2a2a2a; /* Replace var(--card-bg-dark) */
+    color: #e0e0e0; /* Replace var(--white) */
+    border: 1px solid #8a8a8a; /* Replace var(--gray) */
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+[data-theme="dark"] .card:hover {
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.3); /* Enhanced shadow on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+
+[data-theme="dark"] .card-title {
+    color: var(--primary-color) !important; /* Use primary color for titles */
+}
+
+[data-theme="dark"] .card-body {
+    background-color: var(--gray-dark) !important; /* Ensure card body matches card background */
+}
+
+[data-theme="dark"] .list-group-item {
+    background-color: var(--card-bg-dark); /* Match card background */
+    color: var(--white); /* Light text */
+    border-color: var(--gray); /* Subtle border */
+}
+
+[data-theme="dark"] .modal-content {
+    background-color: var(--card-bg-dark); /* Match card background */
+    color: var(--white); /* Light text */
+    border: 1px solid var(--gray); /* Subtle border */
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+    border-color: var(--gray); /* Subtle border */
+}
+
+[data-theme="dark"] .modal-header {
+    border-bottom: 1px solid var(--gray); /* Subtle border for modal header */
+}
+
+[data-theme="dark"] .modal-footer {
+    border-top: 1px solid var(--gray); /* Subtle border for modal footer */
 }
 
 /* Adjust theme toggle button margin for smaller screens */
