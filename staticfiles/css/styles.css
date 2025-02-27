@@ -46,7 +46,7 @@ body {
 }
 
 [data-theme="dark"] body {
-    background-color: var(--black);
+    background-color: var(--gray-dark);
 }
 
 [data-theme="dark"] .light-text {
@@ -58,13 +58,8 @@ body {
 
 /* Navbar Styling */
 .navbar {
-    background-color: var(--tertiary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
     transition: background-color 0.3s ease;
-}
-
-/* Dark Mode Navbar */
-[data-theme="dark"] .navbar {
-    background-color: var(--tertiary-color);
 }
 
 .navbar-brand img{
@@ -106,6 +101,12 @@ body {
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid var(--white);
+}
+
+/* root content styles */
+
+.title {
+    color: var(--secondary-color) !important;
 }
 
 /* Footer styling */

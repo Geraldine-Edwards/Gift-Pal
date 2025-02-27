@@ -3,37 +3,39 @@
 {% load crispy_forms_tags %}
 
 {% block head_title %}
-    {% trans "Signup" %}
+{% trans "Signup" %}
 {% endblock head_title %}
 
 {% block content %}
-<div class="login-container">
-    {% element h1 %}
-        {% trans "Sign Up" %}
-    {% endelement %}
-    {% setvar link %}
+<div class="d-flex justify-content-center align-items-center min-vh-60">
+    <div class="signup-container">
+        <h1 class="display-4 fw-bold title my-3">
+            <i class="fas fa-user-plus me-2"></i> {% trans "Sign Up" %}
+        </h1>
+        {% setvar link %}
         <a href="{{ login_url }}">
-        {% endsetvar %}
-        {% setvar end_link %}
+            {% endsetvar %}
+            {% setvar end_link %}
         </a>
-    {% endsetvar %}
-    {% element p %}
+        {% endsetvar %}
+        {% element p %}
         {% blocktranslate %}Already have an account? Then please {{ link }}sign in{{ end_link }}.{% endblocktranslate %}
-    {% endelement %}
-    {% if not SOCIALACCOUNT_ONLY %}
+        {% endelement %}
+        {% if not SOCIALACCOUNT_ONLY %}
         {% url 'account_signup' as action_url %}
         {% element form form=form method="post" action=action_url tags="entrance,signup" %}
-            {% slot body %}
-                {% csrf_token %}
-                {{ form|crispy }}
-                {{ redirect_field }}
-            {% endslot %}
-            {% slot actions %}
-            <button type="submit" class="btn btn-primary mb-3 btn-rounded">
-                    {% trans "Sign Up" %}
-            </button>
-            {% endslot %}
+        {% slot body %}
+        {% csrf_token %}
+        {{ form|crispy }}
+        {{ redirect_field }}
+        {% endslot %}
+        {% slot actions %}
+        <button type="submit" class="btn btn-purple mb-3 btn-rounded">
+            {% trans "Sign Up" %}
+        </button>
+        {% endslot %}
         {% endelement %}
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
 {% endblock content %}
