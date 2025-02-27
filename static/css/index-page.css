@@ -59,6 +59,7 @@
     transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transitions */
     
 }
+
 .collage-image-1 {
     object-position: 40% 50%; /* Show more of the left-hand side */
 }
