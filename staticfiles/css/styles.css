@@ -8,7 +8,7 @@
 [data-theme="light"] {
     --pink: #e83283;
     --blue: #3a8fd9;
-    --purple: #686dc3;
+    --purple: #574084;
     --yellow: #ffc107;
     --green: #41d7a7;
     --orange: #fd7e14;
@@ -181,10 +181,19 @@ footer {
     color: var(--white) !important; 
     transition: transform 0.3s ease; background-color 0.3s ease, color 0.3s ease;
 }
+.btn-secondary{
+    background-color: var(--blue) !important;
+    border-color: var(--blue) !important;
+    color: var(--white) !important; 
+    transition: transform 0.3s ease; background-color 0.3s ease, color 0.3s ease;
+}
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-secondary:hover {
     transform: scale(1.1);
 }
+
+
 
 .btn-primary:focus,
 .btn-primary:active {

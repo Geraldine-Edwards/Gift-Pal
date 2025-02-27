@@ -8,13 +8,24 @@
 
 <!-- Hero Section -->
 <section class="hero min-vh-100 d-flex align-items-center">
-    <div class="container text-center">
-        <h1 class="display-3 fw-bold mb-4 text-primary">
+    <div class="hero-collage">
+        <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1740613438/pexels-rdne-7249341_qsfscs.webp" alt="Three Muslim women in colourful clothing sitting on a sofa sharing 'Happy Eid' gifts" class="img-fluid rounded collage-image collage-image-2">
+            <!-- <div class="attribution">Photo by <a href="https://www.pexels.com/photo/3-women-sitting-on-couch-7249341/" target="_blank" rel="noopener noreferrer">RDNE Stock Project</a>
+            </div> -->
+        <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1740611912/pexels-anthonyshkraba-production-8910389_vbmjc3.webp" alt="A group of teenagers in a huddle with one member holding some gifts" class="img-fluid rounded collage-image collage-image-3">
+            <!-- <div class="attribution">Photo by <a href="https://www.pexels.com/photo/group-of-people-holding-a-gift-8910389/" target="_blank" rel="noopener noreferrer">Antoni Shkraba</a>
+            </div> -->
+        <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1740617161/pexels-ivan-samkov-7911299_chksig.webp" alt="A mature couple exchanging gifts and flowers" class="img-fluid rounded collage-image collage-image-3">
+        <!-- <div class="attribution">Photo by <a href="https://www.pexels.com/photo/a-man-giving-a-flower-to-his-partner-7911299/" target="_blank" rel="noopener noreferrer">Ivan Samkov</a>
+            </div> -->    
+    </div>
+    <div class="container text-center bg-overlay p-4 rounded">
+        <h1 class="hero-tagline display-3 fw-bold mb-4 text-primary">
             <i class="fas fa-gift me-3"></i>Share the Joy of Gift-Giving
         </h1>
-        <p class="lead mb-5">Create wishlists, organize events, and surprise your loved ones perfectly!</p>
+        <p class="lead mb-5"><strong>Create wishlists, organize events, and surprise your loved ones perfectly!</strong></p>
         <div class="cta-buttons">
-            <a href="{% url 'account_login' %}" class="btn btn-lg btn-primary rounded-pill px-5 py-3 me-3">
+            <a href="{% url 'account_login' %}" aria-label="Get Started Button" class="btn btn-lg btn-primary rounded-pill px-5 py-3 me-3">
                 Get Started
             </a>
         </div>
@@ -82,6 +93,35 @@
                 <div class="step-number">3</div>
                 <h3>Start Sharing</h3>
                 <p>Give and receive perfect gifts</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Charity Donation Section -->
+<section class="charity-donation py-5 bg-light mb-4">
+    <div class="container">
+        <h2 class="text-center mb-5">Donate a Gift via Charity</h2>
+        <div class="row g-4 align-items-center">
+            <div class="col-md-6">
+                <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1740619929/pexels-newmanphotographs-14831743_tbxfvq.webp" alt="Christmas volunteer giving a present to a little girl" class="img-fluid rounded">
+                <!-- <div class="attribution">Photo by <a href="https://www.pexels.com/photo/volunteer-in-a-christmas-costume-giving-a-present-to-a-little-girl-14831743/" target="_blank" rel="noopener noreferrer">Samuel Peter</a>
+            </div> -->
+            </div>
+            <div class="col-md-6">
+                <h3 class="mb-4">Spread Joy to Those in Need</h3>
+                <p class="lead mb-4">
+                    <strong>Make a difference!</strong> Donate a gift to someone in need through our partner charities. 
+                    Your contribution can bring smiles to countless faces.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#" aria-label="Donate Now Button" class="btn btn-lg btn-primary rounded-pill px-5 py-3 me-3">
+                        Donate Now
+                    </a>
+                    <a href="#" aria-label="Learn More Button" class="btn btn-lg btn-secondary rounded-pill px-5 py-3">
+                        Learn More
+                    </a>
+                </div>
             </div>
         </div>
     </div>

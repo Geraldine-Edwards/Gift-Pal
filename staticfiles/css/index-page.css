@@ -27,26 +27,75 @@
     --gray-dark: #1e1e1e;
 }
 
+/* Hero Section */
+
+/* Hero Section */
 .hero {
     position: relative;
     min-height: 60vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(rgba(232, 50, 131, 0.2), rgba(58, 143, 217, 0.2)),
-                url('../images/pexels-ivan-samkov-7911316.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 4rem 0;
+    overflow: hidden; /* Hide overflow from collage images */
 }
 
-.hero-overlay {
+/* Collage Container */
+.hero-collage {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(232,50,131,0.3) 0%, rgba(58,143,217,0.3) 100%);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+    gap: 10px; /* Adjust spacing between images */
+    z-index: -1; /* Place the collage behind the content */
+}
+
+/* Image Styling */
+.collage-image {
+    width: 100%; /* Fill the container width */
+    height: 100%; /* Fill the container height */
+    object-fit: cover; /* Crop the image to fill the container */
+    object-position: center 40%; /* Center the visible part of the image */
+    opacity: 0.8; /* Adjust opacity for a blended effect */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transitions */
+    
+}
+.collage-image-1 {
+    object-position: 40% 50%; /* Show more of the left-hand side */
+}
+
+.collage-image-3 {
+    object-position: 60% 50%; /* Show more of the left-hand side */
+}
+
+.collage-image:hover {
+    opacity: 1; /* Highlight image on hover */
+    transform: scale(1.05); /* Slightly enlarge image on hover */
+}
+
+/* Overlay for Text Content */
+.bg-overlay {
+    background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white background */
+    padding: 2rem; /* Add padding for spacing */
+    border-radius: 10px; /* Optional: Rounded corners */
+    position: relative; /* Ensure overlay is above images */
+    z-index: 2; /* Bring overlay to the front */
+    margin-top: 350px;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.hero-tagline {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+/* Features Section */
+
+.features {
+    padding: 4rem 0; /* Existing padding */
+    margin-top: 4rem; /* Add space above the features section */
 }
 
 .features .icon-wrapper {
@@ -63,6 +112,7 @@
     transform: scale(1.1);
 }
 
+/* How it works Section */
 .how-it-works .step-number {
     width: 60px;
     height: 60px;
@@ -77,10 +127,31 @@
     margin-bottom: 1rem;
 }
 
-.testimonial {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+/* Charity Donation Section */
+.charity-donation {
+    background-color: var(--white); /* Use your theme's white color */
+    padding: 4rem 0; /* Add padding for spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
+.charity-donation h2 {
+    color: var(--primary-color); /* Use your theme's primary color */
+    margin-bottom: 2rem; /* Add spacing below the heading */
+}
+
+.charity-donation .lead {
+    color: var(--gray-dark); /* Use your theme's dark gray color */
+    margin-bottom: 2rem; /* Add spacing below the lead text */
+}
+
+.charity-donation .btn {
+    margin-top: 1rem; /* Add spacing above the button */
+}
+
+/* Testomonial Section */
+.testimonial {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+}
 
 .shadow-lg {
     box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
@@ -88,4 +159,21 @@
 
 .text-primary {
     color: var(--primary-color) !important;
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 768px) {
+    .hero-collage {
+        grid-template-columns: 1fr; /* Single column for mobile */
+        gap: 0; /* Remove gap between images */
+    }
+
+    .collage-image {
+        height: 33.33vh; /* Each image takes up one-third of the viewport height */
+    }
+
+    .bg-overlay {
+        padding: 1rem; /* Reduce padding on smaller screens */
+        transform: translateY(20px); /* Adjust overlay position for mobile */
+    }
 }
