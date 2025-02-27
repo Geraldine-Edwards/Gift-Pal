@@ -3,7 +3,7 @@
     --primary-color: #e83283;
     --secondary-color: #3a8fd9;
     --tertiary-color: #686dc3;
-    --accent-color: #ffc107;
+    --yellow: #ffc107;
     --green: #41d7a7;
     --orange: #fd7e14;
     --black: #000;
@@ -18,7 +18,7 @@
     --primary-color: #8a1a4a;
     --secondary-color: #1b456a;
     --tertiary-color: #3e3a6d;
-    --accent-color: #8a6a07;
+    --yellow: #8a6a07;
     --green: #1e5f4a;
     --orange: #8a3e14;
     --black: #000;
@@ -59,6 +59,7 @@
     transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transitions */
     
 }
+
 .collage-image-1 {
     object-position: 40% 50%; /* Show more of the left-hand side */
 }
@@ -103,8 +104,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--secondary-color);
     transition: transform 0.3s ease; 
 }
+
 
 .card:hover .icon-wrapper {
     transform: scale(1.1);
@@ -133,7 +136,7 @@
 }
 
 .charity-donation h2 {
-    color: var(--primary-color); /* Use your theme's primary color */
+    color: var(--secondary-color); /* Use your theme's primary color */
     margin-bottom: 2rem; /* Add spacing below the heading */
 }
 
