@@ -54,13 +54,13 @@
                         <i class="fas fa-users me-2"></i>Friends
                     </h5>
                     <div class="friends-list" style="max-height: 300px; overflow-y: auto;">
-                        {% if friends %}
+                        {% if friendships %}
                         <div class="list-group list-group-flush">
-                            {% for friend in friends %}
+                            {% for friendships in friendships %}
                             <div class="list-group-item d-flex align-items-center">
-                                <img src="{{ friend.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
-                                    class="rounded-circle me-3" width="40" height="40" alt="{{ friend.user.username }}">
-                                <span>{{ friend.user.username }}</span>
+                                <img src="{{ friendship.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                                    class="rounded-circle me-3" width="40" height="40" alt="{{ friendship.user.username }}">
+                                <span>{{ friendship.user.username }}</span>
                             </div>
                             {% endfor %}
                         </div>
