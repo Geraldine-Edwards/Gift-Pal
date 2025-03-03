@@ -1,7 +1,7 @@
 # Gift Pal - A Gift List Platform
 Updated version by Geraldine Edwards (Orginally created as a hackathon project named Gifting Genie by: Phillip Kershaw, Christopher Matthew, Geraldine Edwards and Joanna O'Connor). 
 
-<img width="100%" alt="responsive screens landing page for the Gift Pal app" src="readme.docs/images/responsive_design_landing_page.png">
+<img width="100%" alt="responsive screens landing page for the Gift Pal app" src="readme.docs/images/">
 
 
 
