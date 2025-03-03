@@ -20,39 +20,69 @@
     <div class="card shadow-lg mb-5 border-0">
         <div class="card-body p-4">
             <h4 class="card-title mb-4"><i class="fas fa-search me-2"></i>Find Friends</h4>
-            <form method="GET" action="{% url 'friendslist' %}" class="input-group">
-                <input type="text" name="search_query" 
-                    class="form-control form-control-lg" 
-                    placeholder="Search by username..."
-                    value="{{ search_query }}">
-                <button type="submit" class="btn btn-primary btn-lg">
+            <form method="GET" action="{% url 'friendslist:friendslist' %}" class="input-group">
+                <input type="text" name="search_query" class="form-control form-control-lg"
+                    placeholder="Search by username..." value="{{ search_query }}">
+                <button type="submit" class="btn btn-pink btn-lg">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
         </div>
     </div>
 
+    <!-- Search Results -->
+    {% if search_results %}
+    <div class="card shadow-lg border-0 mb-4">
+        <div class="card-body p-4">
+            <h4 class="card-title mb-4"><i class="fas fa-users me-2"></i>Search Results</h4>
+            <div class="row g-3">
+                {% for user in search_results %}
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center p-3 bg-light rounded">
+                        <img src="{{ user.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                            class="rounded-circle me-3" width="50" height="50" alt="{{ user.username }}">
+                        <div class="flex-grow-1">
+                            <strong>{{ user.username }}</strong>
+                        </div>
+                        <form method="POST" action="{% url 'friendslist:send_friend_request' user.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-user-plus me-2"></i>Add
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% elif search_query %}
+    <div class="text-center py-4">
+        <i class="fas fa-search fa-2x text-muted mb-3"></i>
+        <p class="text-muted">No users found matching "{{ search_query }}"</p>
+    </div>
+    {% endif %}
+
     <!-- Friends Grid -->
     <div class="row g-4 mb-5">
-        {% for friendship in friendships %}
+        {% for friend in friends %}
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-sm friend-card">
                 <div class="card-body text-center p-4">
                     <div class="avatar-wrapper mb-3">
-                        <img src="{{ friendship.friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
-                            class="rounded-circle avatar-img"
-                            alt="{{ friendship.friend.username }}">
+                        <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                            class="rounded-circle avatar-img" alt="{{ friend.username }}">
                     </div>
-                    <h3 class="h5 mb-2">{{ friendship.friend.username }}</h3>
+                    <h3 class="h5 mb-2">{{ friend.username }}</h3>
                     <p class="text-muted small mb-3">
-                        {{ friendship.friend.myaccount.status_message|default:"🎁 Loves surprises!" }}
+                        {{ friend.myaccount.status_message|default:"🎁 Loves surprises!" }}
                     </p>
                     <div class="d-grid gap-2">
-                        <a href="{% url 'friendsdetail' friendship.friend.id %}" 
-                           class="btn btn-outline-primary btn-sm">
+                        <a href="{% url 'friendslist:friendsdetail' friend.id %}"
+                            class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-eye me-2"></i>View Profile
                         </a>
-                        <form action="{% url 'remove_friend' friendship.friend.id %}" method="post">
+                        <form action="{% url 'friendslist:remove_friend' friend.id %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-link text-danger btn-sm">
                                 <i class="fas fa-user-times me-2"></i>Remove Friend
@@ -74,75 +104,70 @@
     </div>
 
     <!-- Pending Requests -->
-    {% if pending_friendships %}
-    <div class="card shadow-lg border-0 mb-5">
-        <div class="card-body p-4">
-            <h4 class="card-title mb-4">
-                <i class="fas fa-clock me-2"></i>Pending Requests
-            </h4>
-            <div class="list-group">
-                {% for friendship in pending_friendships %}
-                <div class="list-group-item d-flex align-items-center">
-                    <img src="{{ friendship.user.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
-                         class="rounded-circle me-3" 
-                         width="40" 
-                         height="40"
-                         alt="{{ friendship.user.username }}">
-                    <div class="flex-grow-1">
-                        <strong>{{ friendship.user.username }}</strong> wants to connect
-                    </div>
-                    <form method="post" action="{% url 'confirm_friendship' friendship.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="fas fa-check me-2"></i>Confirm
-                        </button>
-                    </form>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Search Results -->
-    {% if search_results %}
-    <div class="card shadow-lg border-0">
-        <div class="card-body p-4">
-            <h4 class="card-title mb-4"><i class="fas fa-users me-2"></i>Search Results</h4>
-            <div class="row g-3">
-                {% for user in search_results %}
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center p-3 bg-light rounded">
-                        <img src="{{ user.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
-                             class="rounded-circle me-3" 
-                             width="50" 
-                             height="50"
-                             alt="{{ user.username }}">
-                        <div class="flex-grow-1">
-                            <strong>{{ user.username }}</strong>
+    {% if pending_received_requests or pending_sent_requests %}
+    <div class="row">
+        <!-- Received Requests -->
+        {% if pending_received_requests %}
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 mb-5">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4"><i class="fas fa-clock me-2"></i>Pending Received Requests</h4>
+                    <div class="list-group">
+                        {% for request in pending_received_requests %}
+                        <div class="list-group-item d-flex align-items-center">
+                            <img src="{{ request.sender.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                                class="rounded-circle me-3" width="40" height="40" alt="{{ request.sender.username }}">
+                            <div class="flex-grow-1">
+                                <strong>{{ request.sender.username }}</strong> wants to connect
+                            </div>
+                            <form method="post" action="{% url 'friendslist:accept_friend_request' request.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-sm me-2">
+                                    <i class="fas fa-check me-2"></i>Accept
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'friendslist:decline_friend_request' request.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-times me-2"></i>Decline
+                                </button>
+                            </form>
                         </div>
-                        <form class="add-friend-form" method="POST" action="{% url 'add_friend' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="friend_id" value="{{ user.id }}">
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="fas fa-user-plus me-2"></i>Add
-                            </button>
-                        </form>
+                        {% endfor %}
                     </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
-    </div>
-    {% elif search_query %}
-    <div class="text-center py-4">
-        <i class="fas fa-search fa-2x text-muted mb-3"></i>
-        <p class="text-muted">No users found matching "{{ search_query }}"</p>
+        {% endif %}
+
+        <!-- Sent Requests -->
+        {% if pending_sent_requests %}
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 mb-5">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4"><i class="fas fa-clock me-2"></i>Pending Sent Requests</h4>
+                    <div class="list-group">
+                        {% for request in pending_sent_requests %}
+                        <div class="list-group-item d-flex align-items-center">
+                            <img src="{{ request.receiver.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                                class="rounded-circle me-3" width="40" height="40"
+                                alt="{{ request.receiver.username }}">
+                            <div class="flex-grow-1">
+                                <strong>{{ request.receiver.username }}</strong> (Pending)
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
-</div>
 
-<!-- Link to your custom JavaScript -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'js/friendsearch.js' %}"></script>
-{% endblock %}
+
+
+    <!-- Link to your custom JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="{% static 'js/friendsearch.js' %}"></script> -->
+    {% endblock %}

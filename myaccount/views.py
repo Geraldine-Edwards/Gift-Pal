@@ -1,10 +1,14 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import MyAccount, Like
-from .forms import ProfileImageForm, ProfileStatusForm, ProfileDetailsForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User  # Add this line
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.db.models import Q
+from friendslist.models import Friendship  # Add this line
 from planner.models import Planner
 from wishlist.models import WishlistItem
+from .forms import ProfileDetailsForm, ProfileImageForm, ProfileStatusForm
+from .models import Like, MyAccount
 
 @login_required
 def profile_view(request):
@@ -13,6 +17,25 @@ def profile_view(request):
     status_form = ProfileStatusForm(instance=myaccount)
     details_form = ProfileDetailsForm(instance=myaccount)
     image_form = ProfileImageForm(instance=myaccount)
+    
+    # Fetch confirmed friends for the current user
+    confirmed_friends = Friendship.objects.filter(Q(user1=request.user) | Q(user2=request.user))
+
+    # Extract friends from confirmed_friends
+    friends = []
+    for friendship in confirmed_friends:
+        if friendship.user1 == request.user:
+            friends.append(friendship.user2)
+        else:
+            friends.append(friendship.user1)
+
+    upcoming_events = Planner.objects.filter(user=request.user, start__gte=timezone.now()).order_by('start')
+    wishlist_items = WishlistItem.objects.filter(user=request.user).order_by('-created_at')
+
+
+    # Ensure each friend has a MyAccount instance
+    for friend in friends:
+        MyAccount.objects.get_or_create(user=friend)
 
     if request.method == 'POST':
         # Handle profile image upload
@@ -36,7 +59,8 @@ def profile_view(request):
                 'image_form': image_form,
                 'status_form': status_form,
                 'details_form': details_form,
-                'friends_count': request.user.friends.count(),
+                'friends': friends,
+                'friends_count': len(friends),
                 'events_count': Planner.objects.filter(user=request.user).count(),
                 'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count()
             })
@@ -54,7 +78,8 @@ def profile_view(request):
                 'image_form': image_form,
                 'status_form': status_form,
                 'details_form': details_form,
-                'friends_count': request.user.friends.count(),
+                'friends': friends,
+                'friends_count': len(friends),
                 'events_count': Planner.objects.filter(user=request.user).count(),
                 'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count()
             })
@@ -65,9 +90,12 @@ def profile_view(request):
         'image_form': image_form,
         'status_form': status_form,
         'details_form': details_form,
-        'friends_count': request.user.friends.count(),
+        'friends': friends,
+        'friends_count': len(friends),
         'events_count': Planner.objects.filter(user=request.user).count(),
-        'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count()
+        'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count(),
+        'events': upcoming_events,
+        'wishlist_items': wishlist_items
     }
     return render(request, 'myaccount/profile.html', context)
 

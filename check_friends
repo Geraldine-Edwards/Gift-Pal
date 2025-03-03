@@ -1,0 +1,24 @@
+import os
+import django
+
+# Set up Django environment
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'giftpal.settings')
+django.setup()
+
+from friendslist.models import Friendship
+
+def check_friendships():
+    # Find all confirmed friendships
+    print("Confirmed Friendships:")
+    confirmed_friendships = Friendship.objects.filter(confirmed=True)
+    for friendship in confirmed_friendships:
+        print(f"User: {friendship.user.username}, Friend: {friendship.friend.username}, Confirmed: {friendship.confirmed}")
+
+    # Find all pending friendships
+    print("\nPending Friendships:")
+    pending_friendships = Friendship.objects.filter(confirmed=False)
+    for friendship in pending_friendships:
+        print(f"User: {friendship.user.username}, Friend: {friendship.friend.username}, Confirmed: {friendship.confirmed}")
+
+if __name__ == "__main__":
+    check_friendships()
