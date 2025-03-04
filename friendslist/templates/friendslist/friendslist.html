@@ -112,12 +112,13 @@
                     <h4 class="card-title mb-4 text-purple"><i class="fas fa-clock me-2"></i>Pending Received Requests</h4>
                     <div class="list-group">
                         {% for request in pending_received_requests %}
-                        <div class="list-group-item d-flex align-items-center">
+                        <div class="d-flex align-items-center">
                             <img src="{{ request.sender.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
-                                class="rounded-circle me-3" width="40" height="40" alt="{{ request.sender.username }}">
+                                class="rounded-circle me-2" width="40" height="40" alt="{{ request.sender.username }}">
                             <div class="flex-grow-1 me-2">
                                 <strong>{{ request.sender.username }}</strong> wants to connect
                             </div>
+                            <div class="d-flex flex-column flex-lg-row gap-2 w-100 w-md-auto">
                             <form method="post" action="{% url 'friendslist:accept_friend_request' request.id %}">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-blue btn-sm me-2">
@@ -130,6 +131,7 @@
                                     <i class="fas fa-times me-2"></i>Decline
                                 </button>
                             </form>
+                        </div>
                         </div>
                         {% endfor %}
                     </div>
