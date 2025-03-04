@@ -114,7 +114,7 @@
                         {% for request in pending_received_requests %}
                         <div class="d-flex align-items-center">
                             <img src="{{ request.sender.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
-                                class="rounded-circle me-2" width="40" height="40" alt="{{ request.sender.username }}">
+                                class="rounded-circle me-3" width="40" height="40" alt="{{ request.sender.username }}">
                             <div class="flex-grow-1 me-2">
                                 <strong>{{ request.sender.username }}</strong> wants to connect
                             </div>
