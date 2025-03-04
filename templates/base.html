@@ -35,58 +35,63 @@
                 <img src="{% static 'images/gift_box_light.webp' %}" alt="Gift Pal Logo" height="40">
                 <span class="ms-2">Gift Pal</span>
             </a>
-    
+
             <!-- Navbar Toggler Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-    
+
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
-                        <!-- Profile Image -->
-                        <li class="nav-item">
-                            <a class="nav-link trans-text" href="{% url 'myaccount:myaccount_home' %}">
-                                {% if user.myaccount.profile_image %}
-                                    <img src="{{ user.myaccount.profile_image.url }}" alt="Profile Image" class="rounded-circle profile-image" height="40">
-                                {% else %}
-                                    <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1739390582/nobody_pcaqjl.jpg" alt="Profile Image" class="rounded-circle profile-image" height="40">
-                                {% endif %}
-                            </a>
-                        </li>
-    
-                        <!-- Friends Link -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'friendslist:friendslist' %} ">Friends</a>
-                        </li>
-    
-                        <!-- Wishlist Link -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'wishlist:wishlist' %}">Wishlist</a>
-                        </li>
-    
-                        <!-- Event Planner Link -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'planner:planner_view' %}">Event Planner</a>
-                        </li>
-    
-                        <!-- Logout Link -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                        </li>
+                    <!-- Profile Image & username -->
+                    <li class="nav-item d-flex align-items-center">
+                        <a class="nav-link trans-text d-flex align-items-center"
+                            href="{% url 'myaccount:myaccount_home' %}">
+                            <span class="me-2 fw-bold">{{ user.username }}</span>
+                            {% if user.myaccount.profile_image %}
+                            <img src="{{ user.myaccount.profile_image.url }}" alt="Profile Image"
+                                class="rounded-circle profile-image" height="40">
+                            {% else %}
+                            <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1739390582/nobody_pcaqjl.jpg"
+                                alt="Profile Image" class="rounded-circle profile-image" height="40">
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <!-- Friends Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'friendslist:friendslist' %} ">Friends</a>
+                    </li>
+
+                    <!-- Wishlist Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'wishlist:wishlist' %}">Wishlist</a>
+                    </li>
+
+                    <!-- Event Planner Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'planner:planner_view' %}">Event Planner</a>
+                    </li>
+
+                    <!-- Logout Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                    </li>
                     {% else %}
-                        <!-- Login Link -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                        </li>
-    
-                        <!-- Sign Up Link -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
-                        </li>
+                    <!-- Login Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                    </li>
+
+                    <!-- Sign Up Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+                    </li>
                     {% endif %}
-    
+
                     <!-- Theme Toggle Button -->
                     <li class="nav-item">
                         <button id="theme-toggle" class="btn ms-2">🌙</button>
@@ -96,6 +101,20 @@
         </div>
     </nav>
 
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main content -->
     <div class="container mt-4">
         {% block content %}{% endblock %}
     </div>
@@ -106,7 +125,7 @@
                 <div class="col-md-4 mb-3">
                     <a href="https://www.facebook.com/" target="_blank" rel="noopener" class=" me-3 social-link"
                         aria-label="Visit our Facebook page (opens in a new tab)">
-                        <i class="fab fa-facebook fa-2x"></i></a> 
+                        <i class="fab fa-facebook fa-2x"></i></a>
                     <a href="https://www.twitter.com/" target="_blank" rel="noopener" class=" me-3 social-link"
                         aria-label="Visit our X (Twitter) page (opens in a new tab)">
                         <i class="fab fa-x-twitter fa-2x"></i></a>

@@ -12,48 +12,46 @@
         <h1 class="display-4 fw-bold title mb-3">
             <i class="fas fa-user me-2"></i> Your Profile
         </h1>
-        <p class="lead text-muted">All your information in one place!</p>
+        <p class="lead">All your information in one place!</p>
     </div>
 
     <div class="row g-4">
         <!-- Left Column: Profile Header and Friends List -->
         <div class="col-lg-4">
             <!-- Profile Header -->
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="profile-avatar-wrapper position-relative me-4">
-                            {% if myaccount.profile_image %}
-                            <img src="{{ myaccount.profile_image.url }}" class="rounded-circle avatar-img shadow"
-                                alt="{{ myaccount.user.username }}">
-                            {% else %}
-                            <img src="https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg"
-                                class="rounded-circle avatar-img shadow" alt="Default profile image">
-                            {% endif %}
-                            <button class="btn btn-purple btn-edit-avatar" data-bs-toggle="modal"
-                                data-bs-target="#uploadProfilePictureModal" title="Edit Profile Picture">
-                                <i class="fas fa-camera"></i>
-                            </button>
-                        </div>
-                        <div>
-                            <h1 class="display-5 fw-bold title mb-1">
-                                {{ myaccount.user.username }}
-                            </h1>
-                            <p class="lead text-muted mb-0">
-                                {{ myaccount.status_message|default:"🎁 Ready to share the gift of connection!" }}
-                            </p>
-                        </div>
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-body text-center">
+                    <div class="profile-avatar-wrapper position-relative d-inline-block">
+                        {% if myaccount.profile_image %}
+                        <img src="{{ myaccount.profile_image.url }}" class="rounded-circle avatar-img shadow"
+                            alt="{{ myaccount.user.username }}">
+                        {% else %}
+                        <img src="https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg"
+                            class="rounded-circle avatar-img shadow" alt="Default profile image">
+                        {% endif %}
+                        <button class="btn btn-purple btn-edit-avatar position-absolute bottom-0 end-00"
+                            data-bs-toggle="modal" data-bs-target="#uploadProfilePictureModal"
+                            title="Edit Profile Picture" aria-label="Edit Profile Picture">
+                            <i class="fas fa-camera"></i>
+                        </button>
                     </div>
+                    <h3 class="fw-bold title mt-3">
+                        {{ myaccount.user.username }}
+                    </h3>
+                    <p class="lead  mb-0">
+                        <i class="fas fa-quote-left me-2"></i>
+                        {{ myaccount.status_message|default:"🎁 Ready to share the gift of connection!" }}
+                        <i class="fas fa-quote-right me-2"></i>
+                    </p>
                 </div>
             </div>
-
             <!-- Friends List -->
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-lg border-0">
                 <div class="card-body">
-                    <h5 class="card-title mb-3" style="color: var(--primary-color);">
+                    <h5 class="card-title text-pink mb-3">
                         <i class="fas fa-users me-2"></i>Friends
                     </h5>
-                    <div class="friends-list" style="max-height: 300px; overflow-y: auto;">
+                    <div class="friends-list" style="max-height: 400px; overflow-y: auto;">
                         {% if friends %}
                         <div class="list-group list-group-flush">
                             {% for friend in friends %}
@@ -66,8 +64,8 @@
                         </div>
                         {% else %}
                         <div class="text-center py-4">
-                            <i class="fas fa-user-friends fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">No friends yet. Start adding friends to share gifts!</p>
+                            <i class="fas fa-user-friends fa-3x  mb-3"></i>
+                            <p class="">No friends yet. Start adding friends to share gifts!</p>
                         </div>
                         {% endif %}
                     </div>
@@ -78,12 +76,20 @@
         <!-- Right Column: About, Upcoming Events, and Wishlist -->
         <div class="col-lg-8">
             <!-- About Card -->
-            <div class="card shadow-sm border-0 mb-4">
+            <div class="card shadow-lg border-0 mb-3">
                 <div class="card-body">
-                    <h5 class="card-title mb-3" style="color: var(--primary-color);">
+                    <h5 class="card-title mb-3 text-pink">
                         <i class="fas fa-info-circle me-2"></i>About Me
                     </h5>
-                    <p>{{ myaccount.about_me|default:"Share something about yourself!" }}</p>
+                    <p >{{ myaccount.about_me|default:"Share something about yourself!" }}</p>
+                    <h5 class="card-title mb-3 text-blue">
+                        <i class="fas fa-cake-candles me-2"></i>My birthday
+                    </h5>
+                    <p>{{ myaccount.birthday|default:"Let friends know when to wish you 'Happy Birthday!'" }}</p>
+                    <h5 class="card-title mb-3 text-purple" >
+                        <i class="fas fa-link me-2"></i>Favourite links
+                    </h5>
+                    <p>{{ myaccount.favorite_links|default:"Share your favourite links" }}</p>
                     <button class="btn btn-outline-blue" data-bs-toggle="collapse" data-bs-target="#editAbout">
                         <i class="fas fa-edit me-2"></i>Edit
                     </button>
@@ -91,6 +97,8 @@
                         <form method="post" action="{% url 'myaccount:myaccount_home' %}">
                             {% csrf_token %}
                             {{ details_form.about_me|as_crispy_field }}
+                            {{ details_form.birthday|as_crispy_field }}
+                            {{ details_form.favorite_links|as_crispy_field }}
                             <button type="submit" class="btn btn-purple">
                                 <i class="fas fa-save me-2"></i>Save Changes
                             </button>
@@ -100,7 +108,7 @@
             </div>
 
             <!-- Upcoming Events Card -->
-            <div class="card shadow-sm border-0 mb-4">
+            <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
                     <h5 class="card-title mb-3" style="color: var(--secondary-color);">
                         <i class="fas fa-calendar-alt me-2"></i>Upcoming Events
@@ -111,14 +119,14 @@
                             {% for event in events %}
                             <div class="list-group-item">
                                 <div class="fw-bold">{{ event.title }}</div>
-                                <small class="text-muted">{{ event.start|date:"M d, Y" }}</small>
+                                <small class="">{{ event.start|date:"M d, Y" }}</small>
                             </div>
                             {% endfor %}
                         </div>
                         {% else %}
                         <div class="text-center py-4">
-                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">No upcoming events. Start planning!</p>
+                            <i class="fas fa-calendar-times fa-3x  mb-3"></i>
+                            <p class="">No upcoming events. Start planning!</p>
                         </div>
                         {% endif %}
                     </div>
@@ -126,7 +134,7 @@
             </div>
 
             <!-- Wishlist Card -->
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-lg border-0">
                 <div class="card-body">
                     <h5 class="card-title mb-3" style="color: var(--tertiary-color);">
                         <i class="fas fa-gift me-2"></i>Wishlist
@@ -137,14 +145,14 @@
                             {% for item in wishlist_items %}
                             <div class="list-group-item">
                                 <div class="fw-bold">{{ item.item_name }}</div>
-                                <small class="text-muted">{{ item.category|default:"Uncategorized" }}</small>
+                                <small class="">{{ item.category|default:"Uncategorized" }}</small>
                             </div>
                             {% endfor %}
                         </div>
                         {% else %}
                         <div class="text-center py-4">
-                            <i class="fas fa-gift fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">No wishlist items yet. Add some gifts!</p>
+                            <i class="fas fa-gift fa-3x  mb-3"></i>
+                            <p class="">No wishlist items yet. Add some gifts!</p>
                         </div>
                         {% endif %}
                     </div>
@@ -168,7 +176,7 @@
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ image_form|crispy }}
-                    <button type="submit" class="btn btn-blue w-100">
+                    <button type="submit" class="btn btn-purple w-90">
                         <i class="fas fa-upload me-2"></i>Upload Photo
                     </button>
                 </form>

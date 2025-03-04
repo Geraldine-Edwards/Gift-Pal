@@ -23,7 +23,18 @@ class ProfileDetailsForm(forms.ModelForm):
         model = MyAccount
         fields = ['about_me', 'birthday', 'favorite_links']
         widgets = {
-            'birthday': forms.DateInput(attrs={'type': 'date'}),
-            'about_me': forms.Textarea(attrs={'rows': 3}),
-            'favorite_links': forms.TextInput(attrs={'class': 'form-control'})
+            'birthday': forms.DateInput(attrs={
+                'type': 'date',
+                'class': 'form-control'
+            }),
+            'about_me': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Tell us about yourself...'
+            }),
+            'favorite_links': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Add links, one per line...'
+            })
         }

@@ -184,12 +184,4 @@ def remove_friend(request, friend_id):
 
     messages.success(request, f"You have removed {friend.username} from your friends.")
 
-    # Fetch pending requests for the current user
-    pending_requests = FriendRequest.objects.filter(
-        receiver=request.user,
-        status='pending'
-    )
-
-    return render(request, 'friendslist/friendslist.html', {
-        'pending_requests': pending_requests,
-    })
+    return redirect('friendslist:friendslist')

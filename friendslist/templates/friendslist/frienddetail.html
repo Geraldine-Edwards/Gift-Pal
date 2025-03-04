@@ -11,43 +11,44 @@
         <h1 class="display-4 fw-bold title mb-3">
             <i class="fas fa-user me-2"></i> {{ friend.username }}'s Profile
         </h1>
-        <p class="lead text-muted">All information in one place!</p>
+        <p class="lead ">All their information in one place!</p>
     </div>
     <!-- Back Button -->
-    <a href="{% url 'friendslist' %}" class="btn btn-outline-primary mb-5 shadow-sm">
-        <i class="fas fa-arrow-left me-2"></i>Back to Friends
+    <a href="{% url 'friendslist:friendslist'%}"class="btn btn-purple mb-5 shadow-lg">
+        <i class="fas fa-arrow-left me-2"></i>Back to My Friends
     </a>
 
     <div class="row g-4">
         <!-- Left Sidebar -->
         <div class="col-lg-4">
             <!-- Profile Card -->
-            <div class="card shadow-sm border-0 h-100">
+            <div class="card shadow-lg border-0 h-100">
                 <div class="card-body text-center">
                     <div class="avatar-wrapper mb-4">
                         <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
                             class="rounded-circle avatar-img"
                             alt="{{ friend.username }}">
                     </div>
-                    <h2 class="h3 mb-2">{{ friend.username }}</h2>
-                    <p class="text-muted mb-4">
+                    <h2 class="mb-2 text-pink">{{ friend.username }}</h2>
+                    <p class=" mb-3">
                         <i class="fas fa-quote-left me-2"></i>
                         {{ friend.myaccount.status_message|default:"🎁 Enjoying the gift of friendship!" }}
+                        <i class="fas fa-quote-right me-2"></i>
                     </p>
                     
                     <!-- Profile Details -->
                     <div class="text-start">
                         <div class="d-flex align-items-center mb-3">
-                            <i class="fas fa-birthday-cake text-primary me-3"></i>
+                            <i class="fas fa-birthday-cake text-blue me-3"></i>
                             <div>
-                                <small class="text-muted">Birthday</small>
+                                <small class="text-blue">Birthday</small>
                                 <div class="fw-bold">{{ friend.myaccount.birthday|default:"Not set" }}</div>
                             </div>
                         </div>
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-link text-primary me-3"></i>
+                            <i class="fas fa-link text-purple me-3"></i>
                             <div>
-                                <small class="text-muted">Favorite Links</small>
+                                <small class="text-purple">Favorite Links</small>
                                 <div class="fw-bold">
                                     {{ friend.myaccount.favorite_links|urlize|default:"No links added" }}
                                 </div>
@@ -61,55 +62,58 @@
         <!-- Main Content -->
         <div class="col-lg-8">
             <!-- About Section -->
-            <div class="card shadow-sm border-0 mb-4">
+            <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
-                    <h3 class="h4 mb-4">
-                        <i class="fas fa-user-circle text-primary me-2"></i>About
+                    <h3 class="h4 mb-4 text-pink">
+                        <i class="fas fa-info-circle me-2"></i>About
                     </h3>
-                    <p class="text-muted">
+                    <p class="">
                         {{ friend.myaccount.about_me|default:"This friend hasn't shared any details yet." }}
                     </p>
                 </div>
             </div>
 
             <!-- Friends Grid -->
-            <div class="card shadow-sm border-0 mb-4">
+            <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
-                    <h3 class="h4 mb-4">
-                        <i class="fas fa-users text-primary me-2"></i>Friends
-                        <span class="badge bg-primary ms-2">{{ friends_friends|length }}</span>
+                    <h3 class="h4 mb-4 text-purple">
+                        <i class="fas fa-users me-2"></i>Friends
+                        <span class="badge bg-dark ms-2">{{ friends_friends|length }}</span>
                     </h3>
-                    <div class="row row-cols-1 row-cols-md-2 g-3">
-                        {% for friendship in friends_friends %}
+                    {% if friends_friends %}
+                    <div class="row row-cols-1 row-cols-md-2 g-3" style="max-height: 300px; overflow-y: auto;">
+                        {% for friend in friends_friends %}
                         <div class="col">
                             <div class="d-flex align-items-center p-3 bg-light rounded">
-                                <img src="{{ friendship.friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
-                                     class="rounded-circle me-3" 
-                                     width="50" 
-                                     height="50"
-                                     alt="{{ friendship.friend.username }}">
+                                <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
+                                    class="rounded-circle me-3" 
+                                    width="40" 
+                                    height="40"
+                                    alt="{{ friend.username }}">
                                 <div class="flex-grow-1">
-                                    <div class="fw-bold">{{ friendship.friend.username }}</div>
+                                    <div class="fw-bold">{{ friend.username }}</div>
                                     <small class="text-muted">
-                                        {{ friendship.friend.myaccount.status_message|default:"Member" }}
+                                        {{ friend.myaccount.status_message|default:"Member" }}
                                     </small>
                                 </div>
-                                <a href="{% url 'friendsdetail' friendship.friend.id %}" 
-                                   class="btn btn-sm btn-outline-primary">
-                                    View
-                                </a>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-user-friends fa-3x mb-3"></i>
+                        <p class="">No friends yet. Start adding friends to share gifts!</p>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
             <!-- Events Section -->
-            <div class="card shadow-sm border-0 mb-4">
+            <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
-                    <h3 class="h4 mb-4">
-                        <i class="fas fa-calendar-alt text-primary me-2"></i>Upcoming Events
+                    <h3 class="h4 mb-4 text-blue">
+                        <i class="fas fa-calendar-alt me-2"></i>Upcoming Events
                     </h3>
                     {% if events %}
                     <div class="row g-3">
@@ -124,7 +128,7 @@
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h5 class="mb-1">{{ event.title }}</h5>
-                                    <p class="text-muted mb-0">{{ event.description }}</p>
+                                    <p class=" mb-0">{{ event.description }}</p>
                                 </div>
                                 <button class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-heart"></i> {{ event.likes.count }}
@@ -135,27 +139,27 @@
                     </div>
                     {% else %}
                     <div class="text-center py-4">
-                        <i class="fas fa-calendar-times fa-2x text-muted mb-3"></i>
-                        <p class="text-muted">No upcoming events found</p>
+                        <i class="fas fa-calendar-times fa-2x  mb-3"></i>
+                        <p class="">No upcoming events found</p>
                     </div>
                     {% endif %}
                 </div>
             </div>
 
             <!-- Wishlist Section -->
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-lg border-0">
                 <div class="card-body">
-                    <h3 class="h4 mb-4">
-                        <i class="fas fa-gift text-primary me-2"></i>Wishlist
+                    <h3 class="h4 mb-4 text-pink">
+                        <i class="fas fa-gift me-2"></i>Wishlist
                     </h3>
                     {% if wishlist_items %}
                     <div class="row g-3">
                         {% for item in wishlist_items %}
                         <div class="col-md-6">
-                            <div class="card h-100 border-0 shadow-sm">
+                            <div class="card h-100 border-0 shadow-lg">
                                 <div class="card-body">
                                     <h5 class="mb-3">{{ item.item_name }}</h5>
-                                    <p class="text-muted small">{{ item.description }}</p>
+                                    <p class=" small">{{ item.description }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <a href="{{ item.link }}" target="_blank" 
                                            class="btn btn-sm btn-outline-primary">
@@ -172,8 +176,8 @@
                     </div>
                     {% else %}
                     <div class="text-center py-4">
-                        <i class="fas fa-gift fa-2x text-muted mb-3"></i>
-                        <p class="text-muted">No wishlist items found</p>
+                        <i class="fas fa-gift fa-2x  mb-3"></i>
+                        <p class="">No wishlist items found</p>
                     </div>
                     {% endif %}
                 </div>

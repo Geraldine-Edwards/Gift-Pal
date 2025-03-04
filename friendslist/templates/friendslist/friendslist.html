@@ -13,17 +13,17 @@
         <h1 class="display-4 fw-bold title mb-3">
             <i class="fas fa-users me-2"></i>My Friends
         </h1>
-        <p class="lead text-muted">Connect and share the gift-giving experience</p>
+        <p class="lead ">Connect and share the gift-giving experience</p>
     </div>
 
     <!-- Search Card -->
     <div class="card shadow-lg mb-5 border-0">
         <div class="card-body p-4">
-            <h4 class="card-title mb-4"><i class="fas fa-search me-2"></i>Find Friends</h4>
+            <h4 class="card-title mb-4 text-pink"><i class="fas fa-search me-2"></i>Find Friends</h4>
             <form method="GET" action="{% url 'friendslist:friendslist' %}" class="input-group">
                 <input type="text" name="search_query" class="form-control form-control-lg"
                     placeholder="Search by username..." value="{{ search_query }}">
-                <button type="submit" class="btn btn-pink btn-lg">
+                <button type="submit" class="btn btn-purple btn-lg">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
@@ -35,7 +35,7 @@
     <div class="card shadow-lg border-0 mb-4">
         <div class="card-body p-4">
             <h4 class="card-title mb-4"><i class="fas fa-users me-2"></i>Search Results</h4>
-            <div class="row g-3">
+            <div class="row g-3 scrollabale-list">
                 {% for user in search_results %}
                 <div class="col-md-6">
                     <div class="d-flex align-items-center p-3 bg-light rounded">
@@ -58,25 +58,23 @@
     </div>
     {% elif search_query %}
     <div class="text-center py-4">
-        <i class="fas fa-search fa-2x text-muted mb-3"></i>
-        <p class="text-muted">No users found matching "{{ search_query }}"</p>
+        <i class="fas fa-search fa-2x  mb-3"></i>
+        <p class="">No users found matching "{{ search_query }}"</p>
     </div>
     {% endif %}
+
 
     <!-- Friends Grid -->
     <div class="row g-4 mb-5">
         {% for friend in friends %}
         <div class="col-md-6 col-lg-4">
-            <div class="card h-100 border-0 shadow-sm friend-card">
+            <div class="card h-100 border-0 shadow-lg friend-card">
                 <div class="card-body text-center p-4">
                     <div class="avatar-wrapper mb-3">
                         <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
                             class="rounded-circle avatar-img" alt="{{ friend.username }}">
                     </div>
                     <h3 class="h5 mb-2">{{ friend.username }}</h3>
-                    <p class="text-muted small mb-3">
-                        {{ friend.myaccount.status_message|default:"🎁 Loves surprises!" }}
-                    </p>
                     <div class="d-grid gap-2">
                         <a href="{% url 'friendslist:friendsdetail' friend.id %}"
                             class="btn btn-outline-primary btn-sm">
@@ -95,9 +93,9 @@
         {% empty %}
         <div class="col-12 text-center py-5">
             <div class="empty-state">
-                <i class="fas fa-user-friends fa-3x text-muted mb-3"></i>
-                <h4 class="h5 text-muted">No friends yet</h4>
-                <p class="text-muted">Start by searching for friends above!</p>
+                <i class="fas fa-user-friends fa-3x  mb-3"></i>
+                <h4 class="h5 ">No friends yet</h4>
+                <p class="">Start by searching for friends above!</p>
             </div>
         </div>
         {% endfor %}
@@ -153,8 +151,14 @@
                                 class="rounded-circle me-3" width="40" height="40"
                                 alt="{{ request.receiver.username }}">
                             <div class="flex-grow-1">
-                                <strong>{{ request.receiver.username }}</strong> (Pending)
+                                You sent a request to <strong>{{ request.receiver.username }}</strong> (Pending)
                             </div>
+                            <form method="post" action="{% url 'friendslist:decline_friend_request' request.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </button>
+                            </form>
                         </div>
                         {% endfor %}
                     </div>
