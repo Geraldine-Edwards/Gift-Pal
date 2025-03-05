@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Learn More - Gift Pal{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/learn-more.css' %}">
+
+<section class="learn-more py-5">
+    <!-- Hero Image Section -->
+    <div class="hero-image mb-5">
+        <img src="https://res.cloudinary.com/dn7aws3wl/image/upload/v1741188225/pexels-newmanphotographs-14831653_1_vlziqp.webp" alt="Christmas volunteers giving away presents on the city streets" class="img-fluid w-100">
+        <div class="hero-overlay d-flex align-items-center justify-content-center">
+            <h1 class="text-white display-4 fw-bold"><i class="fas fa-hand-holding-heart me-2"></i>Learn More About Donating Gifts via Charity</h1>
+        </div>
+    </div>
+
+    <!-- Text Content Section -->
+    <div class="container">
+        <div class="row g-4">
+            <!-- How It Works Card -->
+            <div class="col-lg-6">
+                <div class="card shadow-lg border-0 h-100 hover-effect">
+                    <div class="card-body p-5">
+                        <h2 class="mb-4 text-center text-purple"><i class="fas fa-gift me-2"></i>How It Works</h2>
+                            <p class="lead text-center mb-4">
+                                At Gift Pal, we want to bring joy to children and families in need throughout the year. Your donation can help provide gifts to those who might otherwise go without. Here’s how it works:
+                            </p>
+                            <ol class="mb-4">
+                                <li><strong class="text-pink">Donate a Gift</strong>: Contribute a new, unwrapped gift suitable for children or families. Popular items include toys, books, clothing, and festive treats.</li>
+                                <li><strong class="text-blue">Drop Off or Ship</strong>: You can drop off your gift at a local Salvation Army donation point or ship it directly to their headquarters.</li>
+                                <li><strong class="text-pink">Spread Joy</strong>: The Salvation Army distributes your gift to children and families in need, ensuring they have something special to open on Christmas Day.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Why Choose This Option Card -->
+            <div class="col-lg-6">
+                <div class="card shadow-lg border-0 h-100 hover-effect">
+                    <div class="card-body p-5">
+                        <h2 class="mb-4 text-center text-purple"><i class="fas fa-heart me-2"></i>Why Choose This Option?</h3>
+                            <p class="lead text-center">Choosing to donate a gift through our platform ensures that your contribution reaches those who need it most, making a real difference in their lives.</p>
+                    
+                            <ul class="mb-4">
+                            <li><strong class="text-blue">Make a Difference</strong>: Your gift can bring smiles to children and families who are struggling during the holiday season.</li>
+                            <li><strong class="text-pink">Support a Trusted Charity</strong>: The Salvation Army has a long history of helping those in need, and your donation will directly impact their Christmas appeal.</li>
+                            <li><strong class="text-blue">Spread the Spirit of Giving</strong>: Celebrate the true meaning of Christmas by giving back to your community.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="text-center mt-5">
+            <div class="cta-buttons d-flex justify-content-center gap-3">
+                <a href="https://www.salvationarmy.org.uk/christmas-present-appeal" target="_blank" rel="noopener" aria-label="Donate Now Button" class="btn btn-lg btn-blue light-text rounded-pill px-5 py-3">
+                    Donate Now
+                </a>
+                <a href="{% url 'home' %}" aria-label="Back To Home Button" class="btn btn-lg btn-pink light-text rounded-pill px-5 py-3">
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

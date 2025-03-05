@@ -1,4 +1,5 @@
 :root,
+/* Light Mode */
 [data-theme="light"] {
     --primary-color: #e83283;
     --secondary-color: #3a8fd9;
@@ -61,14 +62,6 @@
     
 }
 
-.collage-image-1 {
-    object-position: 40% 50%; /* Show more of the left-hand side */
-}
-
-.collage-image-3 {
-    object-position: 60% 50%; /* Show more of the left-hand side */
-}
-
 .collage-image:hover {
     opacity: 1; /* Highlight image on hover */
     transform: scale(1.05); /* Slightly enlarge image on hover */
@@ -104,8 +97,12 @@
 .features {
     padding: 4rem 0; /* Existing padding */
     margin-top: 4rem; /* Add space above the features section */
+    border-radius: 10px;
 }
 
+[data-theme="dark"] .features {
+    background-color: var(--gray);
+}
 
 
 .features .icon-wrapper {
@@ -143,7 +140,7 @@
 .charity-donation {
     background-color: var(--white); 
     padding: 4rem 0; /* Add padding for spacing */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    border-radius: 10px;
 }
 
 .charity-donation h2 {
@@ -164,6 +161,7 @@
 .testimonial {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
     margin-top: 4rem;
+    border-radius: 10px;
 }
 
 .shadow-lg {
@@ -174,8 +172,15 @@
     color: var(--primary-color) !important;
 }
 
-/* Responsive Adjustments for Mobile */
+
+/* Responsive Adjustments for Smaller Devices */
 @media (max-width: 768px) {
+    .bg-overlay {
+        padding: 1rem; /* Reduce padding on smaller screens */
+        width: 90%; /* Reduce width on smaller screens */
+        margin-top: 0%; /* Adjust margin-top for better positioning */
+    }
+
     .hero-collage {
         grid-template-columns: 1fr; /* Single column for mobile */
         gap: 0; /* Remove gap between images */
@@ -185,8 +190,56 @@
         height: 33.33vh; /* Each image takes up one-third of the viewport height */
     }
 
+    .hero-tagline {
+        font-size: 2rem; /* Smaller font size for mobile */
+    }
+
+    .lead {
+        font-size: 1rem; /* Smaller font size for mobile */
+    }
+}
+
+/* Responsive Adjustments for Medium Devices */
+@media (min-width: 769px) and (max-width: 991.98px) {
     .bg-overlay {
-        padding: 1rem; /* Reduce padding on smaller screens */
-        transform: translateY(20px); /* Adjust overlay position for mobile */
+        padding: 2rem; /* Reduce padding on medium screens */
+        width: 80%; /* Reduce width on medium screens */
+        margin-top: 35%; /* Adjust margin-top for better positioning */
+    }
+
+    .hero-tagline {
+        font-size: 2.5rem; /* Adjust font size for medium screens */
+    }
+
+    .lead {
+        font-size: 1.25rem; /* Adjust font size for medium screens */
+    }
+}
+
+/* Responsive Adjustments for Large Devices */
+@media (min-width: 992px) {
+    .bg-overlay {
+        padding: 2rem; /* Default padding */
+        width: auto; /* Default width */
+        margin-top: 350px; /* Default margin-top */
+    }
+
+    .hero-tagline {
+        font-size: 3rem; /* Default font size */
+    }
+
+    .lead {
+        font-size: 1.5rem; /* Default font size */
+    }
+}
+
+/* Adjust spacing between buttons */
+.cta-buttons {
+    gap: 1rem; /* Add gap between buttons */
+}
+
+@media (min-width: 768px) {
+    .cta-buttons {
+        gap: 2rem; /* Increase gap between buttons on larger screens */
     }
 }

@@ -64,6 +64,76 @@
     {% endif %}
 
 
+    <!-- Pending Requests -->
+    {% if pending_received_requests or pending_sent_requests %}
+    <div class="row">
+        <!-- Received Requests -->
+        {% if pending_received_requests %}
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 mb-5">
+                <div class="card-body p-4">
+                    <h4 class="card-title text-purple mb-4"><i class="fas fa-clock me-2"></i>Pending Received Requests</h4>
+                    <div class="list-group">
+                        {% for request in pending_received_requests %}
+                        <div class="d-flex align-items-center">
+                            <img src="{{ request.sender.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                                class="rounded-circle me-3" width="40" height="40" alt="{{ request.sender.username }}">
+                            <div class="flex-grow-1 me-2">
+                                <strong>{{ request.sender.username }}</strong> wants to connect
+                            </div>
+                            <div class="d-flex flex-column flex-lg-row gap-2 w-100 w-md-auto">
+                            <form method="post" action="{% url 'friendslist:accept_friend_request' request.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-blue btn-sm me-2">
+                                    <i class="fas fa-check me-2"></i>Accept
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'friendslist:decline_friend_request' request.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm me-2">
+                                    <i class="fas fa-times me-2"></i>Decline
+                                </button>
+                            </form>
+                        </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Sent Requests -->
+        {% if pending_sent_requests %}
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 mb-5">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4 text-blue"><i class="fas fa-clock me-2"></i>Pending Sent Requests</h4>
+                    <div class="list-group">
+                        {% for request in pending_sent_requests %}
+                        <div class="list-group-item d-flex align-items-center">
+                            <img src="{{ request.receiver.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                                class="rounded-circle me-3" width="40" height="40"
+                                alt="{{ request.receiver.username }}">
+                            <div class="flex-grow-1">
+                                You sent a request to <strong>{{ request.receiver.username }}</strong> (Pending)
+                            </div>
+                            <form method="post" action="{% url 'friendslist:decline_friend_request' request.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
     <!-- Friends Grid -->
     <div class="row g-4 mb-5">
         {% for friend in friends %}
@@ -100,77 +170,6 @@
         </div>
         {% endfor %}
     </div>
-
-    <!-- Pending Requests -->
-    {% if pending_received_requests or pending_sent_requests %}
-    <div class="row">
-        <!-- Received Requests -->
-        {% if pending_received_requests %}
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0 mb-5">
-                <div class="card-body p-4">
-                    <h4 class="card-title mb-4 text-purple"><i class="fas fa-clock me-2"></i>Pending Received Requests</h4>
-                    <div class="list-group">
-                        {% for request in pending_received_requests %}
-                        <div class="d-flex align-items-center">
-                            <img src="{{ request.sender.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
-                                class="rounded-circle me-3" width="40" height="40" alt="{{ request.sender.username }}">
-                            <div class="flex-grow-1 me-2">
-                                <strong>{{ request.sender.username }}</strong> wants to connect
-                            </div>
-                            <div class="d-flex flex-column flex-lg-row gap-2 w-100 w-md-auto">
-                            <form method="post" action="{% url 'friendslist:accept_friend_request' request.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-blue btn-sm me-2">
-                                    <i class="fas fa-check me-2"></i>Accept
-                                </button>
-                            </form>
-                            <form method="post" action="{% url 'friendslist:decline_friend_request' request.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm me-2">
-                                    <i class="fas fa-times me-2"></i>Decline
-                                </button>
-                            </form>
-                        </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
-        <!-- Sent Requests -->
-        {% if pending_sent_requests %}
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0 mb-5">
-                <div class="card-body p-4">
-                    <h4 class="card-title mb-4"><i class="fas fa-clock me-2"></i>Pending Sent Requests</h4>
-                    <div class="list-group">
-                        {% for request in pending_sent_requests %}
-                        <div class="list-group-item d-flex align-items-center">
-                            <img src="{{ request.receiver.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
-                                class="rounded-circle me-3" width="40" height="40"
-                                alt="{{ request.receiver.username }}">
-                            <div class="flex-grow-1">
-                                You sent a request to <strong>{{ request.receiver.username }}</strong> (Pending)
-                            </div>
-                            <form method="post" action="{% url 'friendslist:decline_friend_request' request.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-times me-2"></i>Cancel
-                                </button>
-                            </form>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-    {% endif %}
-
 
 
     <!-- Link to your custom JavaScript -->

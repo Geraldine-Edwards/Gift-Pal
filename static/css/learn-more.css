@@ -1,0 +1,69 @@
+:root,
+/* Light Mode */
+[data-theme="light"] {
+    --primary-color: #e83283;
+    --secondary-color: #3a8fd9;
+    --tertiary-color: #686dc3;
+    --yellow: #ffc107;
+    --green: #41d7a7;
+    --orange: #fd7e14;
+    --black: #000;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+
+    --primary-color: #8a1a4a;
+    --secondary-color: #1b456a;
+    --tertiary-color: #3e3a6d;
+    --yellow: #8a6a07;
+    --green: #1e5f4a;
+    --orange: #8a3e14;
+    --black: #000;
+    --white: #fff;
+    --gray: #3e3e3e;
+    --gray-dark: #1e1e1e;
+}
+
+.hero-image {
+    position: relative;
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire area */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for better text visibility */
+    text-align: center;
+}
+
+.hero-overlay h1 {
+    font-size: 3rem; /* Adjust font size as needed */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds shadow to text for better readability */
+}
+
+/* Card Styling */
+.card {
+    background-color: white;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.card:hover {
+    transform: translateY(-3px); /* Moves the card up slightly on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Adds a stronger shadow on hover */
+}
+

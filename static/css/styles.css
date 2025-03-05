@@ -409,11 +409,6 @@ i.fab:hover::before {
     transform: translateY(-3px); /* Slight lift effect */
 }
 
-
-[data-theme="dark"] .card-title {
-    color: var(--primary-color) !important; /* Use primary color for titles */
-}
-
 [data-theme="dark"] .card-body {
     background-color: var(--gray-dark) !important; /* Ensure card body matches card background */
 }

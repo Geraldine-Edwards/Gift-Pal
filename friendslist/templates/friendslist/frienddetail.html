@@ -81,7 +81,7 @@
                         <span class="badge bg-dark ms-2">{{ friends_friends|length }}</span>
                     </h3>
                     {% if friends_friends %}
-                    <div class="row row-cols-1 row-cols-md-2 g-3" style="max-height: 300px; overflow-y: auto;">
+                    <div class="row row-cols-1 row-cols-md-3 g-3" style="max-height: 300px; overflow-y: auto;">
                         {% for friend in friends_friends %}
                         <div class="col">
                             <div class="d-flex align-items-center p-3 bg-light rounded">
@@ -92,9 +92,7 @@
                                     alt="{{ friend.username }}">
                                 <div class="flex-grow-1">
                                     <div class="fw-bold">{{ friend.username }}</div>
-                                    <small class="text-muted">
-                                        {{ friend.myaccount.status_message|default:"Member" }}
-                                    </small>
+                                    
                                 </div>
                             </div>
                         </div>

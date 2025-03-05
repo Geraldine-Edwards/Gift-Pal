@@ -38,6 +38,13 @@
                     <h3 class="fw-bold title mt-3">
                         {{ myaccount.user.username }}
                     </h3>
+                    <form method="post" action="{% url 'myaccount:myaccount_home' %}">
+                        {% csrf_token %}
+                        {{ status_form.status_message|as_crispy_field }}
+                        <button type="submit" class="btn btn-outline-purple">
+                            <i class="fas fa-save me-2"></i>Update Status
+                        </button>
+                    </form>
                     <p class="lead  mb-0">
                         <i class="fas fa-quote-left me-2"></i>
                         {{ myaccount.status_message|default:"🎁 Ready to share the gift of connection!" }}
