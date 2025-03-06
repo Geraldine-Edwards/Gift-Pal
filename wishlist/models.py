@@ -1,14 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 import requests
 
 app_name = 'wishlist'
 
 class WishlistCategory(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
     occasion_date = models.DateField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     
     class Meta:
         verbose_name_plural = "Wishlist Categories"
@@ -16,15 +18,28 @@ class WishlistCategory(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.user.username})"
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 class WishlistItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    PRIORITY_CHOICES = [
+        ('high', 'High'),
+        ('medium', 'Medium'),
+        ('low', 'Low'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     category = models.ForeignKey(WishlistCategory, on_delete=models.SET_NULL, 
                                 null=True, blank=True)
     item_name = models.CharField(max_length=200)
     link = models.URLField(max_length=500, blank=True)
     description = models.TextField(blank=True)
     thumbnail_url = models.URLField(max_length=500, blank=True, null=True)
+    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
+    reserved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reserved_items')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     
     class Meta:

@@ -4,74 +4,106 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import WishlistItem, WishlistCategory
-from .forms import WishlistItemForm, WishlistCategoryForm 
-
-
-class WishlistCategoryCreateView(CreateView):
-    model = WishlistCategory
-    form_class = WishlistCategoryForm
-    template_name = 'wishlist/category_form.html'
-    success_url = reverse_lazy('wishlist:wishlist')
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-class WishlistCategoryUpdateView(UpdateView):
-    model = WishlistCategory
-    form_class = WishlistCategoryForm
-    template_name = 'wishlist/category_form.html'
-    success_url = reverse_lazy('wishlist:wishlist')
-
-class WishlistCategoryDeleteView(DeleteView):
-    model = WishlistCategory
-    success_url = reverse_lazy('wishlist:wishlist')
-    template_name = 'wishlist/category_confirm_delete.html'
+from .forms import WishlistCategoryForm, WishlistItemForm
 
 
 @login_required
-def wishlist_view(request):
-    categories = WishlistCategory.objects.filter(user=request.user).prefetch_related('wishlistitem_set')
-    uncategorized = WishlistItem.objects.filter(user=request.user, category__isnull=True)
+def wishlist(request):
+    categories = WishlistCategory.objects.filter(user=request.user)
+    wishlist_items = WishlistItem.objects.filter(user=request.user)
     return render(request, 'wishlist/wishlist.html', {
         'categories': categories,
-        'uncategorized': uncategorized
+        'wishlist_items': wishlist_items,
     })
 
 @login_required
-def add_wishlist_item(request):
+def add_category(request):
     if request.method == 'POST':
-        form = WishlistItemForm(request.user, request.POST)
+        form = WishlistCategoryForm(request.POST, user=request.user)
         if form.is_valid():
             item = form.save(commit=False)
             item.user = request.user
             item.save()
-            messages.success(request, 'Item added successfully!')
+            messages.success(request, 'Category added successfully!')
             return redirect('wishlist:wishlist')
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
-        form = WishlistItemForm(request.user)
-    return render(request, 'wishlist/wishlistitem_form.html', {'form': form})
+        form = WishlistCategoryForm(user=request.user)
+    return render(request, 'wishlist/add_category.html', {'form': form})
+
+@login_required
+def edit_category(request, category_id):
+    category = get_object_or_404(WishlistCategory, id=category_id, user=request.user)
+    if request.method == 'POST':
+        form = WishlistCategoryForm(request.POST, instance=category, user=request.user)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
+            messages.success(request, 'Category updated successfully!')
+            return redirect('wishlist:wishlist')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = WishlistCategoryForm(instance=category, user=request.user)
+    return render(request, 'wishlist/edit_category.html', {'form': form, 'category': category})
+
+@login_required
+def delete_category(request, category_id):
+    category = get_object_or_404(WishlistCategory, id=category_id, user=request.user)
+    if request.method == 'POST':
+        category.delete()
+        messages.success(request, 'Category deleted successfully!')
+        return redirect('wishlist:wishlist')
+    return render(request, 'wishlist/delete_category.html', {'category': category})
+
+@login_required
+def add_wishlist_item(request):
+    if request.method == 'POST':
+
+        print("POST data:", request.POST)  # Debugging: Print POST data
+
+        form = WishlistItemForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
+            messages.success(request, 'Wishlist item added successfully!')
+            return redirect('wishlist:wishlist')
+        else:
+
+            print("Form errors:", form.errors)  # Debugging: Print form errors
+
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = WishlistItemForm(user=request.user)
+    return render(request, 'wishlist/add_wishlist_item.html', {'form': form})
 
 
 @login_required
 def edit_wishlist_item(request, item_id):
-    wishlist_item = get_object_or_404(WishlistItem, id=item_id, user=request.user)
+    item = get_object_or_404(WishlistItem, id=item_id, user=request.user)
     if request.method == 'POST':
-        form = WishlistItemForm(request.POST, instance=wishlist_item)
+        form = WishlistItemForm(request.POST, instance=item, user=request.user)
         if form.is_valid():
-            form.save()
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
             messages.success(request, 'Wishlist item updated successfully!')
             return redirect('wishlist:wishlist')
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
-        form = WishlistItemForm(instance=wishlist_item)
-    return render(request, 'wishlist/wishlistitem_form.html', {'form': form})
+        form = WishlistItemForm(instance=item, user=request.user)
+    return render(request, 'wishlist/edit_wishlist_item.html', {'form': form, 'item': item})
 
 
 @login_required
 def delete_wishlist_item(request, item_id):
-    wishlist_item = get_object_or_404(WishlistItem, id=item_id, user=request.user)
+    item = get_object_or_404(WishlistItem, id=item_id, user=request.user)
     if request.method == 'POST':
-        wishlist_item.delete()
+        item.delete()
         messages.success(request, 'Wishlist item deleted successfully!')
         return redirect('wishlist:wishlist')
-    return render(request, 'wishlist/delete_wishlist_item.html', {'wishlist_item': wishlist_item})
+    return render(request, 'wishlist/delete_wishlist_item.html', {'item': item})

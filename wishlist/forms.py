@@ -1,9 +1,7 @@
 from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field
 from .models import WishlistItem, WishlistCategory
-import requests
-from bs4 import BeautifulSoup
+from django.contrib.auth.models import User
+
 
 
 class WishlistCategoryForm(forms.ModelForm):
@@ -14,11 +12,26 @@ class WishlistCategoryForm(forms.ModelForm):
             'occasion_date': forms.DateInput(attrs={'type': 'date'})
         }
 
-class WishlistItemForm(forms.ModelForm):
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields['category'].queryset = WishlistCategory.objects.filter(user=user)
-        
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if self.user:
+            instance.user = self.user
+        if commit:
+            instance.save()
+        return instance
+
+class WishlistItemForm(forms.ModelForm):
     class Meta:
         model = WishlistItem
-        fields = ['category', 'item_name', 'link', 'description', 'thumbnail_url']
+        fields = ['category', 'item_name', 'link', 'description', 'priority', 'reserved_by']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['category'].queryset = WishlistCategory.objects.filter(user=user)
+            self.fields['reserved_by'].queryset = User.objects.exclude(id=user.id)

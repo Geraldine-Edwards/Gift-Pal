@@ -1,22 +1,14 @@
 from django.urls import include, path
-from .views import (
-    wishlist_view,
-    add_wishlist_item,
-    edit_wishlist_item,
-    delete_wishlist_item,
-    WishlistCategoryCreateView,  
-    WishlistCategoryUpdateView, 
-    WishlistCategoryDeleteView
-)
+from . import views
 
 app_name = 'wishlist'
 
 urlpatterns = [
-    path('', wishlist_view, name='wishlist'),
-    path('add/', add_wishlist_item, name='add_wishlist_item'),
-    path('categories/add/', WishlistCategoryCreateView.as_view(), name='add_category'),
-    path('categories/<int:pk>/edit/', WishlistCategoryUpdateView.as_view(), name='edit_category'),
-    path('categories/<int:pk>/delete/', WishlistCategoryDeleteView.as_view(), name='delete_category'),
-    path('edit/<int:item_id>/', edit_wishlist_item, name='edit_wishlist_item'),
-    path('delete/<int:item_id>/', delete_wishlist_item, name='delete_wishlist_item'),
+    path('', views.wishlist, name='wishlist'),
+    path('add/', views.add_wishlist_item, name='add_wishlist_item'),
+    path('edit/<int:item_id>/', views.edit_wishlist_item, name='edit_wishlist_item'),
+    path('delete/<int:item_id>/', views.delete_wishlist_item, name='delete_wishlist_item'),
+    path('category/add/', views.add_category, name='add_category'),
+    path('category/edit/<int:category_id>/', views.edit_category, name='edit_category'),
+    path('category/delete/<int:category_id>/', views.delete_category, name='delete_category'),
 ]

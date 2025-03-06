@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db.models import Q
@@ -97,22 +98,10 @@ def accept_friend_request(request, request_id):
         status='pending'
     )
     try:
-        # Create the friendship
-        Friendship.objects.create(user1=request.user, user2=friend_request.sender)
-
-        # Debug: Print the redundant requests before deleting them
-        redundant_requests = FriendRequest.objects.filter(
-            (Q(sender=request.user) & Q(receiver=friend_request.sender)) |
-            (Q(sender=friend_request.sender) & Q(receiver=request.user))
-        )
-        print("Redundant requests to delete:", redundant_requests)  # Debug statement
-
-        # Delete any pending friend requests between the two users (in either direction)
-        redundant_requests.delete()
-
+        friend_request.accept(request)
         messages.success(request, "Friend request accepted!")
-    except Exception as e:
-        messages.error(request, f"An error occurred: {str(e)}")
+    except ValidationError as e:
+        messages.error(request, str(e))
 
     return redirect('friendslist:friendslist')
 
@@ -129,7 +118,7 @@ def decline_friend_request(request, request_id):
         status='pending'
     )
     try:
-        friend_request.decline()
+        friend_request.decline(request)
         messages.info(request, "Friend request declined.")
     except ValidationError as e:
         messages.error(request, str(e))

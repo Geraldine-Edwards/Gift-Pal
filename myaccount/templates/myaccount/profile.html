@@ -41,7 +41,7 @@
                     <form method="post" action="{% url 'myaccount:myaccount_home' %}">
                         {% csrf_token %}
                         {{ status_form.status_message|as_crispy_field }}
-                        <button type="submit" class="btn btn-outline-purple">
+                        <button type="submit" class="btn btn-outline-purple my-3">
                             <i class="fas fa-save me-2"></i>Update Status
                         </button>
                     </form>

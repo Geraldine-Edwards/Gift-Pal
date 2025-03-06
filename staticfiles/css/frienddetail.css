@@ -8,7 +8,19 @@
 
 .date-box {
     width: 60px;
+    
+}
+
+.bg-pink {
     background: var(--primary-color);
+}
+
+.bg-blue{
+    background: var(--secondary-color);
+}
+
+.bg-purple{
+    background: var(--tertiary-color);
 }
 
 .btn-outline-primary:hover .fa-heart {

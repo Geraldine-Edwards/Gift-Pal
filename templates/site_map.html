@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 h-100 hover-effect">
+        <div class="card-body p-5">
+            <h1 class="text-purple"><i class="fas fa-sitemap me-2"></i>Site Map</h1>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'myaccount:myaccount_home' %}">My Account</a></li>
+                <li><a href="{% url 'friendslist:friendslist' %}">Friends</a></li>
+                <li><a href="{% url 'wishlist:wishlist' %}">Wishlist</a></li>
+                <li><a href="{% url 'planner:planner_view' %}">Event Planner</a></li>
+                <li><a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a></li>
+                <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                <li><a href="{% url 'site_map' %}">Site Map</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

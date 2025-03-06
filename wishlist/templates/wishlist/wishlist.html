@@ -4,68 +4,147 @@
 {% block title %}My Wishlists{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/wishlist.css' %}">
+
 <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-5">
-        <h1 class="display-4 fw-bold title">
-            <i class="fas fa-gift me-2"></i>My Wishlists
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold title mb-3">
+            <i class="fas fa-gift me-2"></i> My Wishlist
         </h1>
-        <div class="btn-group">
-            <a href="{% url 'wishlist:add_category' %}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>New Occasion
-            </a>
-            <a href="{% url 'wishlist:add_wishlist_item' %}" class="btn btn-outline-primary">
-                <i class="fas fa-gift me-2"></i>Add Item
-            </a>
+        <p class="lead">Manage your wishlist and share it with friends!</p>
+    </div>
+
+    <!-- Add Item Button -->
+    <div class="text-end mb-4">
+        <a href="{% url 'wishlist:add_wishlist_item' %}" class="btn btn-purple">
+            <i class="fas fa-plus me-2"></i>Add Item
+        </a>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="card shadow-lg border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">
+                <i class="fas fa-folder me-2"></i> Categories
+            </h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="{% url 'wishlist:add_category' %}" class="btn btn-sm btn-outline-purple">
+                    <i class="fas fa-plus me-1"></i>Add Category
+                </a>
+            </div>
+            <div class="list-group list-group-flush">
+                {% for category in categories %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ category.name }}</span>
+                    <div>
+                        <a href="{% url 'wishlist:edit_category' category.id %}" class="btn btn-sm btn-outline-blue me-2">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'wishlist:delete_category' category.id %}" class="btn btn-sm btn-outline-pink">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="list-group-item text-center py-4">
+                    <i class="fas fa-folder-open fa-3x  mb-3"></i>
+                    <p class="">No categories yet. Add one to organize your wishlist!</p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
-    <!-- Categories -->
+    <!-- Wishlist Items Grouped by Category -->
     {% for category in categories %}
-    <div class="card shadow-sm mb-5">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="h4 mb-0">
-                {{ category.name }}
-                {% if category.occasion_date %}
-                <small class="text-muted ms-2">
-                    ({{ category.occasion_date|date:"M d, Y" }})
-                </small>
-                {% endif %}
-            </h3>
-            <div class="btn-group">
-                <a href="{% url 'wishlist:edit_category' category.pk %}" 
-                   class="btn btn-sm btn-outline-secondary">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a href="{% url 'wishlist:delete_category' category.pk %}" 
-                   class="btn btn-sm btn-outline-danger">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </div>
-        </div>
+    <div class="card shadow-lg border-0 mb-4">
         <div class="card-body">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {% for item in category.wishlistitem_set.all %}
-                {% include "wishlist/includes/item_card.html" %}
+            <h5 class="card-title mb-3">
+                <i class="fas fa-folder me-2"></i> {{ category.name }}
+            </h5>
+            <div class="row g-4">
+                {% for item in wishlist_items %}
+                {% if item.category.id == category.id %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.item_name }}</h5>
+                            <p class="card-text">{{ item.description|default:"No description provided." }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Priority: {{ item.get_priority_display }}</small>
+                            </p>
+                            {% if item.reserved_by %}
+                            <p class="card-text">
+                                <small class="text-success">Reserved by: {{ item.reserved_by.username }}</small>
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="mt-auto d-flex justify-content-between p-3">
+                            <a href="{% url 'wishlist:edit_wishlist_item' item.id %}" class="btn btn-sm btn-outline-blue">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </a>
+                            <a href="{% url 'wishlist:delete_wishlist_item' item.id %}" class="btn btn-sm btn-outline-pink">
+                                <i class="fas fa-trash me-1"></i>Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
                 {% endfor %}
+                {% if not category.wishlistitem_set.exists %}
+                <div class="col-12 text-center py-4">
+                    <i class="fas fa-gift fa-3x  mb-3"></i>
+                    <p class="">No items in this category yet. Start adding gifts!</p>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
     {% endfor %}
 
     <!-- Uncategorized Items -->
-    {% if uncategorized %}
-    <div class="card shadow-sm">
-        <div class="card-header">
-            <h3 class="h4 mb-0">General Wishlist</h3>
-        </div>
+    <div class="card shadow-lg border-0 mb-4">
         <div class="card-body">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {% for item in uncategorized %}
-                {% include "wishlist/includes/item_card.html" %}
+            <h5 class="card-title mb-3">
+                <i class="fas fa-folder-open me-2"></i> Uncategorized
+            </h5>
+            <div class="row g-4">
+                {% for item in wishlist_items %}
+                {% if not item.category %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.item_name }}</h5>
+                            <p class="card-text">{{ item.description|default:"No description provided." }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Priority: {{ item.get_priority_display }}</small>
+                            </p>
+                            {% if item.reserved_by %}
+                            <p class="card-text">
+                                <small class="text-success">Reserved by: {{ item.reserved_by.username }}</small>
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="mt-auto d-flex justify-content-between p-3">
+                            <a href="{% url 'wishlist:edit_wishlist_item' item.id %}" class="btn btn-sm btn-outline-blue">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </a>
+                            <a href="{% url 'wishlist:delete_wishlist_item' item.id %}" class="btn btn-sm btn-outline-pink">
+                                <i class="fas fa-trash me-1"></i>Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
                 {% endfor %}
+                {% if wishlist_items|length == 0 %}
+                <div class="col-12 text-center py-4">
+                    <i class="fas fa-gift fa-3x  mb-3"></i>
+                    <p class="">No uncategorized items yet. Start adding gifts!</p>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
-    {% endif %}
 </div>
 {% endblock %}

@@ -22,7 +22,7 @@
         <!-- Left Sidebar -->
         <div class="col-lg-4">
             <!-- Profile Card -->
-            <div class="card shadow-lg border-0 h-100">
+            <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body text-center">
                     <div class="avatar-wrapper mb-4">
                         <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
@@ -57,6 +57,39 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Friends Grid -->
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-body">
+                    <h3 class="h4 mb-4 text-purple">
+                        <i class="fas fa-users me-2"></i>Friends
+                        <span class="badge bg-dark ms-2">{{ friends_friends|length }}</span>
+                    </h3>
+                    {% if friends_friends %}
+                    <div class="row row-cols-1 row-cols-md-2 g-3" style="max-height: 600px; overflow-y: auto;">
+                        {% for friend in friends_friends %}
+                        <div class="col">
+                            <div class="d-flex align-items-center p-3 bg-light rounded">
+                                <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
+                                    class="rounded-circle me-3" 
+                                    width="40" 
+                                    height="40"
+                                    alt="{{ friend.username }}">
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold">{{ friend.username }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-user-friends fa-3x mb-3"></i>
+                        <p class="">No friends yet. Start adding friends to share gifts!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
         <!-- Main Content -->
@@ -73,40 +106,6 @@
                 </div>
             </div>
 
-            <!-- Friends Grid -->
-            <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body">
-                    <h3 class="h4 mb-4 text-purple">
-                        <i class="fas fa-users me-2"></i>Friends
-                        <span class="badge bg-dark ms-2">{{ friends_friends|length }}</span>
-                    </h3>
-                    {% if friends_friends %}
-                    <div class="row row-cols-1 row-cols-md-3 g-3" style="max-height: 300px; overflow-y: auto;">
-                        {% for friend in friends_friends %}
-                        <div class="col">
-                            <div class="d-flex align-items-center p-3 bg-light rounded">
-                                <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
-                                    class="rounded-circle me-3" 
-                                    width="40" 
-                                    height="40"
-                                    alt="{{ friend.username }}">
-                                <div class="flex-grow-1">
-                                    <div class="fw-bold">{{ friend.username }}</div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    <div class="text-center py-4">
-                        <i class="fas fa-user-friends fa-3x mb-3"></i>
-                        <p class="">No friends yet. Start adding friends to share gifts!</p>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-
             <!-- Events Section -->
             <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
@@ -119,7 +118,7 @@
                         <div class="col-12">
                             <div class="d-flex align-items-center p-3 bg-light rounded">
                                 <div class="flex-shrink-0">
-                                    <div class="date-box text-center bg-primary text-white rounded p-2">
+                                    <div class="date-box text-center bg-purple text-white rounded p-2">
                                         <div class="fw-bold">{{ event.start|date:"d" }}</div>
                                         <small>{{ event.start|date:"M" }}</small>
                                     </div>
@@ -128,7 +127,7 @@
                                     <h5 class="mb-1">{{ event.title }}</h5>
                                     <p class=" mb-0">{{ event.description }}</p>
                                 </div>
-                                <button class="btn btn-sm btn-outline-primary">
+                                <button class="btn btn-sm btn-outline-pink">
                                     <i class="fas fa-heart"></i> {{ event.likes.count }}
                                 </button>
                             </div>
@@ -147,23 +146,23 @@
             <!-- Wishlist Section -->
             <div class="card shadow-lg border-0">
                 <div class="card-body">
-                    <h3 class="h4 mb-4 text-pink">
+                    <h3 class="h4 mb-4 text-purple">
                         <i class="fas fa-gift me-2"></i>Wishlist
                     </h3>
                     {% if wishlist_items %}
                     <div class="row g-3">
                         {% for item in wishlist_items %}
                         <div class="col-md-6">
-                            <div class="card h-100 border-0 shadow-lg">
-                                <div class="card-body">
+                            <div class="card h-100 border-0 shadow-lg d-flex flex-column">
+                                <div class="card-body flex-grow-1">
                                     <h5 class="mb-3">{{ item.item_name }}</h5>
                                     <p class=" small">{{ item.description }}</p>
-                                    <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-between align-items-center mt-auto">
                                         <a href="{{ item.link }}" target="_blank" 
-                                           class="btn btn-sm btn-outline-primary">
+                                           class="btn btn-sm btn-outline-blue">
                                             <i class="fas fa-external-link-alt me-2"></i>View Item
                                         </a>
-                                        <button class="btn btn-sm btn-outline-danger">
+                                        <button class="btn btn-sm btn-outline-pink">
                                             <i class="fas fa-heart"></i> {{ item.likes.count }}
                                         </button>
                                     </div>

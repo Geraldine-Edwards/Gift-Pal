@@ -14,4 +14,4 @@ def privacy_policy(request):
     return render(request, 'privacy_policy.html')
 
 def site_map(request):
-    return render(request, 'sitemap.html')
+    return render(request, 'site_map.html')

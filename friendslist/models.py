@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.models import Q
+from django.contrib import messages
 
 
 class Friendship(models.Model):
@@ -17,11 +18,15 @@ class Friendship(models.Model):
         User, 
         related_name='friendship_user1', 
         on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
     user2 = models.ForeignKey(
         User, 
         related_name='friendship_user2', 
         on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -127,6 +132,7 @@ class FriendRequest(models.Model):
             self.save()
             # Create a bidirectional Friendship
             Friendship.create_friendship(self.sender, self.receiver)
+            messages.success(request, "Friend request accepted!")  # Pass the request object
         else:
             raise ValidationError("This request is no longer valid.")
 
@@ -135,5 +141,6 @@ class FriendRequest(models.Model):
         if self.status == 'pending':
             self.status = 'declined'
             self.save()
+            messages.info(request, "Friend request declined.")  # Pass the request object
         else:
             raise ValidationError("This request is no longer valid.")
