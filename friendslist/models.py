@@ -132,7 +132,6 @@ class FriendRequest(models.Model):
             self.save()
             # Create a bidirectional Friendship
             Friendship.create_friendship(self.sender, self.receiver)
-            messages.success(request, "Friend request accepted!")  # Pass the request object
         else:
             raise ValidationError("This request is no longer valid.")
 
@@ -141,6 +140,5 @@ class FriendRequest(models.Model):
         if self.status == 'pending':
             self.status = 'declined'
             self.save()
-            messages.info(request, "Friend request declined.")  # Pass the request object
         else:
             raise ValidationError("This request is no longer valid.")

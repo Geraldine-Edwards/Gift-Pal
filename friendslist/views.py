@@ -98,7 +98,7 @@ def accept_friend_request(request, request_id):
         status='pending'
     )
     try:
-        friend_request.accept(request)
+        friend_request.accept()
         messages.success(request, "Friend request accepted!")
     except ValidationError as e:
         messages.error(request, str(e))
@@ -118,7 +118,7 @@ def decline_friend_request(request, request_id):
         status='pending'
     )
     try:
-        friend_request.decline(request)
+        friend_request.decline()
         messages.info(request, "Friend request declined.")
     except ValidationError as e:
         messages.error(request, str(e))
