@@ -88,12 +88,12 @@
                     <h5 class="card-title mb-3 text-pink">
                         <i class="fas fa-info-circle me-2"></i>About Me
                     </h5>
-                    <p >{{ myaccount.about_me|default:"Share something about yourself!" }}</p>
+                    <p>{{ myaccount.about_me|default:"Share something about yourself!" }}</p>
                     <h5 class="card-title mb-3 text-blue">
                         <i class="fas fa-cake-candles me-2"></i>My birthday
                     </h5>
                     <p>{{ myaccount.birthday|default:"Let friends know when to wish you 'Happy Birthday!'" }}</p>
-                    <h5 class="card-title mb-3 text-purple" >
+                    <h5 class="card-title mb-3 text-purple">
                         <i class="fas fa-link me-2"></i>Favourite links
                     </h5>
                     <p>{{ myaccount.favorite_links|default:"Share your favourite links" }}</p>
@@ -117,23 +117,41 @@
             <!-- Upcoming Events Card -->
             <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
-                    <h5 class="card-title mb-3" style="color: var(--secondary-color);">
+                    <h5 class="card-title mb-4" style="color: var(--secondary-color);">
                         <i class="fas fa-calendar-alt me-2"></i>Upcoming Events
                     </h5>
-                    <div class="events-list" style="max-height: 300px; overflow-y: auto;">
+                    <div class="row">
                         {% if events %}
-                        <div class="list-group list-group-flush">
-                            {% for event in events %}
-                            <div class="list-group-item">
-                                <div class="fw-bold">{{ event.title }}</div>
-                                <small class="">{{ event.start|date:"M d, Y" }}</small>
+                        {% for event in events %}
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100 shadow-md border-0">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <div class="fw-bold">{{ event.title }}</div>
+                                            <small>{{ event.start|date:"M d, Y" }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto text-start">
+                                        <i class="fas fa-clock fa-2x text-purple me-2"></i>
+                                        <small class="text-muted">
+                                            {%if event.days_remaining > 0 %}
+                                            {{ event.days_remaining }} day{{ event.days_remaining|pluralize }} to go
+                                            {% else %}
+                                            Today!
+                                            {% endif %}
+                                        </small> 
+                                        <i class="text-end fas fa-heart text-pink ms-3"></i>
+                                        <span class="text-pink"> {{ event.like_count }}</span>
+                                    </div>
+                                </div>
                             </div>
-                            {% endfor %}
                         </div>
+                        {% endfor %}
                         {% else %}
-                        <div class="text-center py-4">
-                            <i class="fas fa-calendar-times fa-3x  mb-3"></i>
-                            <p class="">No upcoming events. Start planning!</p>
+                        <div class="col-12 text-center py-4">
+                            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No upcoming events. Start planning!</p>
                         </div>
                         {% endif %}
                     </div>
@@ -143,31 +161,62 @@
             <!-- Wishlist Card -->
             <div class="card shadow-lg border-0">
                 <div class="card-body">
-                    <h5 class="card-title mb-3" style="color: var(--tertiary-color);">
+                    <h5 class="card-title mb-4" style="color: var(--tertiary-color);">
                         <i class="fas fa-gift me-2"></i>Wishlist
                     </h5>
-                    <div class="wishlist-list" style="max-height: 300px; overflow-y: auto;">
+                    <div class="row">
                         {% if wishlist_items %}
-                        <div class="list-group list-group-flush">
-                            {% for item in wishlist_items %}
-                            <div class="list-group-item">
-                                <div class="fw-bold">{{ item.item_name }}</div>
-                                <small class="">{{ item.category|default:"Uncategorized" }}</small>
+                        {% for item in wishlist_items %}
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100 shadow-sm border-0">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <div class="fw-bold">{{ item.item_name }}</div>
+                                            <small class="text-muted">
+                                                {{ item.category|default:"Uncategorized" }}
+                                                </small>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <div>
+                                                    <span>
+                                                        <i class="fas fa-heart text-pink me-1"></i><span
+                                                            class="text-pink"> {{ item.like_count }}</span>
+                                                    </span>
+                                                </div>
+                                                <small class="text-muted">
+                                                    Reserved by:
+                                                    {% if item.reserved_by %}
+                                                    <span class="text-blue">{{ item.reserved_by.username }}</span>
+
+                                                    {% endif %}
+                                                </small>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            {% endfor %}
                         </div>
+                        {% endfor %}
                         {% else %}
-                        <div class="text-center py-4">
-                            <i class="fas fa-gift fa-3x  mb-3"></i>
-                            <p class="">No wishlist items yet. Add some gifts!</p>
+                        <div class="col-12 text-center py-4">
+                            <i class="fas fa-gift fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No wishlist items yet. Add some gifts!</p>
                         </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+
 
 <!-- Profile Picture Modal -->
 <div class="modal fade" id="uploadProfilePictureModal" tabindex="-1">

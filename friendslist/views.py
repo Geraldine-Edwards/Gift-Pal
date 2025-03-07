@@ -9,7 +9,7 @@ from django.db.models import Q
 from friendslist.models import Friendship, FriendRequest  # Add this line
 from planner.models import Planner
 from wishlist.models import WishlistItem
-
+from myaccount.models import Like
 
 @login_required
 def send_friend_request(request, user_id):
@@ -174,3 +174,41 @@ def remove_friend(request, friend_id):
     messages.success(request, f"You have removed {friend.username} from your friends.")
 
     return redirect('friendslist:friendslist')
+
+@login_required
+def like_event(request, event_id):
+    try:
+        event = get_object_or_404(Planner, id=event_id)
+        like, created = Like.objects.get_or_create(user=request.user, event=event)
+        if created:
+            liked = True
+        else:
+            like.delete()
+            liked = False
+        return JsonResponse({
+            'liked': liked,
+            'like_count': event.likes.count()  # Ensure this is included
+        })
+    except Exception as e:
+        # Log the error for debugging
+        print(f"Error in like_event: {e}")
+        return JsonResponse({'error': str(e)}, status=500)
+
+@login_required
+def like_wishlist_item(request, item_id):
+    try:
+        wishlist_item = get_object_or_404(WishlistItem, id=item_id)
+        like, created = Like.objects.get_or_create(user=request.user, wishlist_item=wishlist_item)
+        if created:
+            liked = True
+        else:
+            like.delete()
+            liked = False
+        return JsonResponse({
+            'liked': liked,
+            'like_count': wishlist_item.likes.count()  # Ensure this is included
+        })
+    except Exception as e:
+        # Log the error for debugging
+        print(f"Error in like_wishlist_item: {e}")
+        return JsonResponse({'error': str(e)}, status=500)

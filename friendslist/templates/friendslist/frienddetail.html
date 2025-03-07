@@ -6,6 +6,9 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/frienddetail.css' %}">
 
+<!-- Add the CSRF token to the DOM -->
+<meta name="csrf-token" content="{{ csrf_token }}">
+
 <div class="container py-5">
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold title mb-3">
@@ -127,8 +130,13 @@
                                     <h5 class="mb-1">{{ event.title }}</h5>
                                     <p class=" mb-0">{{ event.description }}</p>
                                 </div>
-                                <button class="btn btn-sm btn-outline-pink">
-                                    <i class="fas fa-heart"></i> {{ event.likes.count }}
+                                <button class="btn btn-sm btn-outline-pink like-event" data-event-id="{{ event.id }}">
+                                    {% if request.user in event.likes.all %}
+                                        <i class="fas fa-heart"></i> <!-- Solid heart for liked -->
+                                    {% else %}
+                                        <i class="far fa-heart"></i> <!-- Outline heart for unliked -->
+                                    {% endif %}
+                                    <span class="like-count">{{ event.likes.count }}</span>
                                 </button>
                             </div>
                         </div>
@@ -162,8 +170,13 @@
                                            class="btn btn-sm btn-outline-blue">
                                             <i class="fas fa-external-link-alt me-2"></i>View Item
                                         </a>
-                                        <button class="btn btn-sm btn-outline-pink">
-                                            <i class="fas fa-heart"></i> {{ item.likes.count }}
+                                        <button class="btn btn-sm btn-outline-pink like-wishlist" data-item-id="{{ item.id }}">
+                                            {% if request.user in item.likes.all %}
+                                                <i class="fas fa-heart"></i> <!-- Solid heart for liked -->
+                                            {% else %}
+                                                <i class="far fa-heart"></i> <!-- Outline heart for unliked -->
+                                            {% endif %}
+                                            <span class="like-count">{{ item.likes.count }}</span>
                                         </button>
                                     </div>
                                 </div>
@@ -182,4 +195,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Link to your custom JavaScript file -->
+<script src="{% static 'js/frienddetail.js' %}"></script>
 {% endblock %}

@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # Add this line
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Count
+from datetime import timedelta
 from friendslist.models import Friendship  # Add this line
 from planner.models import Planner
 from wishlist.models import WishlistItem
@@ -29,9 +30,19 @@ def profile_view(request):
         else:
             friends.append(friendship.user1)
 
-    upcoming_events = Planner.objects.filter(user=request.user, start__gte=timezone.now()).order_by('start')
-    wishlist_items = WishlistItem.objects.filter(user=request.user).order_by('-created_at')
+    # Fetch upcoming events with like counts
+    upcoming_events = Planner.objects.filter(user=request.user, start__gte=timezone.now()).annotate(
+        like_count=Count('likes')  # Annotate with like count
+    ).order_by('start')
 
+    # Calculate days remaining for each event
+    for event in upcoming_events:
+        event.days_remaining = (event.start - timezone.now()).days
+
+    # Fetch wishlist items with like counts
+    wishlist_items = WishlistItem.objects.filter(user=request.user).annotate(
+        like_count=Count('likes')  # Annotate with like count
+    ).order_by('-created_at')
 
     # Ensure each friend has a MyAccount instance
     for friend in friends:
@@ -106,23 +117,3 @@ def user_wishlist_view(request):
     wishlist_items = WishlistItem.objects.filter(user=request.user)
     return render(request, 'wishlist/wishlist.html', {'myaccount': myaccount, 'wishlist_items': wishlist_items})
 
-
-@login_required
-def like_event(request, event_id):
-    event = get_object_or_404(Planner, id=event_id)
-    like, created = Like.objects.get_or_create(user=request.user, event=event)
-    if created:
-        messages.success(request, 'You liked the event!')
-    else:
-        messages.info(request, 'You already liked this event.')
-    return redirect('myaccount:profile')
-
-@login_required
-def like_wishlist_item(request, item_id):
-    wishlist_item = get_object_or_404(WishlistItem, id=item_id)
-    like, created = Like.objects.get_or_create(user=request.user, wishlist_item=wishlist_item)
-    if created:
-        messages.success(request, 'You liked the wishlist item!')
-    else:
-        messages.info(request, 'You already liked this wishlist item.')
-    return redirect('myaccount:profile')
