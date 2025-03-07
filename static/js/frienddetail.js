@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    
+
     // Function to get the CSRF token from the cookie
     function getCookie(name) {
         let cookieValue = null;
@@ -64,4 +64,5 @@ $(document).ready(function() {
             }
         });
     });
+
 });
