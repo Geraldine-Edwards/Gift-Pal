@@ -76,6 +76,7 @@
 
 [data-theme="dark"] .features h2{
     color: var(--white);
+    background-color: var(--tertiary-color);
 }
 
 .features .icon-wrapper {
@@ -97,11 +98,17 @@
 
 .how-it-works {
     padding: 4rem 0;
+    border-radius: 10px;
     background-color: var(--white);
 }
 
 [data-theme="dark"] .how-it-works {
-    background-color: var(--gray-dark);
+    background-color: var(--gray-light);
+}
+
+[data-theme="dark"] .how-it-works h2{
+    color: var(--white);
+    background-color: var(--tertiary-color);
 }
 
 .how-it-works .step-number {
@@ -131,12 +138,17 @@
 }
 
 [data-theme="dark"] .charity-donation {
-    background-color: var(--gray-dark);
+    background-color: var(--gray);
 }
 
 .charity-donation h2 {
     color: var(--tertiary-color); 
     margin-bottom: 2rem; /* Add spacing below the heading */
+}
+
+[data-theme="dark"] .charity-donation h2 {
+    color: var(--white); 
+    background-color: var(--tertiary-color);
 }
 
 .charity-donation .lead {

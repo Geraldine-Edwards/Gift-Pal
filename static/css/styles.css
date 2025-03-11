@@ -456,6 +456,17 @@ i.fab:hover::before {
     filter: invert(1); /* Invert the close button for better visibility in dark mode */
 }
 
+/* Ensure form labels and inputs are visible in dark mode */
+[data-theme="dark"] .form-label {
+    color: var(--text-color); /* Use the text color variable */
+}
+
+[data-theme="dark"] .form-control {
+    background-color: var(--gray); /* Use the card background color */
+    color: var(--text-color); /* Use the text color variable */
+    border-color: var(--gray-light); /* Use the gray light variable for borders */
+}
+
 /* Adjust theme toggle button margin for smaller screens */
 @media (max-width: 768px) {
 

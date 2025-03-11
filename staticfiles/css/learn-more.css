@@ -16,7 +16,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for better text visibility */
+    background-color: rgba(0, 0, 0, 0.2); /* Dark overlay for better text visibility */
     text-align: center;
     display: flex;
     align-items: center;
@@ -31,11 +31,21 @@
 
 /* Dark Mode Overrides */
 [data-theme="dark"] .hero-overlay {
-    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay for dark mode */
+    background-color: rgba(0, 0, 0, 0.4); 
 }
 
 [data-theme="dark"] .hero-overlay h1 {
-    color: var(--white); /* Ensure text is white in dark mode */
+    color: var(--white); 
+}
+
+[data-theme="dark"] .how-it-works h2 {
+    color: var(--white); 
+    background-color: var(--tertiary-color);
+}
+
+[data-theme="dark"] .why-choose h2 {
+    color: var(--white); 
+    background-color: var(--tertiary-color);
 }
 
 /* CTA Buttons Container */
