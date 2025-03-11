@@ -2,13 +2,16 @@
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border: 3px solid #fff;
+    border: 3px solid var(--white);
     box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .avatar-img {
+    border-color: var(--gray-dark); /* Darker border for dark mode */
 }
 
 .date-box {
     width: 60px;
-    
 }
 
 .bg-pink {
@@ -27,14 +30,6 @@
     color: #dc3545;
 }
 
-.card.wishlist-card {
-    transition: transform 0.2s ease;
-}
-
-.card.wishlist-card:hover {
-    transform: translateY(-3px);
-}
-
 .favorite-links-container {
     display: inline-block; /* Ensure the link behaves like a block element */
     max-width: 100%; /* Ensure the link doesn't exceed its container's width */
@@ -49,6 +44,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.truncated-link:hover {
+    color: var(--primary-color);
 }
 
 @media (max-width: 768px) {

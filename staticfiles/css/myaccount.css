@@ -17,28 +17,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.profile-avatar-wrapper:hover .btn-edit-avatar {
-    transform: scale(1.1);
-    transition: all 0.2s ease;
-}
-
-.card {
-    border-radius: 1rem;
+    background-color: var(--primary-color); /* Use CSS variable for button background */
+    border-color: var(--primary-color); /* Use CSS variable for button border */
+    color: var(--white); /* Use CSS variable for button text */
     transition: transform 0.2s ease;
 }
-
-.card:hover {
-    transform: translateY(-3px);
+.btn-edit-avatar:hover {
+    transform: scale(1.1);
+    
 }
 
-.list-group-item {
-    border-color: rgba(0,0,0,0.05);
+/* Dark Mode Overrides for Avatar */
+[data-theme="dark"] .avatar-img {
+    border-color: var(--gray-dark); 
 }
 
-.bg-light {
-    background-color: rgba(232, 50, 131, 0.05) !important;
+[data-theme="dark"] .btn-edit-avatar {
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color); 
+    color: var(--white); 
 }
 
 /* Responsive Design */

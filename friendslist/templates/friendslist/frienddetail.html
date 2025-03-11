@@ -17,7 +17,7 @@
         <p class="lead ">All their information in one place!</p>
     </div>
     <!-- Back Button -->
-    <a href="{% url 'friendslist:friendslist'%}"class="btn btn-purple mb-5 shadow-lg">
+    <a href="{% url 'friendslist:friendslist'%}" class="btn btn-purple mb-5 shadow-lg">
         <i class="fas fa-arrow-left me-2"></i>Back to My Friends
     </a>
 
@@ -28,17 +28,16 @@
             <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body text-center">
                     <div class="avatar-wrapper mb-4">
-                        <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
-                            class="rounded-circle avatar-img"
-                            alt="{{ friend.username }}">
+                        <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                            class="rounded-circle avatar-img" alt="{{ friend.username }}">
                     </div>
-                    <h2 class="mb-2 text-pink">{{ friend.username }}</h2>
+                    <h2 class="mb-2 text-blue">{{ friend.username }}</h2>
                     <p class=" mb-3">
                         <i class="fas fa-quote-left me-2"></i>
                         {{ friend.myaccount.status_message|default:"🎁 Enjoying the gift of friendship!" }}
                         <i class="fas fa-quote-right me-2"></i>
                     </p>
-                    
+
                     <!-- Profile Details -->
                     <div class="text-start">
                         <div class="d-flex align-items-center mb-3">
@@ -53,7 +52,8 @@
                             <div class="favorite-links-container">
                                 <small class="text-purple">Favorite Links</small>
                                 <div class="fw-bold">
-                                    <a href="{{ friend.myaccount.favorite_links }}" class="truncated-link" title="{{ friend.myaccount.favorite_links }}" target="_blank" rel="noopener">
+                                    <a href="{{ friend.myaccount.favorite_links }}" class="truncated-link"
+                                        title="{{ friend.myaccount.favorite_links }}" target="_blank" rel="noopener">
                                         {{ friend.myaccount.favorite_links|urlize|default:"No links added" }}
                                     </a>
                                 </div>
@@ -66,20 +66,18 @@
             <!-- Friends Grid -->
             <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
-                    <h3 class="h4 mb-4 text-purple">
+                    <h3 class="h4 mb-4 text-pink">
                         <i class="fas fa-users me-2"></i>Friends
                         <span class="badge bg-dark ms-2">{{ friends_friends|length }}</span>
                     </h3>
+                    <div class="friends-list" style="max-height: 400px; overflow-y: auto;"></div>
                     {% if friends_friends %}
-                    <div class="row row-cols-1 row-cols-md-2 g-3" style="max-height: 600px; overflow-y: auto;">
+                    <div class="row g-3">
                         {% for friend in friends_friends %}
-                        <div class="col">
-                            <div class="d-flex align-items-center p-3 bg-light rounded">
-                                <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}" 
-                                    class="rounded-circle me-3" 
-                                    width="40" 
-                                    height="40"
-                                    alt="{{ friend.username }}">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex align-items-center">
+                                <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                                    class="rounded-circle me-3" width="40" height="40" alt="{{ friend.username }}">
                                 <div class="flex-grow-1">
                                     <div class="fw-bold">{{ friend.username }}</div>
                                 </div>
@@ -118,28 +116,35 @@
                         <i class="fas fa-calendar-alt me-2"></i>Upcoming Events
                     </h3>
                     {% if events %}
-                    <div class="row g-3">
+                    <div class="row">
                         {% for event in events %}
-                        <div class="col-12">
-                            <div class="d-flex align-items-center p-3 bg-light rounded">
-                                <div class="flex-shrink-0">
-                                    <div class="date-box text-center bg-purple text-white rounded p-2">
-                                        <div class="fw-bold">{{ event.start|date:"d" }}</div>
-                                        <small>{{ event.start|date:"M" }}</small>
+                        <div class="col-12 mb-3">
+                            <div class="card h-100 border-0 shadow">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="flex-shrink-0">
+                                            <div class="date-box text-center bg-purple text-white rounded p-2">
+                                                <div class="fw-bold">{{ event.start|date:"d" }}</div>
+                                                <small>{{ event.start|date:"M" }}</small>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h5 class="mb-1">{{ event.title }}</h5>
+                                            <p class=" mb-0">{{ event.description }}</p>
+                                        </div>
+                                        <div class="mt-auto text-end">
+                                            <button class="btn btn-sm btn-outline-pink like-event"
+                                                data-event-id="{{ event.id }}">
+                                                {% if request.user in event.likes.all %}
+                                                <i class="fas fa-heart"></i> <!-- Solid heart for liked -->
+                                                {% else %}
+                                                <i class="far fa-heart"></i> <!-- Outline heart for unliked -->
+                                                {% endif %}
+                                                <span class="like-count">{{ event.likes.count }}</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h5 class="mb-1">{{ event.title }}</h5>
-                                    <p class=" mb-0">{{ event.description }}</p>
-                                </div>
-                                <button class="btn btn-sm btn-outline-pink like-event" data-event-id="{{ event.id }}">
-                                    {% if request.user in event.likes.all %}
-                                        <i class="fas fa-heart"></i> <!-- Solid heart for liked -->
-                                    {% else %}
-                                        <i class="far fa-heart"></i> <!-- Outline heart for unliked -->
-                                    {% endif %}
-                                    <span class="like-count">{{ event.likes.count }}</span>
-                                </button>
                             </div>
                         </div>
                         {% endfor %}
@@ -159,47 +164,91 @@
                     <h3 class="h4 mb-4 text-purple">
                         <i class="fas fa-gift me-2"></i>Wishlist
                     </h3>
-                    {% if wishlist_items %}
-                    <div class="row g-3">
-                        {% for item in wishlist_items %}
-                        <div class="col-md-6">
-                            <div class="card h-100 border-0 shadow-lg d-flex flex-column">
-                                <div class="card-body flex-grow-1">
-                                    <h5 class="mb-3">{{ item.item_name }}</h5>
-                                    <p class=" small">{{ item.description }}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                                        <a href="{{ item.link }}" target="_blank" 
-                                           class="btn btn-sm btn-outline-blue">
-                                            <i class="fas fa-external-link-alt me-2"></i>View Item
-                                        </a>
-                                        <button class="btn btn-sm btn-outline-pink like-wishlist" data-item-id="{{ item.id }}">
-                                            {% if request.user in item.likes.all %}
-                                                <i class="fas fa-heart"></i> <!-- Solid heart for liked -->
-                                            {% else %}
-                                                <i class="far fa-heart"></i> <!-- Outline heart for unliked -->
-                                            {% endif %}
-                                            <span class="like-count">{{ item.likes.count }}</span>
-                                        </button>
+                    {% if categories %}
+                    <!-- Loop through each category -->
+                    {% for category in categories %}
+                    <div class="card shadow-lg border-0 mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-folder me-2 text-pink"></i>{{ category.name }}
+                            </h5>
+                            <div class="row g-4">
+                                <!-- Loop through wishlist items and display only those in the current category -->
+                                {% for item in wishlist_items %}
+                                {% if item.category.id == category.id %}
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-lg d-flex flex-column">
+                                        <div class="card-body d-flex flex-column">
+                                            <!-- Item Name and Description -->
+                                            <h5 class="mb-3">{{ item.item_name }}</h5>
+                                            <p class="small">{{ item.description|default:"No description provided." }}</p>
+                                    
+                                            <!-- Buttons and Reserved By Section -->
+                                            <div class="mt-auto"> <!-- Push this section to the bottom -->
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <a href="{{ item.link }}" target="_blank"
+                                                        class="btn btn-sm btn-outline-blue">
+                                                        <i class="fas fa-external-link-alt me-1"></i> View Item
+                                                    </a>
+                                                    <button class="btn btn-sm btn-outline-pink like-wishlist"
+                                                        data-item-id="{{ item.id }}">
+                                                        {% if request.user in item.likes.all %}
+                                                            <i class="fas fa-heart me-1"></i> <!-- Solid heart for liked -->
+                                                        {% else %}
+                                                            <i class="far fa-heart me1"></i> <!-- Outline heart for unliked -->
+                                                        {% endif %}
+                                                        <span class="like-count">{{ item.likes.count }}</span>
+                                                    </button>
+                                                    {% if not item.reserved_by %}
+                                                        <!-- Only show Reserve Button if item is not reserved -->
+                                                        <form method="post" action="{% url 'wishlist:reserve_item' item.id %}" class="d-inline">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="btn btn-outline-purple btn-sm">
+                                                                <i class="fas fa-shopping-cart me-1"></i>Reserve
+                                                            </button>
+                                                        </form>
+                                                    {% endif %}
+                                                    {% if item.reserved_by %}
+                                                    <div class="text-muted pe-2">
+                                                        <small>Reserved by:</small>
+                                                        <div class="fw-bold text-purple">{{ item.reserved_by.username }}</div>
+                                                    </div>
+                                                {% endif %}
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                 </div>
+                                {% endif %}
+                                {% endfor %}
+                                <!-- If no items in this category -->
+                                {% if not category.wishlistitem_set.exists %}
+                                <div class="col-12 text-center py-4">
+                                    <i class="fas fa-gift fa-3x mb-3"></i>
+                                    <p class="">No items in this category yet.</p>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
-                        {% endfor %}
                     </div>
+                    {% endfor %}
                     {% else %}
+                    <!-- If no categories or wishlist items exist -->
                     <div class="text-center py-4">
-                        <i class="fas fa-gift fa-2x  mb-3"></i>
-                        <p class="">No wishlist items found</p>
+                        <i class="fas fa-gift fa-2x mb-3"></i>
+                        <p class="">No wishlist items found.</p>
                     </div>
                     {% endif %}
                 </div>
             </div>
+
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
 
-{% block scripts %}
-<!-- Link to your custom JavaScript file -->
-<script src="{% static 'js/frienddetail.js' %}"></script>
-{% endblock %}
+    {% block scripts %}
+    <!-- Link to your custom JavaScript file -->
+    <script src="{% static 'js/frienddetail.js' %}"></script>
+    {% endblock %}

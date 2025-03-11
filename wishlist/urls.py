@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import path
 from . import views
 
 app_name = 'wishlist'
@@ -11,4 +11,5 @@ urlpatterns = [
     path('category/add/', views.add_category, name='add_category'),
     path('category/edit/<int:category_id>/', views.edit_category, name='edit_category'),
     path('category/delete/<int:category_id>/', views.delete_category, name='delete_category'),
+    path('reserve/<int:item_id>/', views.reserve_item, name='reserve_item'),
 ]

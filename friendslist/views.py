@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.db.models import Q
 from friendslist.models import Friendship, FriendRequest  # Add this line
 from planner.models import Planner
-from wishlist.models import WishlistItem
+from wishlist.models import WishlistItem, WishlistCategory
 from myaccount.models import Like
 
 @login_required
@@ -149,6 +149,7 @@ def friendsdetail(request, friend_id):
 
     events = Planner.objects.filter(user=friend)
     wishlist_items = WishlistItem.objects.filter(user=friend)
+    categories = WishlistCategory.objects.filter(user=friend)
 
 
     return render(request, 'friendslist/frienddetail.html', {
@@ -156,6 +157,7 @@ def friendsdetail(request, friend_id):
         'friends_friends': friends_friends,
         'events': events,
         'wishlist_items': wishlist_items,
+        'categories': categories,
     })
 
 

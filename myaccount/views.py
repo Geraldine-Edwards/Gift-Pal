@@ -1,15 +1,17 @@
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # Add this line
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.db import transaction
 from django.db.models import Q, Count
 from datetime import timedelta
-from friendslist.models import Friendship  # Add this line
-from planner.models import Planner
-from wishlist.models import WishlistItem
 from .forms import ProfileDetailsForm, ProfileImageForm, ProfileStatusForm
-from .models import Like, MyAccount
+from friendslist.models import Friendship, FriendRequest
+from myaccount.models import MyAccount
+from wishlist.models import WishlistItem 
+from .models import Planner
 
 @login_required
 def profile_view(request):
@@ -117,3 +119,29 @@ def user_wishlist_view(request):
     wishlist_items = WishlistItem.objects.filter(user=request.user)
     return render(request, 'wishlist/wishlist.html', {'myaccount': myaccount, 'wishlist_items': wishlist_items})
 
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        user = request.user
+
+        with transaction.atomic():
+            # Delete friendships where the user is involved
+            Friendship.objects.filter(user1=user).delete()  # Delete friendships where the user is user1
+            Friendship.objects.filter(user2=user).delete()  # Delete friendships where the user is user2
+
+             # Delete friend requests involving the user
+            FriendRequest.objects.filter(sender=user).delete()  # Delete sent friend requests
+            FriendRequest.objects.filter(receiver=user).delete()  # Delete received friend requests
+
+            # Delete events created by the user
+            Planner.objects.filter(user=request.user).delete()
+
+            # Delete wishlist items created by the user
+            WishlistItem.objects.filter(user=request.user).delete()
+
+        user.delete()  # Delete the user account
+        logout(request)  # Log the user out
+        messages.success(request, 'Your account has been successfully deleted.')
+        return redirect('home')  # Redirect to the home page
+    return redirect('myaccount:myaccount_home')  # Redirect back if not a POST request

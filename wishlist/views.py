@@ -107,3 +107,19 @@ def delete_wishlist_item(request, item_id):
         messages.success(request, 'Wishlist item deleted successfully!')
         return redirect('wishlist:wishlist')
     return render(request, 'wishlist/delete_wishlist_item.html', {'item': item})
+
+@login_required
+def reserve_item(request, item_id):
+    item = get_object_or_404(WishlistItem, id=item_id)
+    
+    # Check if the item is already reserved
+    if item.reserved_by:
+        messages.warning(request, f'This item is already reserved by {item.reserved_by.username}.')
+    else:
+        # Reserve the item for the current user
+        item.reserved_by = request.user
+        item.save()
+        messages.success(request, f'You have reserved "{item.item_name}".')
+    
+    # Redirect back to the friend's detail page
+    return redirect('friendslist:friendsdetail', friend_id=item.user.id)

@@ -1,33 +1,3 @@
-:root,
-/* Light Mode */
-[data-theme="light"] {
-    --primary-color: #e83283;
-    --secondary-color: #3a8fd9;
-    --tertiary-color: #686dc3;
-    --yellow: #ffc107;
-    --green: #41d7a7;
-    --orange: #fd7e14;
-    --black: #000;
-    --white: #fff;
-    --gray: #6c757d;
-    --gray-dark: #343a40;
-}
-
-/* Dark Mode */
-[data-theme="dark"] {
-
-    --primary-color: #8a1a4a;
-    --secondary-color: #1b456a;
-    --tertiary-color: #3e3a6d;
-    --yellow: #8a6a07;
-    --green: #1e5f4a;
-    --orange: #8a3e14;
-    --black: #000;
-    --white: #fff;
-    --gray: #3e3e3e;
-    --gray-dark: #1e1e1e;
-}
-
 .hero-image {
     position: relative;
     height: 400px; /* Adjust height as needed */
@@ -48,22 +18,30 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for better text visibility */
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-overlay h1 {
     font-size: 3rem; /* Adjust font size as needed */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adds shadow to text for better readability */
+    color: var(--white);
 }
 
-/* Card Styling */
-.card {
-    background-color: white;
-    border-radius: 10px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for hover effect */
+/* Dark Mode Overrides */
+[data-theme="dark"] .hero-overlay {
+    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay for dark mode */
 }
 
-.card:hover {
-    transform: translateY(-3px); /* Moves the card up slightly on hover */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Adds a stronger shadow on hover */
+[data-theme="dark"] .hero-overlay h1 {
+    color: var(--white); /* Ensure text is white in dark mode */
 }
 
+/* CTA Buttons Container */
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem; /* Space between buttons */
+    margin-top: 2rem; /* Add margin above buttons */
+}
