@@ -10,7 +10,7 @@ from datetime import timedelta
 from .forms import ProfileDetailsForm, ProfileImageForm, ProfileStatusForm
 from friendslist.models import Friendship, FriendRequest
 from myaccount.models import MyAccount
-from wishlist.models import WishlistItem 
+from wishlist.models import WishlistItem, WishlistCategory
 from .models import Planner
 
 @login_required
@@ -46,6 +46,22 @@ def profile_view(request):
         like_count=Count('likes')  # Annotate with like count
     ).order_by('-created_at')
 
+    # Fetch the wishlist items reserved by the current user for their friends
+    reserved_gifts_by_user = WishlistItem.objects.filter(
+        reserved_by=request.user  # The current user reserved these gifts
+    ).annotate(
+        like_count=Count('likes')
+    ).order_by('created_at')
+
+    # Add occasion_date and days_remaining to each reserved gift
+    for gift in reserved_gifts_by_user:
+        if gift.category and gift.category.occasion_date:
+            gift.occasion_date = gift.category.occasion_date
+            gift.days_remaining = (gift.category.occasion_date - timezone.now().date()).days
+        else:
+            gift.occasion_date = None
+            gift.days_remaining = None
+
     # Ensure each friend has a MyAccount instance
     for friend in friends:
         MyAccount.objects.get_or_create(user=friend)
@@ -57,6 +73,9 @@ def profile_view(request):
             if image_form.is_valid():
                 image_form.save()
                 messages.success(request, 'Profile image updated successfully!')
+                return redirect('myaccount:myaccount_home')
+            else:
+                messages.error(request, 'Error updating profile image. Please try again.')
                 return redirect('myaccount:myaccount_home')
 
         # Handle status update
@@ -75,7 +94,8 @@ def profile_view(request):
                 'friends': friends,
                 'friends_count': len(friends),
                 'events_count': Planner.objects.filter(user=request.user).count(),
-                'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count()
+                'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count(),
+                'reserved_gifts_by_user': reserved_gifts_by_user,  
             })
 
         # Handle profile details
@@ -94,7 +114,8 @@ def profile_view(request):
                 'friends': friends,
                 'friends_count': len(friends),
                 'events_count': Planner.objects.filter(user=request.user).count(),
-                'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count()
+                'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count(),
+                'reserved_gifts_by_user': reserved_gifts_by_user,  
             })
 
     # GET request or no form submitted
@@ -108,7 +129,8 @@ def profile_view(request):
         'events_count': Planner.objects.filter(user=request.user).count(),
         'wishlist_items_count': WishlistItem.objects.filter(user=request.user).count(),
         'events': upcoming_events,
-        'wishlist_items': wishlist_items
+        'wishlist_items': wishlist_items,
+        'reserved_gifts_by_user': reserved_gifts_by_user,  
     }
     return render(request, 'myaccount/profile.html', context)
 

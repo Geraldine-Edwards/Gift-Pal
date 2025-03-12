@@ -30,24 +30,9 @@
     color: #dc3545;
 }
 
-.favorite-links-container {
-    display: inline-block; /* Ensure the link behaves like a block element */
-    max-width: 100%; /* Ensure the link doesn't exceed its container's width */
-    white-space: nowrap; /* Prevent the link from wrapping */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Show ellipsis for overflow */
-}
-
-.truncated-link {
-    display: inline-block;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.truncated-link:hover {
-    color: var(--primary-color);
+/* Favourite Links section */
+.text-break {
+    word-break: break-all; /* Ensure long URLs don't overflow */
 }
 
 @media (max-width: 768px) {

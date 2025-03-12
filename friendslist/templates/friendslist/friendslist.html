@@ -24,7 +24,7 @@
                 <input type="text" name="search_query" class="form-control form-control-lg"
                     placeholder="Search by username..." value="{{ search_query }}">
                 <button type="submit" class="btn btn-purple btn-lg">
-                    <i class="fas fa-search"></i>
+                    <i class="fas fa-search"> </i>
                 </button>
             </form>
         </div>
@@ -163,8 +163,9 @@
 {% endif %}
 
 <!-- Friends Grid -->
-<div class="card shadow-lg border-0 mx-5 mb-5 ">
-    <div class="card-body p-4">
+
+<div class="card shadow-lg mb-5 border-0 mx-4">
+        <div class="card-body p-4">
         <h3 class="h4 card-title mb-4 text-blue">
             <i class="fas fa-users me-2"></i>Friends
         </h3>
@@ -182,7 +183,7 @@
                         <div class="mt-auto text-center">
                             <div class="d-grid gap-2">
                                 <a href="{% url 'friendslist:friendsdetail' friend.id %}"
-                                    class="btn btn-outline-blue btn-sm">
+                                    class="btn btn-outline-purple btn-sm">
                                     <i class="fas fa-eye me-2"></i>View Profile
                                 </a>
                                 <form action="{% url 'friendslist:remove_friend' friend.id %}" method="post">

@@ -77,10 +77,17 @@
                                 <small class="text-muted  mb-auto">Priority: <span class="text-purple fw-bold">
                                     {{ item.get_priority_display }}</span></small>
                             </p>
-                            {% if item.reserved_by %}
                             <p class="card-text ms-3">
-                                <small class="text-muted mb-auto">Reserved by: <span class="text-purple fw-bold">
-                                    {{ item.reserved_by.username }}</span></small>
+                                <small class="text-muted mb-auto">
+                                    Reserved by: 
+                                    {% if item.reserved_by %}
+                                    <span class="text-purple fw-bold">{{ item.reserved_by.username }}</span>
+                                </small>
+                                {% else %}
+                                <small>
+                                    <span class="text-muted ">No reservation for this items yet.</span>
+                                </small>
+                                    
                             </p>
                             {% endif %}
                         </div>

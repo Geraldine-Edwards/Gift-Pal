@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Count
 from friendslist.models import Friendship, FriendRequest  # Add this line
 from planner.models import Planner
 from wishlist.models import WishlistItem, WishlistCategory
@@ -151,6 +151,21 @@ def friendsdetail(request, friend_id):
     wishlist_items = WishlistItem.objects.filter(user=friend)
     categories = WishlistCategory.objects.filter(user=friend)
 
+     # Fetch gifts that the user's friend has reserved for their own friends
+    reserved_gifts_by_friend = WishlistItem.objects.filter(
+        reserved_by=friend  # The user's friend reserved these gifts
+    ).annotate(
+        like_count=Count('likes')
+    ).order_by('-created_at')
+
+    for gift in reserved_gifts_by_friend:
+        if gift.category and gift.category.occasion_date:
+            gift.occasion_date = gift.category.occasion_date
+            gift.days_remaining = (gift.category.occasion_date - timezone.now().date()).days
+        else:
+            gift.occasion_date = None
+            gift.days_remaining = None
+
 
     return render(request, 'friendslist/frienddetail.html', {
         'friend': friend,
@@ -158,7 +173,9 @@ def friendsdetail(request, friend_id):
         'events': events,
         'wishlist_items': wishlist_items,
         'categories': categories,
+        'reserved_gifts_by_friend': reserved_gifts_by_friend,
     })
+
 
 
 @login_required

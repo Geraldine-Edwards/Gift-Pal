@@ -31,8 +31,8 @@
                         <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
                             class="rounded-circle avatar-img" alt="{{ friend.username }}">
                     </div>
-                    <h2 class="mb-2 text-blue">{{ friend.username }}</h2>
-                    <p class=" mb-3">
+                    <h2 class="display-4 mb-2 text-blue"><span class="fw-bold">{{ friend.username }}</span></h2>
+                    <p class="mb-3">
                         <i class="fas fa-quote-left me-2"></i>
                         {{ friend.myaccount.status_message|default:"🎁 Enjoying the gift of friendship!" }}
                         <i class="fas fa-quote-right me-2"></i>
@@ -40,34 +40,65 @@
 
                     <!-- Profile Details -->
                     <div class="text-start">
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fas fa-birthday-cake text-blue me-3"></i>
+                        <!-- Birthday -->
+                        <div class="d-flex align-items-center my-3">
                             <div>
-                                <small class="text-blue">Birthday</small>
-                                <div class="fw-bold">{{ friend.myaccount.birthday|default:"Not set" }}</div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-link text-purple me-3"></i>
-                            <div class="favorite-links-container">
-                                <small class="text-purple">Favorite Links</small>
+                                <small class="text-pink">
+                                    <i class="fas fa-birthday-cake mx-1"></i>
+                                    <span class="fw-bold">{{ friend.username }}'s</span> Birthday
+                                </small>
                                 <div class="fw-bold">
-                                    <a href="{{ friend.myaccount.favorite_links }}" class="truncated-link"
-                                        title="{{ friend.myaccount.favorite_links }}" target="_blank" rel="noopener">
-                                        {{ friend.myaccount.favorite_links|urlize|default:"No links added" }}
-                                    </a>
+                                    {{ friend.myaccount.birthday|default:"Not set" }}
                                 </div>
                             </div>
                         </div>
-                    </div>
+            
+                        <!-- Favorite Links -->
+                        <div class="d-flex align-items-center my-3">
+                            <div>
+                                <small class="text-purple">
+                                    <i class="fas fa-link text-purple mx-1"></i>
+                                    <span class="fw-bold">{{ friend.username }}'s</span> Favorite Links
+                                </small>
+                                <div class="fw-bold">
+                                    {% if friend.myaccount.favorite_links %}
+                                        {% for link in friend.myaccount.favorite_links.splitlines %}
+                                            <a href="{{ link }}"
+                                            class="d-block text-break"
+                                            title="{{ link }}"
+                                            target="_blank"
+                                            rel="noopener">
+                                                {{ link|urlize }}
+                                            </a>
+                                        {% endfor %}
+                                    {% else %}
+                                        No links added
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>           
                 </div>
             </div>
+
+<!-- About Section -->
+<div class="card shadow-lg border-0 mb-4">
+    <div class="card-body">
+        <h3 class="h4 mb-4 text-pink">
+            <i class="fas fa-info-circle me-2"></i>About <span class="fw-bold">{{ friend.username }}</span>
+        </h3>
+        <p>
+            {{ friend.myaccount.about_me|default:"This friend hasn't shared any details yet." }}
+        </p>
+    </div>
+</div>
 
             <!-- Friends Grid -->
             <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
-                    <h3 class="h4 mb-4 text-pink">
-                        <i class="fas fa-users me-2"></i>Friends
+                    <h3 class="h4 mb-4 text-purple">
+                        <i class="fas fa-users me-2"></i><span class="fw-bold">{{ friend.username }}'s</span> Friends
                         <span class="badge bg-dark ms-2">{{ friends_friends|length }}</span>
                     </h3>
                     <div class="friends-list" style="max-height: 400px; overflow-y: auto;"></div>
@@ -97,23 +128,11 @@
 
         <!-- Main Content -->
         <div class="col-lg-8">
-            <!-- About Section -->
-            <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body">
-                    <h3 class="h4 mb-4 text-pink">
-                        <i class="fas fa-info-circle me-2"></i>About
-                    </h3>
-                    <p class="">
-                        {{ friend.myaccount.about_me|default:"This friend hasn't shared any details yet." }}
-                    </p>
-                </div>
-            </div>
-
             <!-- Events Section -->
             <div class="card shadow-lg border-0 mb-4">
                 <div class="card-body">
-                    <h3 class="h4 mb-4 text-blue">
-                        <i class="fas fa-calendar-alt me-2"></i>Upcoming Events
+                    <h3 class="h4 mb-4 text-pink">
+                        <i class="fas fa-calendar-alt me-2"></i><span class="fw-bold">{{ friend.username }}'s</span> Upcoming Events
                     </h3>
                     {% if events %}
                     <div class="row">
@@ -121,7 +140,7 @@
                         <div class="col-12 mb-3">
                             <div class="card h-100 border-0 shadow">
                                 <div class="card-body d-flex flex-column">
-                                    <div class="d-flex align-items-center mb-2">
+                                    <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
                                             <div class="date-box text-center bg-purple text-white rounded p-2">
                                                 <div class="fw-bold">{{ event.start|date:"d" }}</div>
@@ -152,7 +171,7 @@
                     {% else %}
                     <div class="text-center py-4">
                         <i class="fas fa-calendar-times fa-2x  mb-3"></i>
-                        <p class="">No upcoming events found</p>
+                        <p class="text-muted">No upcoming events found</p>
                     </div>
                     {% endif %}
                 </div>
@@ -161,8 +180,8 @@
             <!-- Wishlist Section -->
             <div class="card shadow-lg border-0">
                 <div class="card-body">
-                    <h3 class="h4 mb-4 text-purple">
-                        <i class="fas fa-gift me-2"></i>Wishlist
+                    <h3 class="h4 mb-4 text-blue">
+                        <i class="fas fa-gift me-2"></i><span class="fw-bold">{{ friend.username }}'s</span> Wishlist
                     </h3>
                     {% if categories %}
                     <!-- Loop through each category -->
@@ -181,8 +200,9 @@
                                         <div class="card-body d-flex flex-column">
                                             <!-- Item Name and Description -->
                                             <h5 class="mb-3">{{ item.item_name }}</h5>
-                                            <p class="small">{{ item.description|default:"No description provided." }}</p>
-                                    
+                                            <p class="small">{{ item.description|default:"No description provided." }}
+                                            </p>
+
                                             <!-- Buttons and Reserved By Section -->
                                             <div class="mt-auto"> <!-- Push this section to the bottom -->
                                                 <div class="d-flex justify-content-between align-items-center">
@@ -193,33 +213,37 @@
                                                     <button class="btn btn-sm btn-outline-pink like-wishlist"
                                                         data-item-id="{{ item.id }}">
                                                         {% if request.user in item.likes.all %}
-                                                            <i class="fas fa-heart me-1"></i> <!-- Solid heart for liked -->
+                                                        <i class="fas fa-heart me-1"></i> <!-- Solid heart for liked -->
                                                         {% else %}
-                                                            <i class="far fa-heart me1"></i> <!-- Outline heart for unliked -->
+                                                        <i class="far fa-heart me1"></i>
+                                                        <!-- Outline heart for unliked -->
                                                         {% endif %}
                                                         <span class="like-count">{{ item.likes.count }}</span>
                                                     </button>
                                                     {% if not item.reserved_by %}
-                                                        <!-- Only show Reserve Button if item is not reserved -->
-                                                        <form method="post" action="{% url 'wishlist:reserve_item' item.id %}" class="d-inline">
-                                                            {% csrf_token %}
-                                                            <button type="submit" class="btn btn-outline-purple btn-sm">
-                                                                <i class="fas fa-shopping-cart me-1"></i>Reserve
-                                                            </button>
-                                                        </form>
+                                                    <!-- Only show Reserve Button if item is not reserved -->
+                                                    <form method="post"
+                                                        action="{% url 'wishlist:reserve_item' item.id %}"
+                                                        class="d-inline">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-outline-purple btn-sm">
+                                                            <i class="fas fa-shopping-cart me-1"></i>Reserve
+                                                        </button>
+                                                    </form>
                                                     {% endif %}
                                                     {% if item.reserved_by %}
                                                     <div class="text-muted pe-2">
                                                         <small>Reserved by:</small>
-                                                        <div class="fw-bold text-purple">{{ item.reserved_by.username }}</div>
+                                                        <div class="fw-bold text-purple">{{ item.reserved_by.username }}
+                                                        </div>
                                                     </div>
-                                                {% endif %}
+                                                    {% endif %}
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 {% endif %}
                                 {% endfor %}
@@ -227,7 +251,7 @@
                                 {% if not category.wishlistitem_set.exists %}
                                 <div class="col-12 text-center py-4">
                                     <i class="fas fa-gift fa-3x mb-3"></i>
-                                    <p class="">No items in this category yet.</p>
+                                    <p class="text-muted">No items in this category yet.</p>
                                 </div>
                                 {% endif %}
                             </div>
@@ -238,9 +262,85 @@
                     <!-- If no categories or wishlist items exist -->
                     <div class="text-center py-4">
                         <i class="fas fa-gift fa-2x mb-3"></i>
-                        <p class="">No wishlist items found.</p>
+                        <p class="text-muted">No wishlist items found.</p>
                     </div>
                     {% endif %}
+                </div>
+            </div>
+
+            <!-- Reserved Gifts Section -->
+            <div class="card shadow-lg border-0 mt-4">
+                <div class="card-body">
+                    <h3 class="h4 card-title mb-4 text-purple">
+                        <i class="fas fa-gift me-2"></i>Gifts <span class="fw-bold">{{ friend.username }}</span> Has Reserved For others 
+                    </h3>
+                    <div class="row">
+                        {% if reserved_gifts_by_friend %}
+                        {% for gift in reserved_gifts_by_friend %}
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100 shadow border-0">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <div class="fw-bold">{{ gift.item_name }}</div>
+                                            <small class="text-muted">
+                                                {% if gift.category %}
+                                                {{ gift.category.name }}
+                                                <!-- Assuming WishlistCategory has a 'name' field -->
+                                                {% else %}
+                                                Uncategorized
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <small>
+                                                    Reserved for:
+                                                    <span class="text-blue">
+                                                        {% if gift.user %}
+                                                        {{ gift.user.username }}
+                                                        {% else %}
+                                                        Unknown User
+                                                        {% endif %}
+                                                    </span>
+                                                </small>
+                                                <br>
+                                                <div>                                            
+                                                    <span>
+                                                        <br>
+                                                        <i class="fas fa-heart text-pink me-1"></i>
+                                                        <span class="text-pink"> {{ gift.like_count }}</span>                                                      
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <!-- Countdown to Occasion Date (only if categorized and occasion_date exists) -->
+                                    {% if gift.occasion_date %}
+                                    <div class="mt-2">
+                                        <small class="text-purple fw-bold">
+                                            <i class="fas fa-calendar-day text-black me-1"></i>
+                                            {% if gift.days_remaining > 0 %}
+                                                {{ gift.days_remaining }} day{{ gift.days_remaining|pluralize }} to go
+                                            {% else %}
+                                                Today!
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="col-12 text-center py-4">
+                            <i class="fas fa-gift fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No gifts yet.</p>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 

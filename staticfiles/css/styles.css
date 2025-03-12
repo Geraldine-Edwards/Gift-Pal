@@ -421,6 +421,31 @@ i.fab:hover::before {
     transform: scale(1.1);
 }
 
+/* Dark mode for Bootstrap messages */
+[data-theme="dark"] .alert-success {
+    background-color: #1a472a;
+    border-color: #2a623d;
+    color: var(--gray-dark);
+}
+
+[data-theme="dark"] .alert-error {
+    background-color: #4a1a1a;
+    border-color: #6d2a2a;
+    color: var(--gray-dark);
+}
+
+[data-theme="dark"] .alert-info {
+    background-color: #1a3a4a;
+    border-color: #2a546d;
+    color: var(--gray-dark);
+}
+
+[data-theme="dark"] .alert-warning {
+    background-color: #4a3a1a;
+    border-color: #6d542a;
+    color: var(--gray-dark);
+}
+
 
 /* Modal Styles */
 .modal-content {

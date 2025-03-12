@@ -38,6 +38,19 @@
     color: var(--white); 
 }
 
+.card small {
+    display: block; /* Ensure small text is on its own line */
+    margin-top: 0.5rem; /* Add space above small text */
+}
+
+/* Favorite links */
+.favorite-links-container a {
+    word-wrap: break-word;  /* Break long words */
+    white-space: normal;    /* Allow text to wrap */
+    display: block;         /* Ensure the link takes full width */
+    margin-bottom: 0.5rem;  /* Add spacing between multiple links */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .avatar-img {

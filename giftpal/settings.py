@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 import dj_database_url
+
+# Import env to load environment variables
 if os.path.isfile('env.py'):
     import env
 
@@ -80,7 +82,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

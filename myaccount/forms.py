@@ -6,6 +6,18 @@ class ProfileImageForm(forms.ModelForm):
     class Meta:
         model = MyAccount
         fields = ['profile_image']
+        widgets = {
+            'profile_image': forms.ClearableFileInput(attrs={
+                'class': 'form-control',  # Add Bootstrap class
+                'accept': 'image/*',  # Restrict to image files
+            }),
+        }
+        labels = {
+            'profile_image': 'Upload a new profile photo',  # Custom label
+        }
+        help_texts = {
+            'profile_image': 'Allowed formats: JPG, PNG, GIF. Max size: 5MB.',  # Help text
+        }
 
 class ProfileStatusForm(forms.ModelForm):
     class Meta:
