@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class WishlistCategoryForm(forms.ModelForm):
     class Meta:
         model = WishlistCategory
-        fields = ['name', 'occasion_date']  # Match model fields exactly
+        fields = ['name', 'occasion_date'] 
         widgets = {
             'occasion_date': forms.DateInput(attrs={'type': 'date'})
         }
@@ -27,11 +27,10 @@ class WishlistCategoryForm(forms.ModelForm):
 class WishlistItemForm(forms.ModelForm):
     class Meta:
         model = WishlistItem
-        fields = ['category', 'item_name', 'link', 'description', 'priority', 'reserved_by']
+        fields = ['category', 'item_name', 'link', 'description', 'priority']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:
             self.fields['category'].queryset = WishlistCategory.objects.filter(user=user)
-            self.fields['reserved_by'].queryset = User.objects.exclude(id=user.id)

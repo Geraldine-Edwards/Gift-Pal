@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}My Wishlists{% endblock %}
+{% block title %}My Wishlist{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/wishlist.css' %}">
 
 <div class="container py-5">
+    <!-- Page Header -->
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold title mb-3">
             <i class="fas fa-gift me-2"></i> My Wishlist
@@ -14,100 +14,94 @@
         <p class="lead">Manage your wishlist and share it with friends!</p>
     </div>
 
-
-    <!-- Categories Section -->
+    <!-- Instructions for New Users -->
+    {% if not categories %}
     <div class="card shadow-lg border-0 mb-4">
-        <div class="card-body">
-            <h3 class="h4 card-title mb-3 text-purple">
-                <i class="fas fa-folder me-2"></i> Categories
-            </h3>
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="{% url 'wishlist:add_category' %}" class="btn btn-sm btn-outline-purple">
-                    <i class="fas fa-plus me-1"></i>Add Category
-                </a>
-            </div>
-            <div class="list-group list-group-flush">
-                {% for category in categories %}
-                <div class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="fw-bold">{{ category.name }}</span>
-                    <div>
-                        <a href="{% url 'wishlist:edit_category' category.id %}"
-                            class="btn btn-sm btn-outline-blue me-2">
-                            <i class="fas fa-edit me-1"></i>Edit
-                        </a>
-                        <a href="{% url 'wishlist:delete_category' category.id %}" class="btn btn-sm btn-outline-pink">
-                            <i class="fas fa-trash me-1"></i>Delete
-                        </a>
-                    </div>
-                </div>
-                {% empty %}
-                <div class="list-group-item text-center py-4">
-                    <i class="fas fa-folder-open fa-3x  mb-3"></i>
-                    <p class="">No categories yet. Add one to organize your wishlist!</p>
-                </div>
-                {% endfor %}
-            </div>
+        <div class="card-body text-center">
+            <i class="fas fa-folder-open fa-3x text-blue mb-3"></i>
+            <h3 class="h4 card-title mb-3">No Categories Yet</h3>
+            <p class="card-text">You need to create a category before you can add wishlist items.</p>
+            <button class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                <i class="fas fa-plus me-2"></i>Create Category
+            </button>
         </div>
     </div>
-
-    <!-- Wishlist Items Grouped by Category -->
-    {% for category in categories %}
+    {% else %}
+    <!-- Instructions for Returning Users -->
     <div class="card shadow-lg border-0 mb-4">
+        <div class="card-body text-center">
+            <h3 class="h4 card-title mb-3">Welcome Back!</h3>
+            <p class="card-text">You can add or edit items in your existing categories, or create a new category to
+                organize more items.</p>
+            <button class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                <i class="fas fa-plus me-2"></i>Create New Category
+            </button>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Categories and Wishlist Items -->
+    {% for category in categories %}
+    <div class="card category-id shadow-lg border-0 mb-4" id="category-{{ category.id }}">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="h4 card-title">
+                <h3 class="h4 card-title category-name" id="category-name-{{ category.id }}">
                     <i class="fas fa-folder me-2 text-pink"></i> {{ category.name }}
+
+                </h3>
+                <h3 class="h4 card-title category-date" id="category-date-{{ category.id }}">
+                    <i class="fas fa-calendar-alt me-2 text-blue"></i>{{ category.occasion_date|date:"F j, Y" }}
                 </h3>
                 <!-- Add Item Button -->
-                <a href="{% url 'wishlist:add_wishlist_item' %}" class="btn btn-outline-purple" class="text-end mb-4">
-                    <i class="fas fa-plus me-2"></i>Add Item
-                </a>
+                <button class="btn btn-outline-purple add-item" data-bs-toggle="modal" data-bs-target="#addItemModal"
+                    data-category-id="{{ category.id }}">
+                    <i class="fas fa-plus me-2"></i>Add Wishlist Item
+                </button>
             </div>
-            <div class="row g-4">
-                {% for item in wishlist_items %}
-                {% if item.category.id == category.id %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="card shadow-md border-0 h-100">
+            <!-- Edit and Delete Category Buttons -->
+            <div class="d-flex gap-2 mb-3">
+                <button class="btn btn-sm btn-outline-blue edit-category" data-category-id="{{ category.id }}"
+                    data-category-name="{{ category.name }}">
+                    <i class="fas fa-edit me-1"></i>Edit Category Name
+                </button>
+                <button class="btn btn-sm btn-outline-pink delete-category" data-category-id="{{ category.id }}">
+                    <i class="fas fa-trash me-1"></i>Delete Category
+                </button>
+            </div>
+            <!-- Wishlist Items -->
+            <div class="row g-4" id="items-container-{{ category.id }}">
+                {% for item in category.wishlistitem_set.all %}
+                <!-- Individual Card for Each Wishlist Item -->
+                <div class="col-md-6 col-lg-4 item-id" id="item-{{ item.id }}">
+                    <div class="card shadow border-0 h-100">
                         <div class="card-body">
-                            <h5 class="card-title text-blue">{{ item.item_name }}</h5>
-                            <p class="card-text">{{ item.description|default:"No description provided." }}</p>
-                        </div>
-                        <div>
-                            <p class="card-text ms-3">
-                                <small class="text-muted  mb-auto">Priority: <span class="text-purple fw-bold">
-                                    {{ item.get_priority_display }}</span></small>
+                            <h5 class="card-title item-name text-blue">{{ item.item_name }}</h5>
+                            <p class="card-text item-description">{{ item.description|default:"No description provided." }}</p>
+                            <p class="card-text item-priority">
+                                <small class="text-muted">Priority: <span class="text-purple fw-bold">
+                                        {{item.get_priority_display }}</span></small>
                             </p>
-                            <p class="card-text ms-3">
-                                <small class="text-muted mb-auto">
-                                    Reserved by: 
-                                    {% if item.reserved_by %}
-                                    <span class="text-purple fw-bold">{{ item.reserved_by.username }}</span>
-                                </small>
-                                {% else %}
-                                <small>
-                                    <span class="text-muted ">No reservation for this items yet.</span>
-                                </small>
-                                    
+                            {% if item.reserved_by %}
+                            <p class="card-text ms-3 item-reserved-by">
+                                <small class="text-muted mb-auto">Reserved by: <span class="text-purple fw-bold">
+                                        {{ item.reserved_by.username }}</span></small>
                             </p>
                             {% endif %}
-                        </div>
-                        <div class="mt-auto d-flex justify-content-between p-3">
-                            <a href="{% url 'wishlist:edit_wishlist_item' item.id %}"
-                                class="btn btn-sm btn-outline-blue">
-                                <i class="fas fa-edit me-1"></i>Edit
-                            </a>
-                            <a href="{% url 'wishlist:delete_wishlist_item' item.id %}"
-                                class="btn btn-sm btn-outline-pink">
-                                <i class="fas fa-trash me-1"></i>Delete
-                            </a>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-blue edit-item" data-item-id="{{ item.id }}">
+                                    <i class="fas fa-edit me-1"></i>Edit Item
+                                </button>
+                                <button class="btn btn-sm btn-outline-pink delete-item" data-item-id="{{ item.id }}">
+                                    <i class="fas fa-trash me-1"></i>Delete Item
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {% endif %}
                 {% endfor %}
-                {% if not category.wishlistitem_set.exists %}
-                <div class="col-12 text-center py-4">
-                    <i class="fas fa-gift fa-3x  mb-3"></i>
+                {% if category.wishlistitem_set.all|length == 0 %}
+                <div class="col-12 text-center no-items py-4">
+                    <i class="fas fa-gift fa-3x mb-3"></i>
                     <p class="">No items in this category yet. Start adding gifts!</p>
                 </div>
                 {% endif %}
@@ -115,56 +109,239 @@
         </div>
     </div>
     {% endfor %}
+</div>
 
-    <!-- Uncategorized Items -->
-    <div class="card shadow-lg border-0 mb-4">
-        <div class="card-body">
-            <h3 class="h4 card-title mb-3">
-                <i class="fas fa-folder-open me-2 text-blue"></i> Uncategorized
-            </h3>
-            <div class="row g-4">
-                {% for item in wishlist_items %}
-                {% if not item.category %}
-                <div class="col-md-6 col-lg-4">
-                    <div class="card shadow-md border-0 h-100">
-                        <div class="card-body">
-                            <h5 class="card-title text-blue">{{ item.item_name }}</h5>
-                            <p class="card-text">{{ item.description|default:"No description provided." }}</p>
-                        </div>
-                        <div>
-                            <p class="card-text ms-3">
-                                <small class="text-muted  mb-auto">Priority: <span class="text-purple fw-bold">
-                                    {{ item.get_priority_display }}</span></small>
-                            </p>
-                            {% if item.reserved_by %}
-                            <p class="card-text ms-3">
-                                <small class="text-muted mb-auto">Reserved by: <span class="text-purple fw-bold">
-                                    {{ item.reserved_by.username }}</span></small>
-                            </p>
-                            {% endif %}
-                        </div>
-                            <div class="mt-auto d-flex justify-content-between p-3">
-                            <a href="{% url 'wishlist:edit_wishlist_item' item.id %}"
-                                class="btn btn-sm btn-outline-blue">
-                                <i class="fas fa-edit me-1"></i>Edit
-                            </a>
-                            <a href="{% url 'wishlist:delete_wishlist_item' item.id %}"
-                                class="btn btn-sm btn-outline-pink">
-                                <i class="fas fa-trash me-1"></i>Delete
-                            </a>
-                        </div>
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addCategoryForm" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="categoryName" name="name" required>
                     </div>
-                </div>
-                {% endif %}
-                {% endfor %}
-                {% if wishlist_items|length == 0 %}
-                <div class="col-12 text-center py-4">
-                    <i class="fas fa-gift fa-3x  mb-3"></i>
-                    <p class="">No uncategorized items yet. Start adding gifts!</p>
-                </div>
-                {% endif %}
+                    <div class="mb-3">
+                        <label for="occasionDate" class="form-label">Occasion Date</label>
+                        <input type="date" class="form-control" id="occasionDate" name="occasion_date">
+                    </div>
+                    <button type="submit" class="btn btn-purple">Save</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Template for a new category (hidden by default) -->
+<template id="category-template">
+    <div class="card category-id shadow-lg border-0 mb-4" id="category-{categoryId}">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="h4 card-title category-name" id="category-name-{categoryId}">
+                    <i class="fas fa-folder me-2 text-pink"></i> {categoryName}
+                </h3>
+                <h3 class="h4 category-date">
+                    <i class="fas fa-calendar-alt me-2 text-blue"></i>{occasionDate}
+                </h3>
+                <button class="btn btn-outline-purple add-item" data-bs-toggle="modal" data-bs-target="#addItemModal" data-category-id="{categoryId}">
+                    <i class="fas fa-plus me-2"></i>Add Item
+                </button>
+            </div>
+            <!-- Edit and Delete Buttons -->
+            <div class="d-flex gap-2 mb-3">
+                <button class="btn btn-sm btn-outline-blue edit-category" data-category-id="{categoryId}" data-category-name="{categoryName}" data-occasion-date="{occasionDate}">
+                    <i class="fas fa-edit me-1"></i>Edit Category
+                </button>
+                <button class="btn btn-sm btn-outline-pink delete-category" data-category-id="{categoryId}">
+                    <i class="fas fa-trash me-1"></i>Delete Category
+                </button>
+            </div>
+            <!-- Wishlist Items -->
+            <div class="row g-4 py-4" id="items-container-{categoryId}">
+                <!-- "No items" message will be added dynamically by JavaScript -->
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Add Item Modal -->
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addItemModalLabel">Add Wishlist Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addItemForm" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="itemName" class="form-label">Item Name</label>
+                        <input type="text" class="form-control" id="itemName" name="item_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="itemDescription" name="description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemLink" class="form-label">Link</label>
+                        <input type="url" class="form-control" id="itemLink" name="link">
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemPriority" class="form-label">Priority</label>
+                        <select class="form-select" id="itemPriority" name="priority">
+                            <option value="high">High</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="itemCategoryId" name="category">
+                    <button type="submit" class="btn btn-purple">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Template for a new item (hidden by default) -->
+<template id="item-template">
+    <div class="col-md-6 col-lg-4" id="item-{itemId}">
+        <div class="card shadow border-0 h-100">
+            <div class="card-body">
+                <h5 class="card-title item-name text-blue">{itemName}</h5>
+                <p class="card-text item-description">{itemDescription}</p>
+                <p class="card-text item-priority">
+                    <small class="text-muted">Priority: <span class="text-purple fw-bold">{itemPriority}</span></small>
+                </p>
+                {#if itemReservedBy}
+                <p class="card-text item-reserved-by ms-3">
+                    <small class="text-muted mb-auto">Reserved by: <span class="text-purple fw-bold">{itemReservedBy}</span></small>
+                </p>
+                {/if}
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-blue edit-item" data-item-id="{itemId}">
+                        <i class="fas fa-edit me-1"></i>Edit Item
+                    </button>
+                    <button class="btn btn-sm btn-outline-pink delete-item" data-item-id="{itemId}">
+                        <i class="fas fa-trash me-1"></i>Delete Item
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Edit Category Modal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editCategoryForm" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="editCategoryName" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="editCategoryName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editOccasionDate" class="form-label">Occasion Date</label>
+                        <input type="date" class="form-control" id="editOccasionDate" name="occasion_date">
+                    </div>
+                    <button type="submit" class="btn btn-purple">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Delete Category Modal -->
+<div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCategoryModalLabel">Delete Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this category? All items in this category will be moved to
+                    "Uncategorized".</p>
+                <form id="deleteCategoryForm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Item Modal -->
+<div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editItemModalLabel">Edit Wishlist Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editItemForm" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="editItemName" class="form-label">Item Name</label>
+                        <input type="text" class="form-control" id="editItemName" name="item_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editItemDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="editItemDescription" name="description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editItemLink" class="form-label">Link</label>
+                        <input type="url" class="form-control" id="editItemLink" name="link">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editItemPriority" class="form-label">Priority</label>
+                        <select class="form-select" id="editItemPriority" name="priority">
+                            <option value="high">High</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-purple">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Item Modal -->
+<div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteItemModalLabel">Delete Wishlist Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this item?</p>
+                <form id="deleteItemForm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/wishlist.js' %}"></script>
 {% endblock %}

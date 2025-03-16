@@ -1,15 +1,14 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import WishlistCategoryViewSet, WishlistItemViewSet, wishlist
 
-app_name = 'wishlist'
+app_name='wishlist'
+
+router = DefaultRouter()
+router.register(r'categories', WishlistCategoryViewSet, basename='wishlistcategory')
+router.register(r'items', WishlistItemViewSet, basename='wishlistitem')
 
 urlpatterns = [
-    path('', views.wishlist, name='wishlist'),
-    path('add/', views.add_wishlist_item, name='add_wishlist_item'),
-    path('edit/<int:item_id>/', views.edit_wishlist_item, name='edit_wishlist_item'),
-    path('delete/<int:item_id>/', views.delete_wishlist_item, name='delete_wishlist_item'),
-    path('category/add/', views.add_category, name='add_category'),
-    path('category/edit/<int:category_id>/', views.edit_category, name='edit_category'),
-    path('category/delete/<int:category_id>/', views.delete_category, name='delete_category'),
-    path('reserve/<int:item_id>/', views.reserve_item, name='reserve_item'),
+    path('', wishlist, name='wishlist'),
+    path('api/', include(router.urls)),
 ]

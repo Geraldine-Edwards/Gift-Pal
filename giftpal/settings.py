@@ -57,10 +57,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'crispy_forms',
     'crispy_bootstrap5',
-    'planner',
+    'rest_framework',
     'friendslist',
-    'wishlist',
     'myaccount',
+    'planner',
+    'wishlist',
 ]
 
 # Cloudinary configuration
@@ -74,6 +75,16 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+# Add DRF settings (optional but recommended)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',  # For browser-based API access
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Restrict API access to logged-in users
+    ],
+}
 
 SITE_ID = 1
 LOGIN_URL = '/accounts/login/'

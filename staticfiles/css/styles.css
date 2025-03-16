@@ -403,6 +403,7 @@ i.fab:hover::before {
     color: var(--text-color);
     border-radius: 1rem;
     border: 1px solid var(--gray-light);
+    margin-bottom: 1.5rem;
 }
 
 .card:hover {
