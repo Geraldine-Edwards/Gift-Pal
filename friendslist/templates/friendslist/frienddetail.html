@@ -26,7 +26,7 @@
         <div class="col-lg-4">
             <!-- Profile Card -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body text-center">
+                <div class="card-body text-center m-2">
                     <div class="avatar-wrapper mb-4">
                         <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
                             class="rounded-circle avatar-img" alt="{{ friend.username }}">
@@ -84,7 +84,7 @@
 
 <!-- About Section -->
 <div class="card shadow-lg border-0 mb-4">
-    <div class="card-body">
+    <div class="card-body m-2">
         <h3 class="h4 mb-4 text-pink">
             <i class="fas fa-info-circle me-2"></i>About <span class="fw-bold">{{ friend.username }}</span>
         </h3>
@@ -96,7 +96,7 @@
 
             <!-- Friends Grid -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body">
+                <div class="card-body m-2">
                     <h3 class="h4 mb-4 text-purple">
                         <i class="fas fa-users me-2"></i><span class="fw-bold">{{ friend.username }}'s</span> Friends
                         <span class="badge bg-dark ms-2">{{ friends_friends|length }}</span>
@@ -130,7 +130,7 @@
         <div class="col-lg-8">
             <!-- Events Section -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body">
+                <div class="card-body m-2">
                     <h3 class="h4 mb-4 text-pink">
                         <i class="fas fa-calendar-alt me-2"></i><span class="fw-bold">{{ friend.username }}'s</span> Upcoming Events
                     </h3>
@@ -179,7 +179,7 @@
 
             <!-- Wishlist Section -->
             <div class="card shadow-lg border-0">
-                <div class="card-body">
+                <div class="card-body m-2">
                     <h3 class="h4 mb-4 text-blue">
                         <i class="fas fa-gift me-2"></i><span class="fw-bold">{{ friend.username }}'s</span> Wishlist
                     </h3>
@@ -187,7 +187,7 @@
                     <!-- Loop through each category -->
                     {% for category in categories %}
                     <div class="card shadow-lg border-0 mb-4">
-                        <div class="card-body">
+                        <div class="card-body m-2">
                             <h5 class="card-title mb-4">
                                 <i class="fas fa-folder me-2 text-pink"></i>{{ category.name }}
                             </h5>
@@ -223,7 +223,7 @@
                                                     {% if not item.reserved_by %}
                                                     <!-- Only show Reserve Button if item is not reserved -->
                                                     <form method="post"
-                                                        action="{% url 'wishlist:reserve_item' item.id %}"
+                                                        action="#"
                                                         class="d-inline">
                                                         {% csrf_token %}
                                                         <button type="submit" class="btn btn-outline-purple btn-sm">
@@ -270,7 +270,7 @@
 
             <!-- Reserved Gifts Section -->
             <div class="card shadow-lg border-0 mt-4">
-                <div class="card-body">
+                <div class="card-body m-2">
                     <h3 class="h4 card-title mb-4 text-purple">
                         <i class="fas fa-gift me-2"></i>Gifts <span class="fw-bold">{{ friend.username }}</span> Has Reserved For others 
                     </h3>

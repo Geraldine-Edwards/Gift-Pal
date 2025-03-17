@@ -18,7 +18,7 @@
 
     <!-- Search Card -->
     <div class="card shadow-lg mb-5 border-0">
-        <div class="card-body p-4">
+        <div class="card-body m-2 p-4">
             <h3 class="h4 card-title mb-4 text-pink"><i class="fas fa-search me-2"></i>Find Friends</h3>
             <form method="GET" action="{% url 'friendslist:friendslist' %}" class="input-group">
                 <input type="text" name="search_query" class="form-control form-control-lg"
@@ -33,7 +33,7 @@
     <!-- Search Results -->
     {% if search_results %}
     <div class="card shadow-lg border-0 mb-5">
-        <div class="card-body p-4">
+        <div class="card-body m-2 p-4">
             <h3 class="h4 card-title text-purple mb-4">
                 <i class="fas fa-users me-2"></i>Search Results
             </h3>
@@ -78,7 +78,7 @@
     {% if pending_received_requests %}
     <div class="col-md-6">
         <div class="card shadow-lg border-0 mb-4">
-            <div class="card-body p-4">
+            <div class="card-body m-2 p-4">
                 <h3 class="h4 card-title text-purple mb-4">
                     <i class="fas fa-clock me-2"></i>Pending Received Requests
                 </h3>
@@ -125,7 +125,7 @@
     {% if pending_sent_requests %}
     <div class="col-md-6">
         <div class="card shadow-lg border-0 mb-4">
-            <div class="card-body p-4">
+            <div class="card-body m-2 p-4">
                 <h3 class="h4 card-title mb-4 text-blue">
                     <i class="fas fa-clock me-2"></i>Pending Sent Requests
                 </h3>
@@ -165,7 +165,7 @@
 <!-- Friends Grid -->
 
 <div class="card shadow-lg mb-5 border-0 mx-4">
-        <div class="card-body p-4">
+        <div class="card-body m-2 p-4">
         <h3 class="h4 card-title mb-4 text-blue">
             <i class="fas fa-users me-2"></i>Friends
         </h3>

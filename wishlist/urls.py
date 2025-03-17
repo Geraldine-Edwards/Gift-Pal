@@ -11,4 +11,5 @@ router.register(r'items', WishlistItemViewSet, basename='wishlistitem')
 urlpatterns = [
     path('', wishlist, name='wishlist'),
     path('api/', include(router.urls)),
+    
 ]

@@ -21,7 +21,7 @@
         <div class="col-lg-4">
             <!-- Profile Header -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body text-center">
+                <div class="card-body text-center m-2">
                     <div class="profile-avatar-wrapper position-relative d-inline-block">
                         {% if myaccount.profile_image %}
                         <img src="{{ myaccount.profile_image.url }}" class="rounded-circle avatar-img shadow"
@@ -63,7 +63,7 @@
 
             <!-- About Me Section -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body mb-2">
+                <div class="card-body m-2 mb-2">
                     <h3 class="h4 card-title mb-3 text-pink">
                         <i class="fas fa-info-circle me-2"></i>About Me
                     </h3>
@@ -134,7 +134,7 @@
 
             <!-- Friends List -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body">
+                <div class="card-body m-2">
                     <h3 class="h4 card-title text-purple mb-3">
                         <i class="fas fa-users me-2"></i>Friends
                     </h3>
@@ -165,7 +165,7 @@
 
             <!-- Upcoming Events Card -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body">
+                <div class="card-body m-2">
                     <h3 class="h4 card-title mb-4 text-pink">
                         <i class="fas fa-calendar-alt me-2"></i> My Upcoming Events
                     </h3>
@@ -212,7 +212,7 @@
 
             <!-- Wishlist Card -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body">
+                <div class="card-body m-2">
                     <h3 class="h4 card-title mb-4 text-blue">
                         <i class="fas fa-gift me-2"></i>My Wishlist
                     </h3>
@@ -237,7 +237,11 @@
                                                 <small>
                                                     Reserved by:
                                                     {% if item.reserved_by %}
-                                                    <span class="text-blue fw-bold"> {{ item.reserved_by.username }}</span>
+                                                    <div class="list-group-item d-flex align-items-center">
+                                                        <img src="{{ friend.myaccount.profile_image.url|default:'https://res.cloudinary.com/dqm93egis/image/upload/v1738488445/nobody_l7bbqh.jpg' }}"
+                                                            class="rounded-circle me-3" width="20" height="20" alt="{{ friend.username }}">
+                                                        <span>{{ friend.username }}</span>
+                                                    </div>
                                                     {% else %}
                                                     <span class="text-muted">No reservation for this items yet.</span>
                                                     {% endif %}
@@ -268,7 +272,7 @@
 
             <!-- Reserved Gifts Section -->
             <div class="card shadow-lg border-0 mb-4">
-                <div class="card-body">
+                <div class="card-body m-2">
                     <h3 class="h4 card-title mb-4 text-purple">
                         <i class="fas fa-gift me-2"></i>Friends' Gifts I've reserved
                     </h3>
