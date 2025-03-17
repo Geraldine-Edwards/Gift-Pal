@@ -165,35 +165,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Move Items to "Uncategorized" and Delete Category
-    document.getElementById('moveItemsToUncategorized').addEventListener('click', function () {
-        const categoryId = document.getElementById('deleteCategoryId').value;
-
-        if (categoryId) {
-            fetch(`/wishlist/api/categories/${categoryId}/move_items_to_uncategorized/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Close the modal
-                        const deleteCategoryModal = bootstrap.Modal.getInstance(document.getElementById('deleteCategoryModal'));
-                        deleteCategoryModal.hide();
-
-                        // Refresh the page
-                        window.location.reload();
-                    } else {
-                        alert('Error moving items to "Uncategorized".');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    });
-
-    // Delete Everything (Category and Items)
+    
+    // Delete Category (and Items)
     document.getElementById('deleteEverything').addEventListener('click', function () {
         const categoryId = document.getElementById('deleteCategoryId').value;
 
@@ -230,6 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('deleteCategoryId').value = '';
     });
 
+    
     // Edit Item: Populate Modal
     document.querySelectorAll('.edit-item').forEach(button => {
         button.addEventListener('click', function () {
@@ -298,6 +272,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Error updating item: ' + error.message);
             });
     });
+
+    // Handle the "X" button and other modal closing events for the Edit Item Modal
+    document.getElementById('editItemModal').addEventListener('hidden.bs.modal', function () {
+        console.log('Edit Item Modal closed');
+        // Remove the backdrop manually if it persists
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(backdrop => backdrop.remove());
+    });
+
 
     // Delete Item: Show Modal
     document.querySelectorAll('.delete-item').forEach(button => {

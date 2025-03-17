@@ -22,26 +22,6 @@ class WishlistCategoryViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save()  # Save the updated category
 
-    # Custom action to move items to "Uncategorized" and delete the category
-    @action(detail=True, methods=['post'])
-    def move_items_to_uncategorized(self, request, pk=None):
-        category = self.get_object()  # Get the category to be deleted
-
-        # Find or create an "Uncategorized" category for the user
-        uncategorized_category, created = WishlistCategory.objects.get_or_create(
-            user=request.user,
-            name="Uncategorized",
-            defaults={'occasion_date': None}  # Optional: Set a default occasion date
-        )
-
-        # Move all items to the "Uncategorized" category
-        WishlistItem.objects.filter(category=category).update(category=uncategorized_category)
-
-        # Delete the original category
-        category.delete()
-
-        return Response({'success': True}, status=status.HTTP_200_OK)
-    
 
 class WishlistItemViewSet(viewsets.ModelViewSet):
     serializer_class = WishlistItemSerializer
