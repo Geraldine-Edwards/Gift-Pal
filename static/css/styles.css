@@ -3,7 +3,6 @@
 
 /* CSS Variables for Light and Dark Modes */
 :root,
-:root,
 [data-theme="light"] {
     --primary-color: #e83283;
     --secondary-color: #3a8fd9;

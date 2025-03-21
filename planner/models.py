@@ -8,6 +8,7 @@ class Planner(models.Model):
     description = models.TextField(null=True, blank=True)
     start = models.DateTimeField(null=True, blank=True)
     end = models.DateTimeField(null=True, blank=True)
+    all_day = models.BooleanField(default=False)
     color = models.CharField(max_length=50, default='#3788d8')  # Default color for events
     reminder = models.DateTimeField(null=True, blank=True)  # Reminder for the event
     created_at = models.DateTimeField(auto_now_add=True)

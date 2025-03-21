@@ -1,52 +1,88 @@
-
-.fc {
-    font-family: inherit;
-}
-
-.fc-toolbar-title {
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
+/* FullCalendar header buttons */
 .fc-button-primary {
-    background-color: var(--primary-color) !important;
-    border-color: var(--primary-color) !important;
+    background-color: var(--primary-color) !important; /* Use primary color */
+    border-color: var(--primary-color) !important; /* Use primary color */
+    color: var(--white) !important; /* Use white text */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease !important; /* Add smooth transitions */
 }
 
+.fc-button-primary:hover {
+    background-color: var(--primary-color) !important; /* Keep primary color on hover */
+    border-color: var(--primary-color) !important; /* Keep primary color on hover */
+    color: var(--white) !important; /* Keep white text on hover */
+    transform: scale(1.1) !important; /* Add scale effect on hover */
+}
+
+.fc-button-primary:active,
+.fc-button-primary.fc-button-active {
+    background-color: var(--white) !important; /* Use white background for active state */
+    border-color: var(--primary-color) !important; /* Use primary color for border */
+    color: var(--primary-color) !important; /* Use primary color for text */
+}
+
+/* FullCalendar dark mode adjustments */
+[data-theme="dark"] .fc-button-primary {
+    background-color: var(--primary-color) !important; /* Use primary color */
+    border-color: var(--primary-color) !important; /* Use primary color */
+    color: var(--white) !important; /* Use white text */
+}
+
+[data-theme="dark"] .fc-button-primary:hover {
+    background-color: var(--primary-color) !important; /* Keep primary color on hover */
+    border-color: var(--primary-color) !important; /* Keep primary color on hover */
+    color: var(--white) !important; /* Keep white text on hover */
+    transform: scale(1.1) !important; /* Add scale effect on hover */
+}
+
+[data-theme="dark"] .fc-button-primary:active,
+[data-theme="dark"] .fc-button-primary.fc-button-active {
+    background-color: var(--gray-dark) !important; /* Use gray-dark background for active state */
+    border-color: var(--primary-color) !important; /* Use primary color for border */
+    color: var(--primary-color) !important; /* Use primary color for text */
+}
+
+
+/* FullCalendar event styles */
 .fc-event {
-    background-color: var(--primary-color);
-    border: none;
-    border-radius: 0.5rem;
-    padding: 0.25rem 0.5rem;
+    background-color: var(--primary-color); /* Use primary color for events */
+    border-color: var(--primary-color); /* Use primary color for event borders */
+    color: var(--white); /* Use white text for events */
+    border-radius: 4px; /* Rounded corners */
+    padding: 2px 4px; /* Add padding for better spacing */
+    margin-bottom: 2px; /* Add margin between events */
+}
+
+.fc-event:hover {
+    background-color: var(--secondary-color); /* Use secondary color for event hover */
+    border-color: var(--secondary-color);
+}
+
+/* Month View: Compact layout */
+.fc-daygrid-event {
+    font-size: 12px; /* Smaller font size for month view */
 }
 
 .fc-daygrid-event-dot {
-    display: none;
+    display: none; /* Hide the event dot */
 }
 
-.event-badge {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--primary-color);
+/* Week and Day Views: More detailed layout */
+.fc-timegrid-event {
+    font-size: 14px; /* Larger font size for week/day view */
+    padding: 4px 8px; /* Add more padding for better readability */
+}
+
+/* Tooltip styles */
+.tippy-box[data-theme="custom"] {
+    background-color: #333;
     color: white;
-    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
 }
 
-.modal-content {
-    border-radius: 1rem;
-    border: none;
-}
-
-.fc-event-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 8px;
+.tippy-box[data-theme="custom"] .tippy-arrow {
+    color: #333;
 }
 
 /* Responsive Design */
@@ -55,72 +91,18 @@
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .fc-header-toolbar .fc-toolbar-chunk {
         display: flex;
         justify-content: center;
     }
-}
 
+    /* Adjust event font size for smaller screens */
+    .fc-daygrid-event {
+        font-size: 10px;
+    }
 
-
-/* OLD CSS */
-/* Planner */
-
-.fc-event .event-profile-thumbnail {
-    width: 24px !important;        /* Force width */
-    height: 24px !important;       /* Force height */
-    border-radius: 50% !important; /* Circular shape */
-    object-fit: cover;             /* Prevent stretching */
-    margin-right: 8px;             /* Spacing between image and text */
-    display: inline-block;         /* Align with text */
-    vertical-align: middle;        /* Center vertically */
-}
-
-/* Optional: Add hover animation */
-.fc-event .event-profile-thumbnail:hover {
-    transform: scale(1.1);
-    transition: transform 0.2s ease-in-out;
-}
-
-/* Tooltip styling */
-.profile-thumbnail-container {
-    position: relative;
-    display: inline-block;
-    margin-right: 8px;
-}
-
-.profile-tooltip {
-    visibility: hidden;
-    background-color: rgba(0,0,0,0.8);
-    color: white;
-    text-align: center;
-    border-radius: 4px;
-    padding: 4px 8px;
-    position: absolute;
-    z-index: 1000;
-    bottom: 125%; /* Position above the image */
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.profile-thumbnail-container:hover .profile-tooltip {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* Arrow for tooltip */
-.profile-tooltip::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+    .fc-timegrid-event {
+        font-size: 12px;
+    }
 }

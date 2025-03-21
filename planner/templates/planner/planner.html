@@ -7,24 +7,29 @@
 <link rel="stylesheet" href="{% static 'css/planner.css' %}">
 
 <div class="container py-5">
+    <!-- Page Header -->
     <div class="text-center mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-5">
         <h1 class="display-4 fw-bold title mb-3">
-            <i class="fas fa-calendar-alt me-2"></i>Event Planner
+            <i class="fas fa-calendar-alt me-2"></i> Event Planner
         </h1>
-    </div>
-    <div class="text-end mb-4">
-        <button type="button" class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#eventModal">
-            <i class="fas fa-plus me-2"></i>Add Event
-        </button>
+        <p class="lead">Create and manage events then share them with your friends!</p>
     </div>
 
-  
-    <div class="card border-0 p-3" id="calendar"></div>
-</div>
+    <div class="card shadow-lg border-0 mb-4">
+        <div class="card-body text-center my-2">
+            <i class="fa-solid fa-calendar-plus fa-3x text-pink mb-3"></i>
+            <h3 class="h4 card-title mb-3">Start Planning</h3>
+            <p class="card-text">You can add or edit items in your existing categories, or create a new categories to
+                organize more items.</p>
+                <button type="button" class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#eventModal">
+                <i class="fas fa-plus me-2"></i>Add event
+            </button>
+        </div>
+    </div>
 
-</div>
-</div>
+        <!-- Calendar Container -->
+        <div class="card border-0 p-3 shadow-lg" id="calendar"></div>
+    </div>
 </div>
 
 <!-- Event Modal -->
@@ -63,6 +68,10 @@
                         <label for="eventDescription" class="form-label fw-bold">Description</label>
                         <textarea class="form-control" id="eventDescription" rows="3"></textarea>
                     </div>
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="eventAllDay">
+                        <label class="form-check-label" for="eventAllDay">All-Day Event</label>
+                    </div>
                     <input type="hidden" id="eventId">
                 </form>
             </div>
@@ -84,11 +93,9 @@
 
 {% block scripts %}
 <script>
-    // Define the URLs for fetching, adding, and editing events
-    const getEventsUrl = "{% url 'planner:get_events' %}";
-    const addEventUrl = "{% url 'planner:add_event' %}";
-    const editEventUrl = "{% url 'planner:edit_event' 0 %}";  // Placeholder for event ID
-    const deleteEventUrl = "{% url 'planner:delete_event' 0 %}";  // Placeholder for event ID
+    // Define the DRF endpoints
+    const getEventsUrl = "{% url 'planner:event-list' %}";  // List/Create events
+    const eventDetailUrl = "{% url 'planner:event-detail' 0 %}";  // Retrieve/Update/Delete events (0 is a placeholder)
 </script>
 <script src="{% static 'js/planner.js' %}"></script>
 {% endblock %}

@@ -1,12 +1,17 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from django.views.generic import TemplateView
+from rest_framework.routers import DefaultRouter
+from .views import PlannerViewSet
 
 app_name = 'planner'
 
+router = DefaultRouter()
+router.register(r'events', PlannerViewSet, basename='event')
+
 urlpatterns = [
-    path('', views.planner_view, name='planner_view'),
-    path('get-events/', views.get_events, name='get_events'),
-    path('add-event/', views.add_event, name='add_event'),
-    path('edit/<int:event_id>/', views.edit_event, name='edit_event'),
-    path('delete/<int:event_id>/', views.delete_event, name='delete_event'),
+    # Serve the planner.html template
+    path('', TemplateView.as_view(template_name='planner/planner.html'), name='planner_view'),
+    
+    # Include DRF router URLs
+    path('api/', include(router.urls)),
 ]

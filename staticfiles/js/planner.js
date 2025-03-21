@@ -1,4 +1,3 @@
-
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -22,47 +21,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const eventTitle = document.getElementById('eventTitle');
     const eventStart = document.getElementById('eventStart');
     const eventEnd = document.getElementById('eventEnd');
+    const eventAllDay = document.getElementById('eventAllDay');
     const eventDescription = document.getElementById('eventDescription');
     const eventColor = document.getElementById('eventColor');
     const eventId = document.getElementById('eventId');
     const saveEventButton = document.getElementById('saveEvent');
     const deleteEventButton = document.getElementById('deleteEvent');
 
-    
-    // Enhanced calendar initialization with error handling
-        function initializeCalendar() {
-        fetch(getEventsUrl)
-            .then(response => {
-                if (!response.ok) {
-                    console.error('Server error:', response.status);
-                    showCalendarError();
-                    return Promise.reject('Failed to load events');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Received events data:', data);  // Debugging log
-                
-                // Handle both {events: [...]} and direct array responses
-                const eventsArray = data.events || data;
-                
-                if (!Array.isArray(eventsArray)) {
-                    console.error('Invalid events data format:', data);
-                    showCalendarError();
-                    return;
-                }
-
-                initFullCalendar(eventsArray);
-            })
-            .catch(error => {
-                console.error('Error initializing calendar:', error);
-                showCalendarError();
-            });
+    // Function to calculate contrasting text color
+    function getContrastColor(hexColor) {
+        const r = parseInt(hexColor.slice(1, 3), 16);
+        const g = parseInt(hexColor.slice(3, 5), 16);
+        const b = parseInt(hexColor.slice(5, 7), 16);
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        return luminance > 0.5 ? '#000000' : '#ffffff';
     }
 
-    function initFullCalendar(events) {
-        if (calendar) calendar.destroy();
-        
+    // Initialize FullCalendar
+    function initializeCalendar() {
         calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
@@ -72,204 +48,250 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             editable: true,
             selectable: true,
+            eventOverlap: true, // Allow events to overlap
+            slotEventOverlap: true, // Allow events to overlap in time slots
             eventTimeFormat: {
                 hour: 'numeric',
                 minute: '2-digit',
                 hour12: true,
                 meridiem: 'short'
             },
+            events: fetchEvents,  // Fetch events from the server
+            dateClick: info => openModal(null, info.dateStr), // Open modal for new event
+            eventClick: info => openModal(info.event), // Open modal for editing event
             eventDidMount: function (info) {
-                // Set background and border colors
-                info.el.style.backgroundColor = info.event.backgroundColor;
-                info.el.style.borderColor = info.event.backgroundColor;
+                const event = info.event;
+                const username = event.extendedProps.username;
+                const profileImage = event.extendedProps.profile_image;
+                const eventColor = event.backgroundColor || '#e83e8c';
+                const textColor = getContrastColor(eventColor);
             
-                // Check if the view is 'dayGridMonth'
-                if (info.view.type === 'dayGridMonth') {
-                    // Create a dot element
-                    const dot = document.createElement('div');
-                    dot.className = 'fc-event-dot';
-                    dot.style.backgroundColor = info.event.backgroundColor;
+                // Set the event's background color
+                info.el.style.backgroundColor = eventColor;
             
-                    // Safely prepend the dot to the event's content
-                    const eventContent = info.el.querySelector('.fc-event-main');
-                    if (eventContent) {
-                        eventContent.prepend(dot);
+                // Add profile image and start time
+                const eventContent = info.el.querySelector('.fc-event-main');
+                if (eventContent) {
+                    let content = '';
+            
+                    // Month View: Profile image and start time
+                    if (info.view.type === 'dayGridMonth') {
+                        const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                        content = `
+                            <div class="d-flex align-items-center">
+                                <img src="${profileImage}" class="rounded-circle me-2" width="20" height="20" alt="${username}">
+                                <span class="small" style="color: ${textColor};">${startTime}</span>
+                            </div>
+                        `;
+                    }
+                    // Week View: Profile image and start time
+                    else if (info.view.type === 'timeGridWeek') {
+                        const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                        content = `
+                            <div class="d-flex align-items-center">
+                                <img src="${profileImage}" class="rounded-circle me-2" width="20" height="20" alt="${username}">
+                                <span class="small" style="color: ${textColor};">${startTime}</span>
+                            </div>
+                        `;
+                    }
+                    // Day View: Full event details
+                    else if (info.view.type === 'timeGridDay') {
+                        const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                        const endTime = event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                        content = `
+                            <div class="d-flex align-items-center">
+                                <img src="${profileImage}" class="rounded-circle me-2" width="20" height="20" alt="${username}">
+                                <div>
+                                    <span class="small" style="color: ${textColor}; font-weight: bold;">${event.title}</span><br>
+                                    <span class="small" style="color: ${textColor};">${startTime} - ${endTime}</span><br>
+                                    <span class="small" style="color: ${textColor};">${event.extendedProps.description || ''}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+            
+                    eventContent.innerHTML = content;
+                }
+            
+                // Prepare tooltip content (only for month and week views)
+                if (info.view.type === 'dayGridMonth' || info.view.type === 'timeGridWeek') {
+                    let tooltipContent = `<strong>${event.title}</strong><br>`;
+            
+                    if (event.allDay) {
+                        tooltipContent += 'All Day<br>';
                     } else {
-                        // Fallback: Append the dot directly to the event element
-                        info.el.prepend(dot);
+                        const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                        const endTime = event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                        tooltipContent += `${startTime} - ${endTime}<br>`;
+                    }
+            
+                    if (event.extendedProps.description) {
+                        tooltipContent += `${event.extendedProps.description}<br>`;
+                    }
+            
+                    // Initialize Tippy.js for tooltips
+                    if (window.tippy) {
+                        tippy(info.el, {
+                            content: tooltipContent,
+                            allowHTML: true,
+                            placement: 'top',
+                            theme: 'light',
+                            arrow: true,
+                        });
                     }
                 }
-            },
-            events: events.map(event => ({
-                id: event.id,
-                title: event.title,
-                start: event.start,
-                end: event.end,
-                backgroundColor: event.color || '#686dc3',
-                extendedProps: {
-                    description: event.description || '',
-                    is_friend: event.is_friend,
-                    profile_image: event.profile_image,
-                    user: event.user
-                }
-            })),
-            dateClick: info => openModal(null, info.dateStr),
-            eventClick: info => openModal(info.event)
+            }
         });
-        
+
         calendar.render();
     }
 
-    function showCalendarError() {
-        calendarEl.innerHTML = '<div class="alert alert-danger mt-3">Could not load calendar events. Please refresh the page.</div>';
+    // Fetch events from the server
+    function fetchEvents(fetchInfo, successCallback, failureCallback) {
+        fetch(getEventsUrl)  // Use the DRF endpoint
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch events');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const events = data.map(event => ({
+                    id: event.id,
+                    title: event.title,
+                    start: event.start,
+                    end: event.end,
+                    allDay: event.all_day,
+                    color: event.color,
+                    description: event.description,
+                    username: event.username,  // Include friend's username
+                    profile_image: event.profile_image,  // Include friend's profile image
+                }));
+                successCallback(events);
+            })
+            .catch(error => {
+                console.error('Error fetching events:', error);
+                failureCallback(error);
+            });
     }
 
-    // Improved form submission handling
-        saveEventButton.addEventListener('click', function () {
-
-        // Clear previous validation states
-        eventTitle.classList.remove('is-invalid');
-        eventStart.classList.remove('is-invalid');
-
-        // Validate required fields
-        if (!eventTitle.value || !eventStart.value) {
-            if (!eventTitle.value) eventTitle.classList.add('is-invalid');
-            if (!eventStart.value) eventStart.classList.add('is-invalid');
-            alert('Please fill out all required fields (Title and Start Date).');
-            return;
-        }
-
-        // Convert local datetime to UTC ISO strings
-        const startDate = eventStart.value ? new Date(eventStart.value) : null;
-        const endDate = eventEnd.value ? new Date(eventEnd.value) : null;
-
-        const eventData = {
-            id: eventId.value,
-            title: eventTitle.value,
-            start: eventStart.value,
-            end: eventEnd.value || null,
-            description: eventDescription.value.trim(),
-            color: eventColor.value
-        };
-
-        const url = eventData.id 
-            ? editEventUrl.replace('0', eventData.id)
-            : addEventUrl;
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify(eventData)
-        })
-        .then(async response => {
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message || 'Unknown error');
-            }
-            return data;
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                console.log("Event saved successfully!");
-                eventModal.hide();
-                calendar.refetchEvents();
-            } else {
-                throw new Error(data.message || 'Unknown error occurred');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert(`Failed to save event: ${error.message}`);
-            // Highlight problematic fields
-            if (error.message.includes('start')) eventStart.classList.add('is-invalid');
-            if (error.message.includes('end')) eventEnd.classList.add('is-invalid');
-        });
-    });
-
-    
-    // Enhanced delete handling
-        deleteEventButton.addEventListener('click', function () {
-        if (!confirm('Are you sure you want to delete this event?')) return;
-
-        const url = deleteEventUrl.replace('0', eventId.value);
-
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            }
-        })
-        .then(async response => {
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message || 'Delete failed');
-            }
-            return data;
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                console.log("Event deleted successfully");
-                eventModal.hide();
-                calendar.refetchEvents();
-            } else {
-                throw new Error(data.message || 'Delete failed');
-            }
-        })
-        .catch(error => {
-            console.error('Delete error:', error);
-            alert(`Delete failed: ${error.message}`);
-        });
-    });
-
+    function fetchEvents(fetchInfo, successCallback, failureCallback) {
+        fetch(getEventsUrl)  // Use the DRF endpoint
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch events');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const events = data.map(event => ({
+                    id: event.id,
+                    title: event.title,
+                    start: event.start,
+                    end: event.end,
+                    allDay: event.all_day,
+                    color: event.color,
+                    description: event.description,
+                    username: event.username,  // Include friend's username
+                    profile_image: event.profile_image,  // Include friend's profile image
+                }));
+                successCallback(events);
+            })
+            .catch(error => {
+                console.error('Error fetching events:', error);
+                failureCallback(error);
+            });
+    }
+    // Open the modal for adding or editing an event
     function openModal(event, dateStr) {
         if (event) {
             // Editing an existing event
             eventId.value = event.id;
             eventTitle.value = event.title;
-            
-            // Convert UTC dates to local timezone for the datetime inputs
-            if (event.start) {
-                const startDate = new Date(event.start);
-                eventStart.value = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000))
-                    .toISOString()
-                    .slice(0, 16);  // Format: YYYY-MM-DDTHH:mm
-            } else {
-                eventStart.value = '';
-            }
-    
-            if (event.end) {
-                const endDate = new Date(event.end);
-                eventEnd.value = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000))
-                    .toISOString()
-                    .slice(0, 16);  // Format: YYYY-MM-DDTHH:mm
-            } else {
-                eventEnd.value = '';
-            }
-    
-            // Populate other fields
+            eventStart.value = event.start ? event.start.toISOString().slice(0, 16) : '';
+            eventEnd.value = event.end ? event.end.toISOString().slice(0, 16) : '';
+            eventAllDay.checked = event.allDay || false;
             eventDescription.value = event.extendedProps.description || '';
-            eventColor.value = event.backgroundColor || '#686dc3';
+            eventColor.value = event.backgroundColor || '#3788d8';
             deleteEventButton.style.display = 'inline-block';
         } else {
             // Adding a new event
             eventId.value = '';
             eventTitle.value = '';
-            eventStart.value = dateStr ? 
-                new Date(new Date(dateStr).getTime() - (new Date(dateStr).getTimezoneOffset() * 60000))
-                    .toISOString()
-                    .slice(0, 16) : '';  // Format: YYYY-MM-DDTHH:mm
+            eventStart.value = dateStr ? new Date(dateStr).toISOString().slice(0, 16) : '';
             eventEnd.value = '';
+            eventAllDay.checked = false;
             eventDescription.value = '';
-            eventColor.value = '#686dc3';  // Default color
+            eventColor.value = '#3788d8';
             deleteEventButton.style.display = 'none';
         }
+        eventModal.show();
     }
-    // Initialize calendar when page loads
-    initializeCalendar();
-    
-});
 
+    // Save or update an event
+    saveEventButton.addEventListener('click', function () {
+        const eventData = {
+            title: eventTitle.value,
+            start: eventStart.value,
+            end: eventEnd.value || null,
+            all_day: eventAllDay.checked,
+            color: eventColor.value,
+            description: eventDescription.value,
+        };
+
+        const url = eventId.value ? eventDetailUrl.replace('0', eventId.value) : getEventsUrl;
+        const method = eventId.value ? 'PUT' : 'POST';
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify(eventData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.detail || 'Failed to save event');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Event saved:', data);
+                eventModal.hide();
+                calendar.refetchEvents();
+            })
+            .catch(error => {
+                console.error('Error saving event:', error);
+                alert('Failed to save event. Please try again.');
+            });
+    });
+
+    // Delete an event
+    deleteEventButton.addEventListener('click', function () {
+        if (!confirm('Are you sure you want to delete this event?')) return;
+
+        fetch(eventDetailUrl.replace('0', eventId.value), {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete event');
+                }
+                eventModal.hide();
+                calendar.refetchEvents();
+            })
+            .catch(error => {
+                console.error('Error deleting event:', error);
+                alert('Failed to delete event. Please try again.');
+            });
+    });
+
+    // Initialize the calendar when the page loads
+    initializeCalendar();
+});

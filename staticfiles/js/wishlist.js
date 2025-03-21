@@ -36,14 +36,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('Error: ' + JSON.stringify(data));
                 }
             })
-            .catch(error => console.error('Error:', error));
+            
     });
 
     // Set the category ID when the "Add Item" button is clicked
     document.querySelectorAll('[data-bs-target="#addItemModal"]').forEach(button => {
         button.addEventListener('click', function () {
             const categoryId = this.dataset.categoryId;
-            console.log('Category ID:', categoryId);
+            
             document.getElementById('itemCategoryId').value = categoryId;
         });
     });
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('Error: ' + JSON.stringify(data));
                 }
             })
-            .catch(error => console.error('Error:', error));
+            
     });
 
     // Edit Category: Populate Modal
@@ -92,11 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const categoryId = this.dataset.categoryId;
             const categoryName = this.dataset.categoryName;
             const occasionDate = this.dataset.occasionDate;
-
-            // Debugging: Log the retrieved data
-            console.log('Category ID:', categoryId);
-            console.log('Category Name:', categoryName);
-            console.log('Occasion Date:', occasionDate);
 
             // Populate the form fields
             document.getElementById('editCategoryName').value = categoryName;
@@ -146,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                
                 alert('Error updating category: ' + error.message);
             });
     });
@@ -189,13 +184,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         alert('Error deleting category and items.');
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                
         }
     });
 
     // Handle the "X" button and other modal closing events for the Delete Category Modal
     document.getElementById('deleteCategoryModal').addEventListener('hidden.bs.modal', function () {
-        console.log('Delete Category Modal closed');
+        
         // Remove the backdrop manually if it persists
         const backdrops = document.querySelectorAll('.modal-backdrop');
         backdrops.forEach(backdrop => backdrop.remove());
@@ -203,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('deleteCategoryId').value = '';
     });
 
-    
+
     // Edit Item: Populate Modal
     document.querySelectorAll('.edit-item').forEach(button => {
         button.addEventListener('click', function () {
@@ -226,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
                     editItemModal.show();
                 })
-                .catch(error => console.error('Error fetching item data:', error));
+                
         });
     });
 
@@ -268,14 +263,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                
                 alert('Error updating item: ' + error.message);
             });
     });
 
     // Handle the "X" button and other modal closing events for the Edit Item Modal
     document.getElementById('editItemModal').addEventListener('hidden.bs.modal', function () {
-        console.log('Edit Item Modal closed');
+        
         // Remove the backdrop manually if it persists
         const backdrops = document.querySelectorAll('.modal-backdrop');
         backdrops.forEach(backdrop => backdrop.remove());
@@ -319,13 +314,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         alert('Error deleting item.');
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                
         }
     });
 
     // Handle the "X" button and other modal closing events for the Delete Item Modal
     document.getElementById('deleteItemModal').addEventListener('hidden.bs.modal', function () {
-        console.log('Delete Item Modal closed');
+        
         // Remove the backdrop manually if it persists
         const backdrops = document.querySelectorAll('.modal-backdrop');
         backdrops.forEach(backdrop => backdrop.remove());

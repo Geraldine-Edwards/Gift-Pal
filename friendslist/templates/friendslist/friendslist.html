@@ -17,9 +17,11 @@
     </div>
 
     <!-- Search Card -->
-    <div class="card shadow-lg mb-5 border-0">
-        <div class="card-body m-2 p-4">
-            <h3 class="h4 card-title mb-4 text-pink"><i class="fas fa-search me-2"></i>Find Friends</h3>
+    <div class="card shadow-lg border-0 mb-4">
+        <div class="card-body text-center my-2">
+            <i class="fa-solid fa-search fa-3x text-pink mb-3"></i>
+            <h3 class="h4 card-title mb-3">Find Friends</h3>
+            <p class="card-text">Start searching for friends to see their wishlist items and events.</p>
             <form method="GET" action="{% url 'friendslist:friendslist' %}" class="input-group">
                 <input type="text" name="search_query" class="form-control form-control-lg"
                     placeholder="Search by username..." value="{{ search_query }}">
@@ -29,7 +31,7 @@
             </form>
         </div>
     </div>
-
+</div>
     <!-- Search Results -->
     {% if search_results %}
     <div class="card shadow-lg border-0 mb-5">
@@ -208,7 +210,4 @@
     </div>
 </div>
 
-
-<!-- Link to your custom JavaScript -->
-<script src="{% static 'js/friendsearch.js' %}"></script>
 {% endblock %}
