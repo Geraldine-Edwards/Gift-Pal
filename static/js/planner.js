@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             editable: true,
             selectable: true,
-            eventOverlap: true, // Allow events to overlap
-            slotEventOverlap: true, // Allow events to overlap in time slots
+            eventOverlap: false, // Disable event overlap
+            slotEventOverlap: false, // Disable slot overlap
             eventTimeFormat: {
                 hour: 'numeric',
                 minute: '2-digit',
@@ -57,66 +57,83 @@ document.addEventListener('DOMContentLoaded', function () {
                 meridiem: 'short'
             },
             events: fetchEvents,  // Fetch events from the server
+            eventContent: function (arg) {
+                // Custom event content
+                const event = arg.event;
+                const username = event.extendedProps.username;
+                const profileImage = event.extendedProps.profile_image;
+                const eventColor = event.backgroundColor || '#e83e8c'; // Use the event's background color
+                const textColor = getContrastColor(eventColor);
+
+                // Month View: Profile image and start time
+                if (arg.view.type === 'dayGridMonth') {
+                    const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    return {
+                        html: `
+                            <div class="d-flex align-items-center" style="background-color: ${eventColor}; width: 100%; padding: 2px; border-radius: 4px;">
+                                <img src="${profileImage}" class="rounded-circle me-2" width="12" height="12" alt="${username}">
+                                <span class="small me-2" style="color: ${textColor}; font-weight: bold;">${username}</span>
+                                <span class="small" style="color: ${textColor};">${startTime}</span>
+                            </div>
+                        `,
+                    };
+                }
+
+                // Week View: Profile image and start time
+                else if (arg.view.type === 'timeGridWeek') {
+                    const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    return {
+                        html: `
+                            <div class="d-flex align-items-center" style="background-color: ${eventColor}; width: 100%; padding: 4px; border-radius: 4px;">
+                                <img src="${profileImage}" class="rounded-circle me-2" width="16" height="16" alt="${username}">
+                                <span class="small" style="color: ${textColor}; font-weight: bold;">${username}</span>
+                            </div>
+                        `,
+                    };
+                }
+
+                // Day View: Full event details
+                else if (arg.view.type === 'timeGridDay') {
+                    const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    const endTime = event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    return {
+                        html: `
+                            <div class="d-flex align-items-center" style="background-color: ${eventColor}; width: 100%; padding: 4px; border-radius: 4px;">
+                                <img src="${profileImage}" class="rounded-circle me-2" width="20" height="20" alt="${username}">
+                                <div>
+                                    <span class="small me-2" style="color: ${textColor}; font-weight: bold;">${username}</span><br>
+                                    <span class="small" style="color: ${textColor}; font-weight: bold;">${event.title}</span><br>
+                                    <span class="small" style="color: ${textColor};">${event.extendedProps.description || ''}</span>
+                                </div>
+                            </div>
+                        `,
+                    };
+                }
+            },
             dateClick: info => openModal(null, info.dateStr), // Open modal for new event
             eventClick: info => openModal(info.event), // Open modal for editing event
             eventDidMount: function (info) {
                 const event = info.event;
-                const username = event.extendedProps.username;
-                const profileImage = event.extendedProps.profile_image;
-                const eventColor = event.backgroundColor || '#e83e8c';
-                const textColor = getContrastColor(eventColor);
-            
-                // Set the event's background color
-                info.el.style.backgroundColor = eventColor;
-            
-                // Add profile image and start time
-                const eventContent = info.el.querySelector('.fc-event-main');
-                if (eventContent) {
-                    let content = '';
-            
-                    // Month View: Profile image and start time
-                    if (info.view.type === 'dayGridMonth') {
-                        const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                        content = `
-                            <div class="d-flex align-items-center">
-                                <img src="${profileImage}" class="rounded-circle me-2" width="20" height="20" alt="${username}">
-                                <span class="small" style="color: ${textColor};">${startTime}</span>
-                            </div>
-                        `;
+                const eventEl = info.el;
+
+                // Week View: Adjust event width and position
+                if (info.view.type === 'timeGridWeek') {
+                    
+
+                    // Check if this is the second event in the same time slot
+                    const siblingEvents = Array.from(info.el.parentElement.children);
+                    const eventIndex = siblingEvents.indexOf(info.el);
+
+                    if (eventIndex === 1) {
+                        // If this is the second event, align it to the right
+                        eventEl.style.marginLeft = 'auto';
                     }
-                    // Week View: Profile image and start time
-                    else if (info.view.type === 'timeGridWeek') {
-                        const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                        content = `
-                            <div class="d-flex align-items-center">
-                                <img src="${profileImage}" class="rounded-circle me-2" width="20" height="20" alt="${username}">
-                                <span class="small" style="color: ${textColor};">${startTime}</span>
-                            </div>
-                        `;
-                    }
-                    // Day View: Full event details
-                    else if (info.view.type === 'timeGridDay') {
-                        const startTime = event.start ? event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                        const endTime = event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                        content = `
-                            <div class="d-flex align-items-center">
-                                <img src="${profileImage}" class="rounded-circle me-2" width="20" height="20" alt="${username}">
-                                <div>
-                                    <span class="small" style="color: ${textColor}; font-weight: bold;">${event.title}</span><br>
-                                    <span class="small" style="color: ${textColor};">${startTime} - ${endTime}</span><br>
-                                    <span class="small" style="color: ${textColor};">${event.extendedProps.description || ''}</span>
-                                </div>
-                            </div>
-                        `;
-                    }
-            
-                    eventContent.innerHTML = content;
                 }
-            
-                // Prepare tooltip content (only for month and week views)
+
+                // Tooltip logic
                 if (info.view.type === 'dayGridMonth' || info.view.type === 'timeGridWeek') {
-                    let tooltipContent = `<strong>${event.title}</strong><br>`;
-            
+                    let tooltipContent = `<strong>${event.extendedProps.username}</strong><br><strong>${event.title}</strong><br>`;
+
                     if (event.allDay) {
                         tooltipContent += 'All Day<br>';
                     } else {
@@ -124,11 +141,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         const endTime = event.end ? event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
                         tooltipContent += `${startTime} - ${endTime}<br>`;
                     }
-            
+
                     if (event.extendedProps.description) {
                         tooltipContent += `${event.extendedProps.description}<br>`;
                     }
-            
+
                     // Initialize Tippy.js for tooltips
                     if (window.tippy) {
                         tippy(info.el, {
@@ -140,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                     }
                 }
-            }
+            },
         });
 
         calendar.render();
@@ -175,33 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    function fetchEvents(fetchInfo, successCallback, failureCallback) {
-        fetch(getEventsUrl)  // Use the DRF endpoint
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch events');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const events = data.map(event => ({
-                    id: event.id,
-                    title: event.title,
-                    start: event.start,
-                    end: event.end,
-                    allDay: event.all_day,
-                    color: event.color,
-                    description: event.description,
-                    username: event.username,  // Include friend's username
-                    profile_image: event.profile_image,  // Include friend's profile image
-                }));
-                successCallback(events);
-            })
-            .catch(error => {
-                console.error('Error fetching events:', error);
-                failureCallback(error);
-            });
-    }
     // Open the modal for adding or editing an event
     function openModal(event, dateStr) {
         if (event) {

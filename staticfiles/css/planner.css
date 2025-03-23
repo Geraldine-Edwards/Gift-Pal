@@ -41,35 +41,80 @@
     color: var(--primary-color) !important; /* Use primary color for text */
 }
 
-
-/* FullCalendar event styles */
+/* General event styling */
 .fc-event {
-    background-color: var(--primary-color); /* Use primary color for events */
-    border-color: var(--primary-color); /* Use primary color for event borders */
-    color: var(--white); /* Use white text for events */
-    border-radius: 4px; /* Rounded corners */
-    padding: 2px 4px; /* Add padding for better spacing */
-    margin-bottom: 2px; /* Add margin between events */
+    border: none !important; /* Remove default borders */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+    transition: opacity 0.2s ease; /* Smooth hover effect */
 }
 
 .fc-event:hover {
-    background-color: var(--secondary-color); /* Use secondary color for event hover */
-    border-color: var(--secondary-color);
+    opacity: 0.9; /* Slightly reduce opacity on hover */
 }
 
-/* Month View: Compact layout */
+/* Hide default event title */
+.fc-event-title {
+    display: none !important;
+}
+
+/* Month View: Full-width events */
 .fc-daygrid-event {
-    font-size: 12px; /* Smaller font size for month view */
+    width: 100% !important; /* Make the event span the full width of the cell */
+    margin: 0 !important; /* Remove any default margins */
+    border-radius: 0 !important; /* Remove rounded corners for a cleaner look */
+    padding: 2px 4px !important; /* Add some padding for spacing */
+    font-size: 12px !important; /* Smaller font size for month view */
 }
 
-.fc-daygrid-event-dot {
-    display: none; /* Hide the event dot */
+/* Ensure the event content aligns nicely */
+.fc-daygrid-event .fc-event-main {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the left */
+    gap: 4px; /* Space between the profile image and text */
 }
 
-/* Week and Day Views: More detailed layout */
+/* Adjust the profile image size for month view */
+.fc-daygrid-event .fc-event-main img {
+    width: 12px !important; /* Slightly larger for better visibility */
+    height: 12px !important;
+    flex-shrink: 0; /* Prevent the image from shrinking */
+}
+
+/* Ensure the text is readable and aligned */
+.fc-daygrid-event .fc-event-main span {
+    font-size: 12px !important; /* Consistent font size */
+    line-height: 1.2; /* Improve readability */
+}
+
+/* Week View: Custom event styling */
 .fc-timegrid-event {
-    font-size: 14px; /* Larger font size for week/day view */
-    padding: 4px 8px; /* Add more padding for better readability */
+    margin: 2px !important; /* Add a small margin for spacing */
+    border-radius: 4px !important; /* Keep rounded corners */
+    font-size: 12px !important; /* Smaller font size for better fit */
+    padding: 4px !important; /* Add padding for spacing */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+/* Ensure the event content aligns neatly */
+.fc-timegrid-event .fc-event-main {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the left */
+    gap: 4px; /* Space between the profile image and text */
+}
+
+/* Adjust the profile image size for week view */
+.fc-timegrid-event .fc-event-main img {
+    width: 16px !important; /* Slightly larger for better visibility */
+    height: 16px !important;
+    flex-shrink: 0; /* Prevent the image from shrinking */
+}
+
+/* Ensure the text is readable and aligned */
+.fc-timegrid-event .fc-event-main span {
+    font-size: 12px !important; /* Consistent font size */
+    line-height: 1.2; /* Improve readability */
 }
 
 /* Tooltip styles */
