@@ -1,19 +1,19 @@
 # Gift Pal - A Gift List Platform
-Updated version by Geraldine Edwards (Orginally created as a hackathon project named Gift Genie by: Phillip Kershaw, Christopher Matthew, Geraldine Edwards and Joanna O'Connor). 
+
+Updated version by Geraldine Edwards (Originally created as a hackathon project named Gift Genie by: Phillip Kershaw, Christopher Matthew, Geraldine Edwards and Joanna O'Connor).
 
 <img width="100%" alt="responsive screens landing page for the Gift Pal app" src="readme.docs/images/giftpal-lightmode.png">
-
 
 <br>
 <br>
 
 > [View live project here](https://gift-Pal-91413d2174b0.herokuapp.com/)
 
-Github links 
+Github links
+
 > [View "Gift Pal" Github repo here](https://github.com/Gerbil1511/Gift-Pal)
-> 
+>
 > [View original hackathon project "Gift Genie" Github repo here](https://github.com/Philgck/gifting-genie-two)
-> 
 
 Gift Pal is a dynamic and intuitive gifting management web application designed to help authenticated users manage their events and wishlist items, and connect with their friends to share and view profiles. Built with HTML, CSS, JavaScript, and Django, this app aims to streamline the process of organizing events, tracking desired gifts, and maintaining connections with friends, all in one place. Whether planning a birthday party, keeping track of gift ideas, or checking a friend's wishlist, Gift Pal makes the experience seamless and enjoyable. Gift Pal simplifies the process of managing gift lists and events while maintaining a social network of friends to share and celebrate with.
 
@@ -51,41 +51,133 @@ Gift Pal is a dynamic and intuitive gifting management web application designed 
 
 **Deployment:** Configured for deployment on Heroku for accessibility and scalability.
 
-
 ---
 
 ## CONTENTS
 
- - [User Experience](#user-experience)
-     - Database planning
-     - Purpose and intended audience     
-     - User stories
- - [Creation process](#creation-process)
-     - [Wireframes](#wireframes)
- - [Design](#design)
-     - Colour scheme
-     - Typography
-     - Imagery
- - [Website features](#website-features)
- - [Tablet/mobile view](#tablet/mobile-view)
- - [Future features](#future-features)
- - [Technologies used](#technologies-used)
- - [Ai Augmentation](#ai-augmentation) 
- - [Deployment](#deployment)
- - [Testing](#testing)
- - [Credits](#credits)
- ---
+- [User Experience](#user-experience)
+  - Database planning
+  - Purpose and intended audience
+  - User stories
+- [Creation process](#creation-process)
+  - [Wireframes](#wireframes)
+- [Design](#design)
+  - Colour scheme
+  - Typography
+  - Imagery
+- [Website features](#website-features)
+- [Tablet/mobile view](#tablet/mobile-view)
+- [Future features](#future-features)
+- [Technologies used](#technologies-used)
+- [Ai Augmentation](#ai-augmentation)
+- [Deployment](#deployment)
+- [Testing](#testing)
+- [Credits](#credits)
+
+---
+
  <br>
 
- ## USER EXPERIENCE
+## USER EXPERIENCE
 
+### Database Planning
 
-**User Model**
-The User model is the standard Django Allauth model
+---
+
+NB: The User model is the standard Django Allauth model
 
 **ERD of models Gift-Pal**
 
- ![Gift_Pal_ERD_screenshot](readme.docs/images/ERD.png)
+### User
+
+| Field    | Type   | Notes       |
+| -------- | ------ | ----------- |
+| id       | int    | Primary Key |
+| username | string |             |
+| email    | string |             |
+| ...      | ...    |             |
+
+---
+
+### WishlistCategory
+
+| Field         | Type   | Notes              |
+| ------------- | ------ | ------------------ |
+| id            | int    | Primary Key        |
+| name          | string |                    |
+| slug          | string |                    |
+| occasion_date | date   |                    |
+| user_id       | int    | Foreign Key → User |
+| ...           | ...    |                    |
+
+**Relationship:**  
+A `User` can have many `WishlistCategory` entries.
+
+---
+
+### WishlistItem
+
+| Field       | Type   | Notes                          |
+| ----------- | ------ | ------------------------------ |
+| id          | int    | Primary Key                    |
+| item_name   | string |                                |
+| description | string |                                |
+| link        | string |                                |
+| priority    | string |                                |
+| category_id | int    | Foreign Key → WishlistCategory |
+| user_id     | int    | Foreign Key → User             |
+| reserved_by | int    | Foreign Key → User (nullable)  |
+| ...         | ...    |                                |
+
+**Relationships:**
+
+- A `WishlistCategory` can have many `WishlistItem` entries.
+- A `User` can have many `WishlistItem` entries.
+- A `WishlistItem` can be reserved by a `User`.
+
+---
+
+### Friendship
+
+| Field     | Type   | Notes                     |
+| --------- | ------ | ------------------------- |
+| id        | int    | Primary Key               |
+| user_id   | int    | Foreign Key → User        |
+| friend_id | int    | Foreign Key → User        |
+| status    | string | (e.g., pending, accepted) |
+| ...       | ...    |                           |
+
+**Relationship:**  
+A `User` can have many `Friendship` entries (as user or friend).
+
+---
+
+### Event
+
+| Field   | Type     | Notes              |
+| ------- | -------- | ------------------ |
+| id      | int      | Primary Key        |
+| title   | string   |                    |
+| start   | datetime |                    |
+| end     | datetime |                    |
+| user_id | int      | Foreign Key → User |
+| ...     | ...      |                    |
+
+**Relationship:**  
+A `User` can have many `Event` entries.
+
+---
+
+Relationships Summary
+
+- **User** 1---\* **WishlistCategory**
+- **WishlistCategory** 1---\* **WishlistItem**
+- **User** 1---\* **WishlistItem**
+- **WishlistItem** \*---1 **User** (reserved_by)
+- **User** _---_ **Friendship** (_as user or friend_)
+- **User** 1---\* **Event**
+  <br>
+  <br>
 
 **Purpose and Intended Audience of Gift-Pal**
 
@@ -104,38 +196,39 @@ INTENDED AUDIENCE
 By addressing the needs of these varied user groups, Gift-Pal aims to create a cohesive and interactive experience that brings people together through thoughtful event planning and gift-giving.
 
 **Gift-Pal User stories**
-     
-Title | User story | MoSCoW prioritisation |
---- | --- | --- |
-**Account Registration** | As a **site user** I want to **register an account** so that I can **login and access my personalized dashboard.** | Must have |
-**User Login** | As a **registered user** I want to **log in to my account =** so that I can **access my events, wishlist, and friends list.** | Must have |
-**Event Creation** | As a **registered user** I want to **create events** so that I can **manage my schedule and important dates.** | Must have |
-**Add Wishlist Item** | As a **registered user** I want to **add items to my wishlist** so that I can **keep track of gifts I want to receive.** | Must have |
-**Edit Profile** | As a **registered user** I want to **edit my profile** so that I can **update my personal information.** | Must have |
-**Delete Event** | As a **registered user** I want to **delete an event** so that I can **remove it from my calendar.** | Must have |
-**Add Friends** | As a **registered user** I want to **add friend** so that I can **view their events and wishlist, and they can view mine.** | Should have |
-**View Friend's Profile** | As a **registered user** I want to **view my friend's profile** so that I can **see their events and wishlist.** | Should have |
-**View Friend's Profile** | As a **registered user** I want to **view my friend's profile** so that I can **see their events and wishlist.** | Could have |
+
+| Title                     | User story                                                                                                                    | MoSCoW prioritisation |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| **Account Registration**  | As a **site user** I want to **register an account** so that I can **login and access my personalized dashboard.**            | Must have             |
+| **User Login**            | As a **registered user** I want to **log in to my account =** so that I can **access my events, wishlist, and friends list.** | Must have             |
+| **Event Creation**        | As a **registered user** I want to **create events** so that I can **manage my schedule and important dates.**                | Must have             |
+| **Add Wishlist Item**     | As a **registered user** I want to **add items to my wishlist** so that I can **keep track of gifts I want to receive.**      | Must have             |
+| **Edit Profile**          | As a **registered user** I want to **edit my profile** so that I can **update my personal information.**                      | Must have             |
+| **Delete Event**          | As a **registered user** I want to **delete an event** so that I can **remove it from my calendar.**                          | Must have             |
+| **Add Friends**           | As a **registered user** I want to **add friend** so that I can **view their events and wishlist, and they can view mine.**   | Should have           |
+| **View Friend's Profile** | As a **registered user** I want to **view my friend's profile** so that I can **see their events and wishlist.**              | Should have           |
+| **View Friend's Profile** | As a **registered user** I want to **view my friend's profile** so that I can **see their events and wishlist.**              | Could have            |
 
 <p align="right"><a href="#contents">Back To Table of Contents</a></p>
 
 ---
 
 ### CREATION PROCESS
-  
- [GitHub Projects](https://github.com/users/Philgck/projects/13) was used to create a project board and was populated with user stories and added labels according to MoSCoW prioritisation.
+
+[GitHub Projects](https://github.com/users/Philgck/projects/13) was used to create a project board and was populated with user stories and added labels according to MoSCoW prioritisation.
 All but one of the 'must have' user stories were completed with any other issues being carried over to the next sprint of the project development.
 
 ![Project Board](readme.docs/images/project_board.png)
 
-Each user story had acceptance criteria added.The fulfillment of the criteria for each of these can be demonstrated by the presence of the features on the site (see below). The CRUD funtionality of the 'Event', 'Wish List' and 'Friends' models were tested extensively throughout each development phase both manually and through automated unit tests. 
+Each user story had acceptance criteria added.The fulfillment of the criteria for each of these can be demonstrated by the presence of the features on the site (see below). The CRUD funtionality of the 'Event', 'Wish List' and 'Friends' models were tested extensively throughout each development phase both manually and through automated unit tests.
 
 ---
 
 **Gift-Pal SITE USER GOALS**
+
 - Efficient Event Management:
- - Users want to easily create, update, and delete events for important occasions.
-  - Users aim to view a comprehensive list of their upcoming events and associated details.
+- Users want to easily create, update, and delete events for important occasions.
+- Users aim to view a comprehensive list of their upcoming events and associated details.
 - Streamlined Gift Management:
   - Users want to add, update, and delete items in their wishlist.
   - Users aim to view and manage a consolidated list of desired gifts with links for easy access.
@@ -150,6 +243,7 @@ Each user story had acceptance criteria added.The fulfillment of the criteria fo
   - Users aim to manage their privacy settings for who can view their profile and content.
 
 **Gift-Pal SITE-OWNER GOALS**
+
 - User Engagement:
   - Site owners want to increase user registration and activity on the platform.
   - Site owners aim to keep users engaged with regular updates and new features.
@@ -172,7 +266,10 @@ Each user story had acceptance criteria added.The fulfillment of the criteria fo
 
 ## CREATION PROCESS
 
-  ### Wireframes
+### Wireframes
+
+There was a moderate redesign of the UI of the original project Gift-Genie, however some similarities remain.
+
 <details open>
 <summary>Landing page wireframe desktop view </summary>
 <img width="1080" alt="Landing page wireframe" src="readme.docs/images/wireframe_landing page.png">
@@ -196,14 +293,14 @@ Each user story had acceptance criteria added.The fulfillment of the criteria fo
 
 The website uses the following fonts:
 
-- **Arial**: The primary font used throughout the website for its clean and professional appearance. Arial is a widely available sans-serif font that ensures readability and consistency across different devices and browsers.
+- **Ubuntu**: The primary font used throughout the website for its clean and professional appearance. Ubuntu is a widely available sans-serif font that ensures readability and consistency across different devices and browsers.
 
 ### Colour Scheme
 
-The color scheme of the website is was taken from open source Bootswatch (https://bootswatch.com/quartz/) and we chose the Quartz theme which provides a fun and colourful background and a non-intrusive background that is easily viewed in both light and dark modes. This design was chosen as it had a fun and warm feel to associate with gift-giving occasions. 
-
+The color scheme of the website is was taken from open source Bootswatch (https://bootswatch.com/quartz/) and we chose the Quartz theme which provides a fun and colourful background and a non-intrusive background that is easily viewed in both light and dark modes. This design was chosen as it had a fun and warm feel to associate with gift-giving occasions.
 
 ### Imagery
+
 - **Pixabay**: Royalty-free stock images that are used to complement the content. [Pixabay](https://pixabay.com/)
 
 The 'Gift Pal' icon is used as the icon to enhance the visual appeal and usability of the website. The same icon is included both on each page in the Navbar and as a recognisable icon as the favicon for the tab. [Procreate](https://procreate.com/)
@@ -213,24 +310,23 @@ The 'Gift Pal' icon is used as the icon to enhance the visual appeal and usabili
 
 The website features a consistent layout and styling across all pages, ensuring a cohesive user experience. Key design elements include:
 
-- **Header**: The header contains a collapsible navbar that is consistent across all pages. It includes links to the main sections of the website, pplanner, friendslist and user wishlists. The navbar also includes login and signup links for unauthenticated users and a logout button for authenticated users.
+- **Header**: The header contains a collapsible navbar that is consistent across all pages. It includes links to the main sections of the website, profile, planner, friendslist and user wishlists. The navbar also includes login and signup links for unauthenticated users and a logout button for authenticated users.
 - **Collapsible Navbar**: The navbar is designed to be responsive and collapses into a hamburger menu on smaller screens. This ensures that the navigation is accessible and user-friendly on all devices.
-- **Footer**: The footer is consistent across all pages and includes links to social media apps Facebook, X (formerly Twitter), Instagram and Pintrest. The styling is cohesive across all pages to give a cohesive look and feel across all pages.
-   
- ---
- <p align="right"><a href="#contents">Back To Table of Contents</a></p>
+- **Footer**: The footer is consistent across all pages and includes links to social media apps Facebook, X (formerly Twitter), Instagram and LinkedIn. It also includes links to the terms & conditions, privacy policy and site map pages. The styling is cohesive across all pages to give a cohesive look and feel across all pages.
+  ***
+  <p align="right"><a href="#contents">Back To Table of Contents</a></p>
 
-## WEBSITE FEATURES 
+## WEBSITE FEATURES
 
+**LANDING PAGE VIEW**
 
-  **LANDING PAGE VIEW**
   <details open>
   <summary>landing page</summary>
 
-  ![home-page](readme.docs/images/landing1.png)
-  ![home-page cont.](readme.docs/images/landing2.png)
-  ![home-page cont.](readme.docs/images/landing3.png)
-  ![home-page cont.](readme.docs/images/landing4.png)
+![home-page](readme.docs/images/landing1.png)
+![home-page cont.](readme.docs/images/landing2.png)
+![home-page cont.](readme.docs/images/landing3.png)
+![home-page cont.](readme.docs/images/landing4.png)
 
   </details>
   Users arrive directly on the landing page which outlines the purpose of the app immediately rather than requiring users to log in or register before being able to see anything in order to entice users to then sign-up in order to use the features.
@@ -238,22 +334,24 @@ The website features a consistent layout and styling across all pages, ensuring 
 <br>
 
 **USER AUTHENTICATION**
+
 <details open>
   <summary>Authentication page</summary>
 
-  ![Signup Page](readme.docs/images/signup_page_view.png)
-  ![login-page](readme.docs/images/login_page_view.png) 
-  ![sign-out-page](readme.docs/images/sign_out_confirm.png) 
+![Signup Page](readme.docs/images/signup_page_view.png)
+![login-page](readme.docs/images/login_page_view.png)
+![sign-out-page](readme.docs/images/sign_out_confirm.png)
 
-  Users must be registered via the sign up page and/or login to navigate from the landing page to their user profile. Incomplete fields will receive prompts. A signout confirmation is requested if a user selects to sign out. 
+Users must be registered via the sign up page and/or login to navigate from the landing page to their user profile. Incomplete fields will receive prompts. A signout confirmation is requested if a user selects to sign out.
 
-**USER PROFILE VIEW** 
+**USER PROFILE VIEW**
+
   <details open>
   <summary>User Profile Page</summary>
 
-  ![User Profile Page](readme.docs/images/user_profile_page_view.png)
-  ![User Profile Page Cont.](readme.docs/images/user_profile_page_view2.png)
- 
+![User Profile Page](readme.docs/images/user_profile_page_view.png)
+![User Profile Page Cont.](readme.docs/images/user_profile_page_view2.png)
+
   </details>
   Authenticated users then access their calendar to add, view or edit events; access wishlists to add, view or modify categories and items, and access their friends list to view or modify their friends list from the navbar at all times. 
   
@@ -263,30 +361,31 @@ The website features a consistent layout and styling across all pages, ensuring 
   <details>
   <summary>Calendar of events</summary>
 
-  ![events-detail](readme.docs/images/populated_planner_view.png)
+![events-detail](readme.docs/images/populated_planner_view.png)
 
   </details>
   The detailed view a calendar containing user added events.
 
   <br>
 
-  **WISHLIST VIEW**
+**WISHLIST VIEW**
+
   <details>
   <summary>A populated wishlist example</summary>
 
-  ![comment](readme.docs/images/my_wishlist_populated_view.png)
+![comment](readme.docs/images/my_wishlist_populated_view.png)
 
   </details>
-  Each user can add/manage categories for wishlists and add/manage wishlist items in each category. 
-  
+  Each user can add/manage categories for wishlists and add/manage wishlist items in each category.
 
-<br> 
+<br>
 
 **FRIENDS LIST VIEW**
+
   <details>
   <summary>Example associated Friends List</summary>
 
-  ![comment](readme.docs/images/basic_friends_list_for_user_1.png)
+![comment](readme.docs/images/basic_friends_list_for_user_1.png)
 
   </details>
   Each user can search and make a request to befriend other registered users or manage their existing friends list 
@@ -294,24 +393,22 @@ The website features a consistent layout and styling across all pages, ensuring 
 <br>
 
 ## FUTURE FEATURES
+
 The following would be options to consider including in future versions of the website:
- 
-  - Include a 'Share Wishlist' or 'Share Events' feature so authenticated users can share new or edited items/events with with their family and friends
-  
-  - Requested friends can receive notifications (via a preferred method eg email or in-app) when other users edit their wishlist to indicate intention of purchase. 
 
-  - Friends can receive notifications (via a preferred method eg email or in-app) that another friend has created a new event or wishlist. 
-    
+- Include a 'Share Wishlist' or 'Share Events' feature so authenticated users can share new or edited items/events with with their family and friends
 
+- Requested friends can receive notifications (via a preferred method eg email or in-app) when other users edit their wishlist to indicate intention of purchase.
+
+- Friends can receive notifications (via a preferred method eg email or in-app) that another friend has created a new event or wishlist.
 
 ---
 
 <p align="right"><a href="#contents">Back To Table of Contents</a></p>
 
-
 ## TECHNOLOGIES USED
 
-  ### Languages Used
+### Languages Used
 
 ![Python](https://img.shields.io/badge/Python-3.8-blue)
 ![asgiref](https://img.shields.io/badge/asgiref-3.8.1-blue)
@@ -360,41 +457,52 @@ The following would be options to consider including in future versions of the w
 ![Flexbox](https://img.shields.io/badge/Flexbox-CSS%20Layout-blue)
 ![Pixabay](https://img.shields.io/badge/Pixabay-Image%20Library-green)
 
- ---
+---
 
  <p align="right"><a href="#contents">Back To Table of Contents</a></p>
 
-### AI AUGMENTATION 
+### AI AUGMENTATION
 
 ### Leveraging AI Tools for Code Creation
+
 During the development of the Gift Pal app, GitHub Copilot, Chat GPT and DeepSeek was utilized to assist in code creation. Each AI solution provided valuable code snippets and suggestions that accelerated the development process. Key areas where AI was used include:
+
 - **Generating Views and Templates**: AI was instrumental in generating Django views and HTML templates. These snippets provided a solid foundation, which were then manually checked and modified to fit the project's specific requirements.
 - **Form Handling**: AI assisted in creating forms for user input. The generated code snippets were reviewed and adjusted to ensure they met the application's validation and processing needs.
 - **File and Directory Management**: AI was invaluable in the reminding of the numerous files and directories to amend when new models, views, or features were introduced, ensuring that all the correct files were updated.
-While AI provided a significant boost in productivity, it was essential to manually review and modify the generated code to ensure accuracy and alignment with project requirements.
+  While AI provided a significant boost in productivity, it was essential to manually review and modify the generated code to ensure accuracy and alignment with project requirements.
 
 ### AI-Assisted Debugging
+
 GitHub Copilot and DeepSeek played a crucial role in identifying and resolving bugs. Key interventions include:
+
 - **Error Handling**: AI suggested error handling mechanisms for example, it provided initial code for handling form validation errors, which were then refined to improve user feedback and error reporting.
 - **Debugging Views**: When encountering issues with view logic, AI suggested potential fixes and improvements. These suggestions were cross-referenced with the current code using tools like Diffchecker and W3C to ensure the changes were appropriate and did not introduce new issues.
-Manual use of Diffchecker was crucial in comparing AI's suggestions with the existing codebase, ensuring that only the most relevant and accurate changes were implemented.
+  Manual use of Diffchecker was crucial in comparing AI's suggestions with the existing codebase, ensuring that only the most relevant and accurate changes were implemented.
 
 ### Optimizing Code for Performance and User Experience
+
 AI was also used to optimize code for performance and enhance user experience:
+
 - **Efficient Query Handling**: AI suggested optimizations for database queries to reduce the number of database hits and improve performance.
 - **Responsive Design**: AI provided initial CSS and JavaScript snippets to enhance the application's responsiveness. These snippets were manually adjusted to ensure a seamless user experience across different devices using custom color choices and fonts, as well as Bootstrap and Flexbox for structure and positioning.
 
 ### Generating Django Unit Tests
+
 AI assisted in generating Django unit tests to ensure code coverage for key functionalities:
+
 - **Test Logic Generation**: GitHub Copilot generated initial test cases for views, forms, and models. For example, it provided test cases for creating, editing, and deleting wishlist items, as well as adding and removing friends. These tests were reviewed and adjusted to improve accuracy and completeness.
 - **Ensuring Code Coverage**: GitHub Copilot's suggestions helped ensure all critical paths were tested. For instance, it generated tests for edge cases, such as handling invalid form submissions and testing user permissions. The generated test logic demonstrated a basic understanding of the application's functionality, and manual adjustments were made to ensure the tests accurately reflected the intended behavior.
 
 ### Additional AI Tools
+
 In addition to GitHub Copilot, Chat GPT and DeepSeek, other AI tools were leveraged in much lesser forms:
+
 - **Perplexity**: Used for generic questions regarding feature planning and implementation, providing valuable insights and information.
 - **Microsoft Copilot**: Assisted in generating user stories and blog content based on key information provided by the developer
 
 ### Reflection on AI Tools
+
 Using GitHub Copilot, DeepSeek, Chat GPT and other AI tools significantly enhanced the development process by providing relevant code snippets and suggestions. They accelerated the initial coding phase, assisted in debugging, and ensured comprehensive test coverage. However, it was essential to manually review and adjust the generated code to ensure it met the project's specific requirements and maintained high standards of quality and performance. AI can occasionally repeat itself despite clear prompts, as if it 'forgets' the previous steps or the focus of the initial query, which can be time-consuming. It is crucial to know when to manually take over reviewing the code.
 
 ---
@@ -402,26 +510,27 @@ Using GitHub Copilot, DeepSeek, Chat GPT and other AI tools significantly enhanc
 <p align="right"><a href="#contents">Back To Table of Contents</a></p>
 
 ## DEPLOYMENT of Gift-Pal
+
 The site was deployed to Heroku. The steps to deploy are as follows:
- - Install the gunicorn python package and create a file called 'Procfile' in the repo's root directory
- - In the Procfile write 'web: gunicorn nuclear_knowledge.wsgi:application --log-file -'
- - In settings.py add ".herokuapp.com" to the ALLOWED_HOSTS list
- - In settings.py add 'https://*.herokuapp.com' to CSRF_TRUSTED_ORIGINS list, git add, commit and push to github
+
+- Install the gunicorn python package and create a file called 'Procfile' in the repo's root directory
+- In the Procfile write 'web: gunicorn nuclear_knowledge.wsgi:application --log-file -'
+- In settings.py add ".herokuapp.com" to the ALLOWED_HOSTS list
+- In settings.py add 'https://\*.herokuapp.com' to CSRF_TRUSTED_ORIGINS list, git add, commit and push to github
 
 Navigate to the Heroku dashboard
- - Create a new Heroku app
- - Give it a name and select the region 'Europe'
-Navigate to settings tab and scroll down to Config Vars
- - Click 'Reveal Config Vars'
- - Add the following keys:
-         key = DATABASE_URL | value = (my secret database url)
-         key = SECRET_KEY | value = (my secret key)
-Navigate to Deploy tab
- - Connect to GitHub and select the repo 'lunar-lists'
- - Scroll down to 'Manual deploy' and select the 'main' branch
- - Click 'Deploy Branch'
-   
 
+- Create a new Heroku app
+- Give it a name and select the region 'Europe'
+  Navigate to settings tab and scroll down to Config Vars
+- Click 'Reveal Config Vars'
+- Add the following keys:
+  key = DATABASE_URL | value = (my secret database url)
+  key = SECRET_KEY | value = (my secret key)
+  Navigate to Deploy tab
+- Connect to GitHub and select the repo 'gift-pal'
+- Scroll down to 'Manual deploy' and select the 'main' branch
+- Click 'Deploy Branch'
 
 ---
 
@@ -432,42 +541,69 @@ Navigate to Deploy tab
 The W3C Markup validator was used to validate all HTML code - [W3C Markup Validator](https://validator.w3.org/)
 
 Throughout this project DTL was utilised. The HTML validator often throws errors when using DTL therefore the following approach was used:
-  - navigate to the deployed Heroku link
-  - right click to find the 'view page source' link
-  - copy and paste the HTML code from here into the validator via the direct input
+
+- navigate to the deployed Heroku link
+- right click to find the 'view page source' link
+- copy and paste the HTML code from here into the validator via the direct input
 
 [home page html validation](readme.docs/...)
 
 [A MODEL page html validation](readme.docs/...)
 
-   ### CSS validation
+### CSS validation
 
 [CSS validation](readme.docs/...)
 
 [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) was used to validate the CSS file. External CSS for Bootstrap, provided by [CDN](https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css) was not tested.
 
-   ### Javascript validation
+### Javascript validation
 
-  [JavaScript Validator](https://jshint.com) - the JavaScript validator was to be used - did not throw up and issues. 
+[JavaScript Validator](https://jshint.com) - the JavaScript validator was to be used - did not throw up and issues.
 
-   ### Python validation 
+### Python validation
+
 [CI Python Linter](https://pep8ci.herokuapp.com/#) will be used to validate the python code.
 
+### Lighthouse scores from Heroku deployed app via Chrome dev tools
 
-
-## Lighthouse scores from Heroku deployed app via Chrome dev tools 
 ![lighthouse](readme.docs/images/lighthouse_desktop.png)
 ![lighthouse](readme.docs/images/lighthouse_mobile.png)
 
-We were delighted that our recent Lighthouse audit yielded excellent performance scores for the desktop version of our application. This achievement reflects the hard work and dedication of our development team in optimizing the user experience for desktop users. However, we also noted that the mobile performance scores were not up to our expectations. Recognizing the importance of a seamless mobile experience, we have prioritized addressing these issues in the upcoming sprint. Our team is committed to enhancing mobile performance to ensure that all users, regardless of their device, enjoy a fast and responsive application.
+The recent Lighthouse audit yielded excellent performance scores for the desktop version of our application. This achievement reflects the hard work and dedication of the development team in optimizing the user experience for desktop users. However, it was also noted that the mobile performance scores were not up to expectations. Recognizing the importance of a seamless mobile experience, addressing these issues in the upcoming sprint is a huge priority. The team is committed to enhancing mobile performance to ensure that all users, regardless of their device, enjoy a fast and responsive application.
 
+### Manual Testing
 
+## Manual Testing Checklist
+
+| Feature                | Test Case                                                                | Pass/Fail | Notes |
+| ---------------------- | ------------------------------------------------------------------------ | --------- | ----- |
+| **Authentication**     | Login with valid credentials                                             |           |       |
+|                        | Logout and confirm redirect to login/landing page                        |           |       |
+|                        | Access protected page after logout (should redirect to login)            |           |       |
+| **Profile Management** | View profile details after login                                         |           |       |
+|                        | Edit profile details and confirm changes                                 |           |       |
+|                        | Change profile picture and confirm update                                |           |       |
+|                        | Remove profile picture and confirm default appears                       |           |       |
+| **Wishlist**           | Add wishlist category and confirm it appears                             |           |       |
+|                        | Add wishlist item to category and confirm it appears                     |           |       |
+|                        | Edit wishlist item and confirm changes                                   |           |       |
+|                        | Delete wishlist item and confirm removal                                 |           |       |
+|                        | Delete wishlist category and confirm all items are removed               |           |       |
+| **Friends**            | Add friend (send and accept request) and confirm in friends list         |           |       |
+|                        | Remove friend and confirm removal from both users' lists                 |           |       |
+|                        | Check pending friend requests for both sender and receiver               |           |       |
+| **Events**             | Add event and confirm it appears in calendar/list                        |           |       |
+|                        | Edit event and confirm changes                                           |           |       |
+|                        | Delete event and confirm removal                                         |           |       |
+| **Navigation**         | Navigate between all main pages using navbar                             |           |       |
+|                        | Check footer links (Terms, Privacy, Site Map, Social) open correct pages |           |       |
+| **Validation**         | Try submitting forms with invalid/empty input and check error handling   |           |       |
 
 <br>
 
 ### Agile Process for Gift-Pal
 
-We adopted an agile methodology using a GitHub project board, applying MoSCoW prioritization to manage my tasks. The board was regularly updated to ensure all 'Must have' and 'Should have' features were addressed. Some 'Could have' issues remain in the backlog for future sprints, as detailed in the 'Future Features' section below.
+An agile methodology was adpted using a GitHub project board, applying MoSCoW prioritization to manage my tasks. The board was regularly updated to ensure all 'Must have' and 'Should have' features were addressed. Some 'Could have' issues remain in the backlog for future sprints, as detailed in the 'Future Features' section below.
 
 ---
 
@@ -476,25 +612,26 @@ We adopted an agile methodology using a GitHub project board, applying MoSCoW pr
 ## CREDITS
 
 **Content**
-  - [JoannaOConnor/readme-example on GitHub](https://github.com/JOCPhys/Nuclear-Knowledge-JOC/blob/main/README.md)
-  was used to help write the README.md
-  - [Code Institute Sample README](https://github.com/Code-Institute-Solutions/SampleREADME)
-  was used as a reference when writing the README.
-  - [Code Institute](https://learn.codeinstitute.net/) The IDE was used for extra reference for HTML, CSS, Python and Django
-  
-**Media**
- - All images not generated from DALL.E AI were obatined from:
-  - [Amiresponsive](https://ui.dev/amiresponsive) for the responsivity mockup on the README.
-  - [Ignore X frame headers](https://chromewebstore.google.com/detail/ignore-x-frame-headers/gleekbfjekiniecknbkamfmkohkpodhe)
-    was used to download a Chrome extension to allow the resposivity image to be taken.
-  - [CODE OPEN IO](https://codepen.io/RoyLee0702/pen/RwNgVya) was used to create the giftbox animation
-  - [BOOTSWATCH](https://bootswatch.com) was used for the css styling using the Quartz theme
 
+- [JoannaOConnor/readme-example on GitHub](https://github.com/JOCPhys/Nuclear-Knowledge-JOC/blob/main/README.md)
+  was used to help write the README.md
+- [Code Institute Sample README](https://github.com/Code-Institute-Solutions/SampleREADME)
+  was used as a reference when writing the README.
+- [Code Institute](https://learn.codeinstitute.net/) The IDE was used for extra reference for HTML, CSS, Python and Django
+
+**Media**
+
+- All images not generated from DALL.E AI were obatined from:
+- [Amiresponsive](https://ui.dev/amiresponsive) for the responsivity mockup on the README.
+- [Ignore X frame headers](https://chromewebstore.google.com/detail/ignore-x-frame-headers/gleekbfjekiniecknbkamfmkohkpodhe)
+  was used to download a Chrome extension to allow the resposivity image to be taken.
+- [CODE OPEN IO](https://codepen.io/RoyLee0702/pen/RwNgVya) was used to create the giftbox animation
+- [BOOTSWATCH](https://bootswatch.com) was used for the css styling using the Quartz theme
 
 **Acknowledgements**
+
 - Code Institute Facilitator Dillon McCaffrey for his encouragement, patience, guidance and support.
 - Code Institute SME Coach John Rearden for coding advice
 - Code Institue Coding Coach Ruairidh MacArthur for GIT advice
 
 <p align="right"><a href="#contents">Back To Table of Contents</a></p>
-
